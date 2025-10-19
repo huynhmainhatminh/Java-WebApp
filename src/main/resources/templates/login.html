@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div th:insert="header :: site-header"></div>
+<main class="auth">
+    <div class="container auth-inner">
+        <section class="auth-card" aria-labelledby="login-title">
+            <h1 id="login-title" class="auth-title">Đăng Nhập</h1>
+            <p class="auth-subtitle">Vui lòng đăng nhập để tiếp tục</p>
+            <form id="loginForm" class="auth-form" novalidate>
+                <label class="field">
+                    <span class="label">Tên Tài Khoản</span>
+                    <input type="text" name="username" placeholder="username" required>
+                </label>
+                <label class="field">
+                    <span class="label">Mật Khẩu</span>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </label>
+
+                <div class="form-row">
+                    <label class="checkbox">
+                        <input type="checkbox" name="remember">
+                        <span>Remember Me</span>
+                    </label>
+                    <a class="link" href="#">Quên mật khẩu?</a>
+                </div>
+
+                <button type="submit" class="button primary full">Đăng Nhập</button>
+
+                <p class="terms">
+                    Khi đăng nhập, bạn đồng ý với
+                    <a href="#" class="link">Điều khoản dịch vụ</a>
+                    và
+                    <a href="#" class="link">Chính sách bảo mật</a>.
+                </p>
+            </form>
+
+            <script>
+                document.getElementById("loginForm").addEventListener("submit", async function(event){
+                    event.preventDefault(); // chặn submit truyền thống
+                    const formData = new FormData(this);
+
+                    const response = await fetch("/api/login", {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đăng nhập thành công',
+                            text: 'Chào mừng bạn quay trở lại.',
+                            confirmButtonText: 'Chuyển hướng'
+                        }).then(() => {
+                            window.location.href = '/my'; // chuyển sang trang login.html
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: result.message || 'Đăng nhập thất bại!'
+                        });
+                    }
+                });
+            </script>
+        </section>
+    </div>
+</main>
+<div th:insert="footer :: site-footer"></div>
+</body>
+</html>
+
