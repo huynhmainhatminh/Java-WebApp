@@ -11,9 +11,9 @@
 | STT | Họ và Tên | MSSV | Vai Trò |
 |--|--|--|--|
 | 01 | <div align="center">[Huỳnh Mai Nhật Minh](https://github.com/huynhmainhatminh)</div> | <div align="center">060205000065</div> | <div align="center">Nhóm Trưởng</div> |
-| 02 | <div align="center">Nguyễn Hà Nam</div> | <div align="center">077205011397</div> | <div align="center">Thành Viên</div> |
-| 03 | <div align="center">Lương Thị Bích Hằng</div> | <div align="center">075305020765</div> | <div align="center">Thành Viên</div> |
-| 04 | <div align="center">Lê Thành Chính</div> | <div align="center">052205009303</div> | <div align="center">Thành Viên</div> |
+| 02 | <div align="center">[Nguyễn Hà Nam](https://github.com/NguyenHaNam657)</div> | <div align="center">077205011397</div> | <div align="center">Thành Viên</div> |
+| 03 | <div align="center">[Lương Thị Bích Hằng](https://github.com/PillowsWannaCry)</div> | <div align="center">075305020765</div> | <div align="center">Thành Viên</div> |
+| 04 | <div align="center">[Lê Thành Chính](https://github.com/9hNek)</div> | <div align="center">052205009303</div> | <div align="center">Thành Viên</div> |
 
 
 ## Công Nghệ Sử Dụng
