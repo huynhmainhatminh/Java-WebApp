@@ -59,4 +59,5 @@
 </details>
 </div>
 
-## Đặc trưng
+## ✨ Đặc trưng
+## 🪄 Cách thức hoạt động
