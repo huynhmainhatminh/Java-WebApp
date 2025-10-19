@@ -42,6 +42,7 @@
 - Hibernate
 - Lombok
 - JWT
+- Thymeleaf
 - com.mysql.cj.jdbc.Driver
   
 </details>
