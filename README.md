@@ -11,6 +11,19 @@
 <div style="border: 2px solid #f39c12; padding: 15px; background-color: #fffbe6; border-radius: 10px;">
 
 <details open>
+<summary><b>🌟 Công cụ làm việc</b></summary>
+
+- Git
+- IntelliJ IDEA
+- Github
+  
+</details>
+</div>
+
+
+<div style="border: 2px solid #f39c12; padding: 15px; background-color: #fffbe6; border-radius: 10px;">
+
+<details open>
 <summary><b>🌟 Phần Backend</b></summary>
 
 - Java
