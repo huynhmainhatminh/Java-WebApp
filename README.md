@@ -59,5 +59,16 @@
 </details>
 </div>
 
+<div style="border: 2px solid #3498db; padding: 15px; background-color: #e6f3ff; border-radius: 10px; margin-top: 15px;">
+
+<details open>
+<summary><b>🌟 Cơ sở dữ liệu</b></summary>
+
+- MySQL
+
+</details>
+</div>
+
+
 ## ✨ Đặc trưng
 ## 🪄 Cách thức hoạt động
