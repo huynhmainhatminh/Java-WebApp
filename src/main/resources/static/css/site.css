@@ -1,0 +1,1181 @@
+/*[ FONT ]*/
+/*new font*/
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraBoldItalic.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraBoldItalic.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraBoldItalic.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraBoldItalic.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraBoldItalic.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraBoldItalic.svg#SVN-PoppinsExtraBoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBlackItalic.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBlackItalic.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBlackItalic.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBlackItalic.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBlackItalic.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBlackItalic.svg#SVN-PoppinsBlackItalic') format('svg');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBoldItalic.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBoldItalic.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBoldItalic.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBoldItalic.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBoldItalic.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBoldItalic.svg#SVN-PoppinsBoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraBold.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraBold.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraBold.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraBold.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraBold.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraBold.svg#SVN-PoppinsExtraBold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBold.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBold.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBold.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBold.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBold.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBold.svg#SVN-PoppinsBold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBlack.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBlack.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBlack.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBlack.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBlack.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsBlack.svg#SVN-PoppinsBlack') format('svg');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsLight.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsLight.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsLight.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsLight.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsLight.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsLight.svg#SVN-PoppinsLight') format('svg');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsItalic.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsItalic.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsItalic.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsItalic.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsItalic.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsItalic.svg#SVN-PoppinsItalic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsMediumItalic.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsMediumItalic.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsMediumItalic.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsMediumItalic.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsMediumItalic.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsMediumItalic.svg#SVN-PoppinsMediumItalic') format('svg');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraLightItalic.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraLightItalic.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraLightItalic.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraLightItalic.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraLightItalic.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraLightItalic.svg#SVN-PoppinsExtraLightItalic') format('svg');
+    font-weight: 200;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsLightItalic.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsLightItalic.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsLightItalic.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsLightItalic.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsLightItalic.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsLightItalic.svg#SVN-PoppinsLightItalic') format('svg');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraLight.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraLight.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraLight.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraLight.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraLight.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsExtraLight.svg#SVN-PoppinsExtraLight') format('svg');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsThin.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsThin.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsThin.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsThin.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsThin.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsThin.svg#SVN-PoppinsThin') format('svg');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsSemiBold.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsSemiBold.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsSemiBold.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsSemiBold.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsSemiBold.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsSemiBold.svg#SVN-PoppinsSemiBold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsMedium.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsMedium.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsMedium.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsMedium.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsMedium.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsMedium.svg#SVN-PoppinsMedium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsThinItalic.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsThinItalic.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsThinItalic.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsThinItalic.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsThinItalic.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsThinItalic.svg#SVN-PoppinsThinItalic') format('svg');
+    font-weight: 100;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-Poppins.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-Poppins.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-Poppins.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-Poppins.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-Poppins.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-Poppins.svg#SVN-Poppins') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SVN-Poppins';
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsSemiBoldItalic.eot');
+    src: url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsSemiBoldItalic.eot?#iefix') format('embedded-opentype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsSemiBoldItalic.woff2') format('woff2'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsSemiBoldItalic.woff') format('woff'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsSemiBoldItalic.ttf') format('truetype'), url('https://cdn.ueh.edu.vn/qnp/fonts/SVN-Poppins/SVN-PoppinsSemiBoldItalic.svg#SVN-PoppinsSemiBoldItalic') format('svg');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
+html, body {
+    font-family: 'SVN-Poppins';
+    font-size: 1.05rem;
+}
+
+tbody, td, tfoot, th, thead, tr {
+    border-color: #bcbebf;
+    border-style: solid;
+}
+
+.spinner-layout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgb(215 213 213 / 80%);
+    z-index: 2000;
+}
+
+.spinner-layout .spinner-box {
+    width: 500px;
+    margin: 0 auto;
+    position: relative;
+    top: 25%;
+}
+
+.spinner-layout .spinner-box > img {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.hidden {
+    display: none;
+}
+
+/*header*/
+@charset "UTF-8";
+
+.bg-dark {
+    background-color: #005F69 !important;
+}
+
+.dropdown-menu, .mega-nav .mega-dropdown .mega-menu-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 1rem;
+    color: #4b566b;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #e3e9ef;
+    border-radius: 0.3125rem;
+    box-shadow: 0 0.25rem 0.5625rem -0.0625rem rgba(0, 0, 0, 0.03), 0 0.275rem 1.25rem -0.0625rem rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-menu[x-placement^="top"], .mega-nav .mega-dropdown .mega-menu-container[x-placement^="top"], .dropdown-menu[x-placement^="right"], .mega-nav .mega-dropdown .mega-menu-container[x-placement^="right"], .dropdown-menu[x-placement^="bottom"], .mega-nav .mega-dropdown .mega-menu-container[x-placement^="bottom"], .dropdown-menu[x-placement^="left"], .mega-nav .mega-dropdown .mega-menu-container[x-placement^="left"] {
+    right: auto;
+    bottom: auto;
+}
+
+.mega-nav {
+    position: relative;
+}
+
+.mega-nav::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 1.875rem;
+    content: '';
+}
+
+.mega-nav .mega-dropdown {
+    display: block;
+    position: static;
+    min-width: 15rem;
+    font-size: 1rem;
+}
+
+.mega-nav .mega-dropdown > a {
+    display: block;
+    position: relative;
+    padding-top: .75rem;
+    padding-right: 1.95rem;
+    padding-bottom: .75rem;
+    padding-left: 1.3rem;
+    transition: all 0.25s ease-in-out;
+    border-bottom: 1px solid #e3e9ef;
+    color: #4b566b;
+    white-space: nowrap;
+}
+
+.mega-nav .mega-dropdown > a > i {
+    margin-top: -.25rem;
+    margin-right: .5rem;
+    font-size: 1.24em;
+    opacity: .6;
+    vertical-align: middle;
+}
+
+.mega-nav .mega-dropdown.menu-item-has-children > a::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    margin-top: -.3em;
+    content: '';
+    border-top: 0.275em solid transparent;
+    border-right: 0;
+    border-bottom: 0.275em solid transparent;
+    border-left: 0.275em solid;
+}
+
+.mega-nav .mega-dropdown:last-child > a {
+    border: 0;
+}
+
+.mega-nav .mega-dropdown .mega-menu-container {
+    float: none;
+    padding: 0 .5rem;
+    padding-right: 17rem;
+    top: 0;
+    left: 100%;
+    min-height: 100%;
+}
+
+.mega-nav .mega-dropdown .mega-menu-container .menu-item-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 17rem;
+    height: 100%;
+    padding: 1.5rem 1rem;
+    padding-top: 1.3rem !important;
+    border-left: 1px solid #e3e9ef;
+}
+
+.mega-nav .mega-dropdown .mega-menu-container .dropdown-menu, .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container {
+    position: relative;
+    display: table;
+    top: auto !important;
+    left: auto !important;
+    width: 32.5rem !important;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .mega-dropdown-column, .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .mega-dropdown-column {
+    display: table-cell;
+    padding-top: 1.3rem !important;
+}
+
+.mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .mega-dropdown-column > a, .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .mega-dropdown-column > a {
+    display: block;
+    margin-bottom: 1rem;
+    color: #373f50;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .mega-dropdown-column .widget-list, .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .mega-dropdown-column .widget-list {
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+    list-style: none;
+}
+
+.mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .mega-dropdown-column .widget-list > li, .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .mega-dropdown-column .widget-list > li {
+    display: block;
+    padding-bottom: .25rem;
+    margin-bottom: .375rem;
+}
+
+.mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .mega-dropdown-column .widget-list > li:last-child, .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .mega-dropdown-column .widget-list > li:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .mega-dropdown-column .widget-list > li > a, .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .mega-dropdown-column .widget-list > li > a {
+    display: block;
+    transition: all 0.25s ease-in-out;
+    color: #4b566b;
+    text-decoration: none;
+}
+
+.mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .mega-dropdown-column .widget-list > li > a:hover, .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .mega-dropdown-column .widget-list > li > a:hover {
+    color: #fe696a;
+}
+
+.mega-nav .mega-dropdown:hover > a {
+    color: #fe696a;
+}
+
+.mega-nav .mega-dropdown:hover .mega-menu-container {
+    display: block;
+}
+
+.mega-dropdown-column {
+    width: 15rem;
+}
+
+.cz-departments-grid {
+    width: 45rem;
+}
+
+.with-mega-menu ul.dropdown-menu, .with-mega-menu .mega-nav .mega-dropdown ul.mega-menu-container, .mega-nav .mega-dropdown .with-mega-menu ul.mega-menu-container {
+    display: none !important;
+}
+
+.navbar-tool {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-tool.dropdown::before {
+    position: absolute;
+    bottom: -1rem;
+    left: -10%;
+    width: 120%;
+    height: 1rem;
+    content: '';
+}
+
+.navbar-tool .dropdown-menu, .navbar-tool .mega-nav .mega-dropdown .mega-menu-container, .mega-nav .mega-dropdown .navbar-tool .mega-menu-container {
+    margin-top: 0.5rem !important;
+}
+
+.navbar-tool-icon-box {
+    position: relative;
+    width: 2.875rem;
+    height: 2.875rem;
+    transition: color 0.25s ease-in-out;
+    border-radius: 50%;
+    line-height: 2.625rem;
+    text-align: center;
+}
+
+.navbar-tool-icon-box.dropdown-toggle::after {
+    display: none;
+}
+
+.navbar-tool-text {
+    display: none;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding-left: .875rem;
+    transition: color 0.25s ease-in-out;
+    font-size: 0.875rem;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+
+.navbar-tool-text > small {
+    display: block;
+    margin-bottom: -.125rem;
+}
+
+.dropdown .navbar-tool-text::after {
+    display: inline-block;
+    margin-left: 0.23375em;
+    vertical-align: 0.23375em;
+    content: "";
+    border-top: 0.275em solid;
+    border-right: 0.275em solid transparent;
+    border-bottom: 0;
+    border-left: 0.275em solid transparent;
+}
+
+.dropdown .navbar-tool-text:empty::after {
+    margin-left: 0;
+}
+
+@media (min-width: 992px) {
+    .navbar .dropdown-menu, .navbar .mega-nav .mega-dropdown .mega-menu-container, .mega-nav .mega-dropdown .navbar .mega-menu-container {
+        margin-top: 0;
+        border-color: #fff;
+        background-color: #fff;
+        box-shadow: 0 0.25rem 0.5625rem -0.0625rem rgba(0, 0, 0, 0.03), 0 0.275rem 1.25rem -0.0625rem rgba(0, 0, 0, 0.05);
+    }
+
+    .navbar .dropdown-menu.show, .navbar .mega-nav .mega-dropdown .show.mega-menu-container, .mega-nav .mega-dropdown .navbar .show.mega-menu-container {
+        display: none;
+    }
+
+    .navbar .dropdown-menu > .dropdown > .dropdown-toggle, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown > .dropdown-toggle, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown > .dropdown-toggle {
+        position: relative;
+        padding-right: 1.95rem;
+    }
+
+    .navbar .dropdown-menu > .dropdown > .dropdown-toggle::after, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown > .dropdown-toggle::after, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown > .dropdown-toggle::after {
+        display: inline-block;
+        margin-left: 0.23375em;
+        vertical-align: 0.23375em;
+        content: "";
+        border-top: 0.275em solid transparent;
+        border-right: 0;
+        border-bottom: 0.275em solid transparent;
+        border-left: 0.275em solid;
+    }
+
+    .navbar .dropdown-menu > .dropdown > .dropdown-toggle:empty::after, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown > .dropdown-toggle:empty::after, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown > .dropdown-toggle:empty::after {
+        margin-left: 0;
+    }
+
+    .navbar .dropdown-menu > .dropdown > .dropdown-toggle::after, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown > .dropdown-toggle::after, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown > .dropdown-toggle::after {
+        position: absolute;
+        display: block;
+        top: 50%;
+        right: 1rem;
+        margin-top: -.3em;
+    }
+
+    .navbar .dropdown-menu > .dropdown .dropdown-menu, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown .dropdown-menu, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown .dropdown-menu, .navbar .dropdown-menu > .dropdown .mega-nav .mega-dropdown .mega-menu-container, .mega-nav .mega-dropdown .navbar .dropdown-menu > .dropdown .mega-menu-container, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown .mega-menu-container, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown .mega-menu-container {
+        top: 0;
+        right: auto;
+        left: 100%;
+        width: 100%;
+        margin-top: -0.5rem;
+        margin-right: 0;
+        margin-left: -.5rem;
+        background-color: #fff;
+    }
+
+    .navbar .dropdown-menu > .dropdown:hover > .dropdown-menu, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown:hover > .dropdown-menu, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown:hover > .dropdown-menu, .navbar .mega-nav .mega-dropdown .dropdown-menu > .dropdown:hover > .mega-menu-container, .mega-nav .mega-dropdown .navbar .dropdown-menu > .dropdown:hover > .mega-menu-container, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown:hover > .mega-menu-container, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown:hover > .mega-menu-container {
+        animation: fade-in .25s ease-in-out;
+    }
+
+    .navbar .dropdown:hover > .dropdown-menu, .navbar .mega-nav .mega-dropdown .dropdown:hover > .mega-menu-container, .mega-nav .mega-dropdown .navbar .dropdown:hover > .mega-menu-container {
+        display: block;
+        animation: slide-up .25s ease-in-out;
+    }
+
+    .navbar .navbar-tool-text {
+        display: block;
+    }
+}
+
+.navbar-dark .nav-link > i {
+    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out, border-color 0.25s ease-in-out;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.navbar-dark .nav-item:hover .nav-link:not(.disabled) {
+    color: #fff;
+}
+
+.navbar-dark .nav-item.active .nav-link:not(.disabled) > i,
+.navbar-dark .nav-item.show .nav-link:not(.disabled) > i,
+.navbar-dark .nav-item.dropdown .nav-link:focus:not(.disabled) > i {
+    color: #fff;
+}
+
+.navbar-dark .navbar-tool-icon-box {
+    color: #fff;
+}
+
+.navbar-dark .navbar-tool-icon-box.bg-secondary {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.navbar-dark .navbar-tool-text {
+    color: #fff;
+}
+
+.navbar-dark .navbar-tool-text > small {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.navbar-dark .navbar-tool:hover .navbar-tool-text {
+    color: #fff;
+}
+
+.navbar-dark .mega-nav::after {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 991.98px) {
+
+    .navbar-dark .dropdown-menu, .navbar-dark .mega-nav .mega-dropdown .mega-menu-container, .mega-nav .mega-dropdown .navbar-dark .mega-menu-container,
+    .navbar-dark .dropdown-menu .dropdown-menu,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-menu,
+    .navbar-dark .dropdown-menu .mega-nav .mega-dropdown .mega-menu-container,
+    .mega-nav .mega-dropdown .navbar-dark .dropdown-menu .mega-menu-container,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .mega-menu-container {
+        border-color: transparent;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-dark .dropdown-menu .dropdown-item, .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-item, .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-item, .navbar-dark .dropdown-menu .lang-item > a, .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .lang-item > a, .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .lang-item > a,
+    .navbar-dark .dropdown-menu .dropdown-menu .dropdown-item,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .dropdown-item,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-menu .dropdown-item,
+    .navbar-dark .dropdown-menu .mega-nav .mega-dropdown .mega-menu-container .dropdown-item,
+    .mega-nav .mega-dropdown .navbar-dark .dropdown-menu .mega-menu-container .dropdown-item,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .dropdown-item,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .mega-menu-container .dropdown-item,
+    .navbar-dark .dropdown-menu .dropdown-menu .lang-item > a,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .lang-item > a,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-menu .lang-item > a,
+    .navbar-dark .dropdown-menu .mega-nav .mega-dropdown .mega-menu-container .lang-item > a,
+    .mega-nav .mega-dropdown .navbar-dark .dropdown-menu .mega-menu-container .lang-item > a,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .lang-item > a,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .mega-menu-container .lang-item > a {
+        color: rgba(255, 255, 255, 0.65);
+    }
+
+    .navbar-dark .dropdown-menu .dropdown-item:hover, .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-item:hover, .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-item:hover, .navbar-dark .dropdown-menu .lang-item > a:hover, .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .lang-item > a:hover, .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .lang-item > a:hover,
+    .navbar-dark .dropdown-menu .dropdown-menu .dropdown-item:hover,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .dropdown-item:hover,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-menu .dropdown-item:hover,
+    .navbar-dark .dropdown-menu .mega-nav .mega-dropdown .mega-menu-container .dropdown-item:hover,
+    .mega-nav .mega-dropdown .navbar-dark .dropdown-menu .mega-menu-container .dropdown-item:hover,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .dropdown-item:hover,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .mega-menu-container .dropdown-item:hover,
+    .navbar-dark .dropdown-menu .dropdown-menu .lang-item > a:hover,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .lang-item > a:hover,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-menu .lang-item > a:hover,
+    .navbar-dark .dropdown-menu .mega-nav .mega-dropdown .mega-menu-container .lang-item > a:hover,
+    .mega-nav .mega-dropdown .navbar-dark .dropdown-menu .mega-menu-container .lang-item > a:hover,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .lang-item > a:hover,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .mega-menu-container .lang-item > a:hover {
+        color: #fff;
+    }
+
+    .navbar-dark .dropdown-menu .dropdown-item.disabled, .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-item.disabled, .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-item.disabled, .navbar-dark .dropdown-menu .lang-item > a.disabled, .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .lang-item > a.disabled, .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .lang-item > a.disabled,
+    .navbar-dark .dropdown-menu .dropdown-menu .dropdown-item.disabled,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .dropdown-item.disabled,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-menu .dropdown-item.disabled,
+    .navbar-dark .dropdown-menu .mega-nav .mega-dropdown .mega-menu-container .dropdown-item.disabled,
+    .mega-nav .mega-dropdown .navbar-dark .dropdown-menu .mega-menu-container .dropdown-item.disabled,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .dropdown-item.disabled,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .mega-menu-container .dropdown-item.disabled,
+    .navbar-dark .dropdown-menu .dropdown-menu .lang-item > a.disabled,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .lang-item > a.disabled,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-menu .lang-item > a.disabled,
+    .navbar-dark .dropdown-menu .mega-nav .mega-dropdown .mega-menu-container .lang-item > a.disabled,
+    .mega-nav .mega-dropdown .navbar-dark .dropdown-menu .mega-menu-container .lang-item > a.disabled,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .lang-item > a.disabled,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .mega-menu-container .lang-item > a.disabled {
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .navbar-dark .dropdown-menu .active .dropdown-item, .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .active .dropdown-item, .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .active .dropdown-item, .navbar-dark .dropdown-menu .active .lang-item > a, .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .active .lang-item > a, .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .active .lang-item > a,
+    .navbar-dark .dropdown-menu .dropdown-menu .active .dropdown-item,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .active .dropdown-item,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-menu .active .dropdown-item,
+    .navbar-dark .dropdown-menu .mega-nav .mega-dropdown .mega-menu-container .active .dropdown-item,
+    .mega-nav .mega-dropdown .navbar-dark .dropdown-menu .mega-menu-container .active .dropdown-item,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .active .dropdown-item,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .mega-menu-container .active .dropdown-item,
+    .navbar-dark .dropdown-menu .dropdown-menu .active .lang-item > a,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .active .lang-item > a,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-menu .active .lang-item > a,
+    .navbar-dark .dropdown-menu .mega-nav .mega-dropdown .mega-menu-container .active .lang-item > a,
+    .mega-nav .mega-dropdown .navbar-dark .dropdown-menu .mega-menu-container .active .lang-item > a,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .active .lang-item > a,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .mega-menu-container .active .lang-item > a {
+        color: #fff;
+    }
+
+    .navbar-dark .dropdown-menu .dropdown-menu,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .dropdown-menu,
+    .navbar-dark .dropdown-menu .mega-nav .mega-dropdown .mega-menu-container,
+    .mega-nav .mega-dropdown .navbar-dark .dropdown-menu .mega-menu-container,
+    .navbar-dark .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container,
+    .mega-nav .mega-dropdown .navbar-dark .mega-menu-container .mega-menu-container {
+        background-color: rgba(0, 0, 0, 0.08);
+    }
+
+    .navbar-dark .dropdown-divider {
+        border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .navbar-dark .text-heading {
+        color: #fff !important;
+    }
+
+    .navbar-dark .text-muted {
+        color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .navbar-dark .widget-title,
+    .navbar-dark h1, .navbar-dark h2, .navbar-dark h3, .navbar-dark h4, .navbar-dark .wc-bacs-bank-details-heading, .navbar-dark h5, .navbar-dark h6,
+    .navbar-dark .h1, .navbar-dark .h2, .navbar-dark .h3, .navbar-dark .dokan-dashboard .dokan-dashboard-header .entry-title, .dokan-dashboard .dokan-dashboard-header .navbar-dark .entry-title, .navbar-dark .h4, .navbar-dark .h5, .navbar-dark .h6 {
+        color: #fff !important;
+    }
+
+    .navbar-dark .widget-list-link {
+        color: rgba(255, 255, 255, 0.65);
+    }
+
+    .navbar-dark .widget-list-link:hover {
+        color: #fff;
+    }
+
+    .navbar-dark .active > .widget-list-link {
+        color: #fff;
+    }
+}
+
+.dropdown-menu .current-page-parent > a, .mega-nav .mega-dropdown .mega-menu-container .current-page-parent > a,
+.dropdown-menu .current_page_parrent > a,
+.mega-nav .mega-dropdown .mega-menu-container .current_page_parrent > a,
+.dropdown-menu .current_page_item > a,
+.mega-nav .mega-dropdown .mega-menu-container .current_page_item > a,
+.dropdown-menu .current-menu-item > a,
+.mega-nav .mega-dropdown .mega-menu-container .current-menu-item > a,
+.dropdown-menu .current-page-ancestor > a,
+.mega-nav .mega-dropdown .mega-menu-container .current-page-ancestor > a,
+.dropdown-menu .current-menu-ancestor > a,
+.mega-nav .mega-dropdown .mega-menu-container .current-menu-ancestor > a {
+    color: #fe696a !important;
+}
+
+
+.site-header-marketplace .mega-nav .mega-dropdown {
+    position: relative;
+    min-width: 12.5rem;
+}
+
+.site-header-marketplace .navbar .mega-nav .mega-dropdown .mega-menu-container {
+    padding: .5rem 0 !important;
+    margin-top: -.5rem;
+    margin-left: 0;
+    top: .35rem;
+}
+
+.site-header-marketplace .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu, .site-header-marketplace .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container,
+.site-header-marketplace .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container {
+    width: auto !important;
+    top: .35rem;
+}
+
+.site-header-marketplace .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .mega-dropdown-column, .site-header-marketplace .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .mega-dropdown-column,
+.site-header-marketplace .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .mega-dropdown-column {
+    padding: 0 !important;
+}
+
+.site-header-marketplace .site-header-marketplace .navbar .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu, .site-header-marketplace .site-header-marketplace .navbar .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container {
+    padding: 0;
+    margin: 0;
+}
+
+.site-header-marketplace .mega-nav .mega-dropdown .mega-menu-container .dropdown-menu, .site-header-marketplace .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container {
+    margin-left: 0;
+}
+
+.navbar .dropdown-menu > .dropdown.position-static .dropdown-menu, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown.position-static .dropdown-menu, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown.position-static .dropdown-menu, .navbar .dropdown-menu > .dropdown.position-static .mega-nav .mega-dropdown .mega-menu-container, .mega-nav .mega-dropdown .navbar .dropdown-menu > .dropdown.position-static .mega-menu-container, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown.position-static .mega-menu-container, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown.position-static .mega-menu-container {
+    min-width: 14.5rem;
+    padding: 0;
+    margin-top: -2px;
+}
+
+.navbar .dropdown-menu > .dropdown.position-static > .dropdown-toggle::after, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown.position-static > .dropdown-toggle::after, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown.position-static > .dropdown-toggle::after {
+    content: none;
+}
+
+.navbar .dropdown-menu > .dropdown .dropdown-menu figure, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown .dropdown-menu figure, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown .dropdown-menu figure, .navbar .dropdown-menu > .dropdown .mega-nav .mega-dropdown .mega-menu-container figure, .mega-nav .mega-dropdown .navbar .dropdown-menu > .dropdown .mega-menu-container figure, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown .mega-menu-container figure, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown .mega-menu-container figure {
+    margin: 0;
+}
+
+.navbar .dropdown-menu > .dropdown.position-static:hover .dropdown-menu, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown.position-static:hover .dropdown-menu, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown.position-static:hover .dropdown-menu, .navbar .dropdown-menu > .dropdown.position-static:hover .mega-nav .mega-dropdown .mega-menu-container, .mega-nav .mega-dropdown .navbar .dropdown-menu > .dropdown.position-static:hover .mega-menu-container, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown.position-static:hover .mega-menu-container, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown.position-static:hover .mega-menu-container {
+    animation: none !important;
+}
+
+.navbar .dropdown-menu > .dropdown .electronics-megamenu .dropdown-menu, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown .electronics-megamenu .dropdown-menu, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown .electronics-megamenu .dropdown-menu, .navbar .dropdown-menu > .dropdown .electronics-megamenu .mega-nav .mega-dropdown .mega-menu-container, .mega-nav .mega-dropdown .navbar .dropdown-menu > .dropdown .electronics-megamenu .mega-menu-container, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown .electronics-megamenu .mega-menu-container, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown .electronics-megamenu .mega-menu-container {
+    width: auto !important;
+    margin-left: 0;
+}
+
+.navbar .dropdown-menu > .dropdown .electronics-megamenu .dropdown-menu li, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown .electronics-megamenu .dropdown-menu li, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown .electronics-megamenu .dropdown-menu li, .navbar .dropdown-menu > .dropdown .electronics-megamenu .mega-nav .mega-dropdown .mega-menu-container li, .mega-nav .mega-dropdown .navbar .dropdown-menu > .dropdown .electronics-megamenu .mega-menu-container li, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown .electronics-megamenu .mega-menu-container li, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown .electronics-megamenu .mega-menu-container li {
+    margin-bottom: .375rem;
+    padding-bottom: .25rem;
+}
+
+.navbar .dropdown-menu > .dropdown .electronics-megamenu .dropdown-menu li a, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown .electronics-megamenu .dropdown-menu li a, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown .electronics-megamenu .dropdown-menu li a, .navbar .dropdown-menu > .dropdown .electronics-megamenu .mega-nav .mega-dropdown .mega-menu-container li a, .mega-nav .mega-dropdown .navbar .dropdown-menu > .dropdown .electronics-megamenu .mega-menu-container li a, .navbar .mega-nav .mega-dropdown .mega-menu-container > .dropdown .electronics-megamenu .mega-menu-container li a, .mega-nav .mega-dropdown .navbar .mega-menu-container > .dropdown .electronics-megamenu .mega-menu-container li a {
+    padding: 0;
+}
+
+.mega-nav .mega-dropdown .mega-menu-container .dropdown-menu .electronics-megamenu .mega-dropdown-column, .mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .electronics-megamenu .mega-dropdown-column,
+.mega-nav .mega-dropdown .mega-menu-container .mega-menu-container .electronics-megamenu .mega-dropdown-column {
+    padding-top: 10px !important;
+}
+
+.mega-nav .mega-dropdown:hover > a {
+    color: #fe696a;
+}
+
+.mega-nav .mega-dropdown > a {
+    display: block;
+    position: relative;
+    padding-top: 0.75rem;
+    padding-right: 1.95rem;
+    padding-bottom: 0.75rem;
+    padding-left: 1.3rem;
+    transition: all 0.25s ease-in-out;
+    border-bottom: 1px solid #e3e9ef;
+    color: #4b566b;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.dropdown-item:hover, .lang-item > a:hover, .dropdown-item:focus, .lang-item > a:focus {
+    color: #fe696a;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.navbar-dark .navbar-nav .show > .nav-link, .navbar-dark .navbar-nav .active > .nav-link, .navbar-dark .navbar-nav .nav-link.show, .navbar-dark .navbar-nav .nav-link.active {
+    color: #fff;
+}
+
+.product-title > a {
+    transition: color 0.25s ease-in-out;
+    color: #373f50;
+    text-decoration: none !important;
+}
+
+.product-title > a:hover {
+    color: #fe696a;
+}
+
+.font-weight-medium {
+    font-weight: 500 !important;
+}
+
+.cz-handheld-menu ul {
+    display: block;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.cz-handheld-menu ul > li {
+    display: block;
+}
+
+.cz-handheld-menu ul > li a {
+    display: block;
+    width: 100%;
+    padding: .375rem 0;
+    transition: color .2s ease-in-out;
+    color: #4b566b;
+    text-decoration: none;
+}
+
+.cz-handheld-menu ul > li a:hover {
+    color: #fe696a;
+}
+
+.cz-handheld-menu ul > li > ul {
+    padding-left: 1rem;
+    border-left: 1px solid #e3e9ef;
+}
+
+.cz-handheld-menu ul > li > ul > li > a {
+    font-size: 0.9375rem;
+}
+
+.cz-handheld-menu > ul > li {
+    border-bottom: 1px solid #e3e9ef;
+}
+
+.cz-handheld-menu > ul > li a {
+    padding: 1rem 0;
+}
+
+.cz-handheld-menu > ul > li a > i {
+    margin-top: -.0625rem;
+    margin-right: .4375rem;
+    opacity: .6;
+    vertical-align: middle;
+}
+
+.cz-handheld-menu > ul > li > ul {
+    width: 100% !important;
+    margin-bottom: 1rem;
+}
+
+.cz-handheld-menu > ul > li > ul > li a {
+    padding: .375rem 0;
+}
+.cz-handheld-menu .electronics-megamenu .mega-dropdown-column {
+    padding: 10px !important;
+}
+
+.cz-handheld-menu ul.dropdown-menu, .cz-handheld-menu .mega-nav .mega-dropdown ul.mega-menu-container, .mega-nav .mega-dropdown .cz-handheld-menu ul.mega-menu-container,
+.cz-handheld-menu .dropdown-menu,
+.cz-handheld-menu .mega-nav .mega-dropdown .mega-menu-container,
+.mega-nav .mega-dropdown .cz-handheld-menu .mega-menu-container {
+    position: relative;
+    top: 0;
+    box-shadow: none;
+    width: 100%;
+    float: none;
+    display: block;
+}
+
+.mega-nav .mega-dropdown.active > a {
+    color: #fe696a;
+}
+
+#menu-mobile .accordion-button {
+    padding-left: 0px;
+    padding-right: 0px;
+    color: #4b566b;
+    background-color: #fff;
+}
+
+#menu-mobile .accordion-button:focus {
+    border: none;
+    box-shadow: none;
+}
+#menu-mobile .accordion-button:hover {
+    color: #fe696a;
+}
+
+#menu-mobile .accordion-button:not(.collapsed) {
+    color: #fe696a;
+}
+
+div.validation-parent {
+    position: relative;
+    display: inline-block;
+    width: 100% !important;
+}
+
+.offcanvas-footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    padding: 10px 0;
+    display: grid;
+}
+
+.offcanvas-footer a {
+    text-decoration: none;
+    color: #4b566b
+}
+
+.offcanvas-footer a:hover,
+.offcanvas-footer a:active {
+    text-decoration: none;
+    color: #fe696a
+}
+
+.display-404 {
+    color: #fff;
+    font-size: 10rem;
+    text-shadow: -0.0625rem 0 #fe696a, 0 0.0625rem #fe696a, 0.0625rem 0 #fe696a, 0 -0.0625rem #fe696a;
+}
+
+footer a{
+    color: #ccb6b6 !important;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #ffffff !important;
+}
+
+.qnp-editable .editable-container {
+    width: 100%;
+}
+
+.qnp-editable .editable-container .editableform .editable-input {
+    width: calc(100% - 120px);
+}
+
+.qnp-editable .editable-container .editableform .editable-input input {
+    width: 100%;
+}
+
+.qnp-editable .editable-container .editableform .editable-input input[type="checkbox"] {
+    width: auto;
+}
+
+.qnp-editable .editable-input input{
+    min-width: 180px;
+}
+
+.qnp-editable .editable-input input[type="checkbox"]{
+    min-width: 40px;
+}
+
+.qnp-editable .editable-buttons {
+    margin-left: 15px;
+}
+
+.tbl-ctdt tr th{
+    max-width: 120px;
+}
+
+/* --------- MAIN / DOCUMENT EDITOR --------------------------------------------------------------- */
+html.qnp-editor,
+.qnp-editor body,
+.qnp-editor main,
+.qnp-editor .content-container,
+.qnp-editor .content-container .ck-editor,
+.qnp-editor .content-container .ck-editor .ck-editor__main,
+.qnp-editor .content-container .ck-editor .ck-editor__main .ck-content {
+    height: 100%;
+}
+.qnp-editor .document-editor {
+    border: 1px solid #DFE4E6;
+    border-bottom-color: #cdd0d2;
+    border-right-color: #cdd0d2;
+    border-radius: 2px;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    box-shadow: 2px 2px 2px rgba(0,0,0,.1);
+}
+
+.qnp-editor .toolbar-container {
+    z-index: 1;
+    position: relative;
+    box-shadow: 2px 2px 1px rgba(0,0,0,.05);
+}
+
+.qnp-editor .toolbar-container .ck.ck-toolbar {
+    border-top-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-radius: 0;
+}
+
+.qnp-editor .content-container {
+    padding: 0.2em;
+    background: #eee;
+    overflow-y: scroll;
+}
+
+.qnp-editor .content-container #html-editor {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    min-height: 21cm;
+    margin: 0 auto;
+    box-shadow: 2px 2px 1px rgba(0,0,0,.05);
+    background: #ffffff;
+}
+
+#snippet-autosave-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--ck-color-toolbar-background);
+    border: 1px solid var(--ck-color-toolbar-border);
+    padding: 10px;
+    border-radius: var(--ck-border-radius);
+    /*margin-top: -1.5em;*/
+    /*margin-bottom: 1.5em;*/
+    border-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+#snippet-autosave-status_spinner {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+#snippet-autosave-status_spinner-label {
+    position: relative;
+}
+
+#snippet-autosave-status_spinner-label::after {
+    content: 'Saved!';
+    color: green;
+    display: inline-block;
+    margin-right: var(--ck-spacing-medium);
+}
+
+/* During "Saving" display spinner and change content of label. */
+#snippet-autosave-status.busy #snippet-autosave-status_spinner-label::after {
+    content: 'Saving...';
+    color: red;
+}
+
+#snippet-autosave-status.busy #snippet-autosave-status_spinner-loader {
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border-top: 3px solid hsl(0, 0%, 70%);
+    border-right: 2px solid transparent;
+    animation: autosave-status-spinner 1s linear infinite;
+}
+
+#snippet-autosave-status,
+#snippet-autosave-server {
+    display: flex;
+    align-items: center;
+}
+
+#snippet-autosave-server_label,
+#snippet-autosave-status_label {
+    font-weight: bold;
+    margin-right: var(--ck-spacing-medium);
+}
+
+#snippet-autosave + .ck.ck-editor .ck-editor__editable {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+#snippet-autosave-lag {
+    padding: 4px;
+}
+
+#snippet-autosave-console {
+    max-height: 300px;
+    overflow: auto;
+    white-space: normal;
+    background: #2b2c26;
+    transition: background-color 500ms;
+}
+
+#snippet-autosave-console.updated {
+    background: green;
+}
+
+@keyframes autosave-status-spinner {
+    to {
+        transform: rotate( 360deg );
+    }
+}
+
+.qnp-table-action {
+    max-width: 100px;
+}
+
+.qnp-ed-img {
+    max-width: 200px;
+}
+
+.qnp-col-new {
+    border: 2px solid red!important;
+}
+
+.select2-container--open {
+    z-index: 1060
+}
+
+table th {
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+}
+
+.qnp-edit-field, .qnp-edit-field-gt, .qnp-edit-field-html {
+    cursor: pointer;
+}
+
+.qnp-edit-field:hover, .qnp-edit-field-gt:hover, .qnp-edit-field-html:hover {
+    color: red;
+}
+
+.break-spaces {
+    white-space: break-spaces;
+}
+
+table.qnp-floatThead thead {
+    background-color: #fff;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #005F69;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #49acb7;
+}
+
+.qnp-editable-table th,
+.qnp-editable-table td {
+    min-width: 150px !important;
+}
+
+.box-table-danhmuc {
+    width: 100%;
+    overflow: auto;
+    max-height: 70vh;
+}
