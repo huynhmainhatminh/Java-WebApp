@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -20,13 +22,17 @@
             <p class="auth-subtitle">Vui lòng đăng nhập để tiếp tục</p>
             <form id="loginForm" class="auth-form" novalidate>
                 <label class="field">
-                    <span class="label">Tên Tài Khoản</span>
-                    <input type="text" name="username" placeholder="username" required>
+                    <span class="label">Tài Khoản</span>
+                    <input type="text" name="username" placeholder="Nhập tài khoản" required>
                 </label>
                 <label class="field">
                     <span class="label">Mật Khẩu</span>
-                    <input type="password" name="password" placeholder="••••••••" required>
+                    <input type="password" name="password" id="passwordInput" placeholder="Nhập mật khẩu" required>
+                    <i id="togglePassword"
+                       class="fa-solid fa-eye"
+                       style="position: absolute; right: 12px; top: 38px; cursor: pointer; color: #666;"></i>
                 </label>
+
 
                 <div class="form-row">
                     <label class="checkbox">
@@ -80,6 +86,18 @@
     </div>
 </main>
 <div th:insert="footer :: site-footer"></div>
+<script>
+    const passwordInput = document.getElementById('passwordInput');
+    const togglePassword = document.getElementById('togglePassword');
+
+    togglePassword.addEventListener('click', () => {
+        const isHidden = passwordInput.type === 'password';
+        passwordInput.type = isHidden ? 'text' : 'password';
+        togglePassword.classList.toggle('fa-eye');
+        togglePassword.classList.toggle('fa-eye-slash');
+    });
+</script>
+
 </body>
 </html>
 
