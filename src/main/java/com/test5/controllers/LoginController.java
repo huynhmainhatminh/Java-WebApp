@@ -4,6 +4,7 @@ import com.test5.model.response.LoginResponse;
 import com.test5.security.JwtUtils;
 import com.test5.services.LoginServices;
 import com.test5.services.UsersServices;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseCookie;
@@ -36,29 +37,54 @@ public class LoginController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> LoginAccount(@ModelAttribute LoginRequests login, HttpServletResponse response) {
+    public ResponseEntity<?> LoginAccount(@ModelAttribute LoginRequests login, HttpServletResponse response, HttpServletRequest request) {
+
 
         if (loginServices.checkLogin(login.getUsername(), login.getPassword())) {
-            String token = jwtUtils.generateToken(login.getUsername(), usersService.findUserByUsername(login.getUsername()).getRoleName());
+            if (request.getHeader("Referer").contains("admin/login")) {
+                System.out.println(request.getHeader("Referer"));
 
-            // thiết lập cookie cho trang để chuyển hướng đến các trang khác
-            ResponseCookie cookie = ResponseCookie.from("jwt", token)
-                    .httpOnly(true)
-                    .secure(false) // đặt true nếu dùng HTTPS
-                    .path("/")
-                    .maxAge(24 * 60 * 60)
-                    .build();
-            response.addHeader("Set-Cookie", cookie.toString());
+                if (usersService.findUserByUsername(login.getUsername()).getRoleName().equals("admin")) {
+                    String token = jwtUtils.generateToken(login.getUsername(), usersService.findUserByUsername(login.getUsername()).getRoleName());
+                    // thiết lập cookie cho trang để chuyển hướng đến các trang khác
+                    ResponseCookie cookie = ResponseCookie.from("jwt", token)
+                            .httpOnly(true)
+                            .secure(false) // đặt true nếu dùng HTTPS
+                            .path("/")
+                            .maxAge(24 * 60 * 60)
+                            .build();
+                    response.addHeader("Set-Cookie", cookie.toString());
+
+                    return ResponseEntity.ok(
+                            new LoginResponse(true, "Đăng nhập thành công", token)
+                    );
+                }
+            } else { // else if staff,
+                String token = jwtUtils.generateToken(login.getUsername(), usersService.findUserByUsername(login.getUsername()).getRoleName());
+
+                // thiết lập cookie cho trang để chuyển hướng đến các trang khác
+                ResponseCookie cookie = ResponseCookie.from("jwt", token)
+                        .httpOnly(true)
+                        .secure(false) // đặt true nếu dùng HTTPS
+                        .path("/")
+                        .maxAge(24 * 60 * 60)
+                        .build();
+                response.addHeader("Set-Cookie", cookie.toString());
 
 
-            return ResponseEntity.ok(
-                    new LoginResponse(true, "Đăng nhập thành công", token)
-            );
+
+                return ResponseEntity.ok(
+                        new LoginResponse(true, "Đăng nhập thành công", token)
+                );
+            }
         } else {
             return ResponseEntity.badRequest().body(
                     new LoginResponse(false, "Đăng nhập thất bại")
             );
         }
+        return ResponseEntity.badRequest().body(
+                new LoginResponse(false, "Đăng nhập thất bại")
+        );
     }
 
 }
