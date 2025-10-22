@@ -42,9 +42,8 @@ public class LoginController {
 
         if (loginServices.checkLogin(login.getUsername(), login.getPassword())) {
             if (request.getHeader("Referer").contains("admin/login")) {
-                System.out.println(request.getHeader("Referer"));
 
-                if (usersService.findUserByUsername(login.getUsername()).getRoleName().equals("admin")) {
+                if (usersService.findUserByUsername(login.getUsername()).getRoleName().equals("admin")) { // đăng nhập admin
                     String token = jwtUtils.generateToken(login.getUsername(), usersService.findUserByUsername(login.getUsername()).getRoleName());
                     // thiết lập cookie cho trang để chuyển hướng đến các trang khác
                     ResponseCookie cookie = ResponseCookie.from("jwt", token)
@@ -59,7 +58,25 @@ public class LoginController {
                             new LoginResponse(true, "Đăng nhập thành công", token)
                     );
                 }
-            } else { // else if staff,
+            } else if (request.getHeader("Referer").contains("staff/login")) {  // đăng nhập nhân viên
+
+                if (usersService.findUserByUsername(login.getUsername()).getRoleName().equals("staff")) {
+                    String token = jwtUtils.generateToken(login.getUsername(), usersService.findUserByUsername(login.getUsername()).getRoleName());
+                    // thiết lập cookie cho trang để chuyển hướng đến các trang khác
+                    ResponseCookie cookie = ResponseCookie.from("jwt", token)
+                            .httpOnly(true)
+                            .secure(false) // đặt true nếu dùng HTTPS
+                            .path("/")
+                            .maxAge(24 * 60 * 60)
+                            .build();
+                    response.addHeader("Set-Cookie", cookie.toString());
+
+                    return ResponseEntity.ok(
+                            new LoginResponse(true, "Đăng nhập thành công", token)
+                    );
+                }
+
+            } else { // đăng nhập member
                 String token = jwtUtils.generateToken(login.getUsername(), usersService.findUserByUsername(login.getUsername()).getRoleName());
 
                 // thiết lập cookie cho trang để chuyển hướng đến các trang khác
@@ -70,8 +87,6 @@ public class LoginController {
                         .maxAge(24 * 60 * 60)
                         .build();
                 response.addHeader("Set-Cookie", cookie.toString());
-
-
 
                 return ResponseEntity.ok(
                         new LoginResponse(true, "Đăng nhập thành công", token)
