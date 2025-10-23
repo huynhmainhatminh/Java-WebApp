@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt lịch thay pin</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f9fafb;
+            margin: 0;
+            padding: 0;
+        }
+
+        header, footer {
+            background: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h1 {
+            margin: 0;
+            color: #1f2937;
+            font-size: 2rem;
+        }
+
+        .form-header p {
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+
+        .field {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        select.field-select, input[type="datetime-local"] {
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        select.field-select:focus, input[type="datetime-local"]:focus {
+            border-color: #3b82f6;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .form-row .field {
+            flex: 1;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            font-weight: 600;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .alert {
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .alert.success {
+            background: #ecfdf5;
+            border-color: #a7f3d0;
+            color: #065f46;
+        }
+
+        .alert.error {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #991b1b;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h2>🔋 Hệ thống đặt lịch thay pin</h2>
+</header>
+
+<main class="schedule">
+    <div class="container">
+        <div class="form-card">
+            <div class="form-header">
+                <h1>Đặt lịch thay pin</h1>
+                <p>Chọn tỉnh, trạm, loại pin và thời gian để đặt lịch</p>
+            </div>
+
+            <!-- Thông báo mẫu -->
+            <div class="alert success" style="display:none;" id="successMsg">✅ Đặt lịch thành công!</div>
+            <div class="alert error" style="display:none;" id="errorMsg">⚠️ Vui lòng chọn đầy đủ thông tin.</div>
+
+            <form id="scheduleForm" class="contact-form" novalidate>
+                <div class="field">
+                    <label class="label">Chọn tỉnh</label>
+                    <select id="provinceSelect" class="field-select" required>
+                        <option value="">-- Chọn tỉnh --</option>
+                        <option value="Hà Nội">Hà Nội</option>
+                        <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                        <option value="Đà Nẵng">Đà Nẵng</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label class="label">Chọn trạm</label>
+                    <select id="stationSelect" class="field-select" required disabled>
+                        <option value="">-- Chọn trạm --</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label class="label">Chọn pin</label>
+                    <select id="pinSelect" class="field-select" required disabled>
+                        <option value="">-- Chọn pin --</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <span class="label">Mốc thời gian</span>
+                        <div style="display:flex; gap:.75rem;">
+                            <label style="display:flex; align-items:center; gap:.4rem;">
+                                <input type="radio" name="duration" value="1" checked> 1 giờ
+                            </label>
+                            <label style="display:flex; align-items:center; gap:.4rem;">
+                                <input type="radio" name="duration" value="2"> 2 giờ
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Thời điểm bắt đầu</label>
+                        <input type="datetime-local" id="startTime" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button">Đặt lịch</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>© 2025 EV Battery Scheduling System</p>
+</footer>
+
+<script>
+    // Dữ liệu mẫu (thay thế cho PHP json_encode)
+    const data = {
+        "Hà Nội": [
+            { id: "HN-01", name: "Trạm Times City", pins: [{id:"P48", name:"Pin 48V"}, {id:"P60", name:"Pin 60V"}] },
+            { id: "HN-02", name: "Trạm Cầu Giấy", pins: [{id:"P48", name:"Pin 48V"}, {id:"P72", name:"Pin 72V"}] }
+        ],
+        "TP. Hồ Chí Minh": [
+            { id: "HCM-01", name: "Trạm Quận 1", pins: [{id:"P60", name:"Pin 60V"}, {id:"P72", name:"Pin 72V"}] },
+            { id: "HCM-02", name: "Trạm Thủ Đức", pins: [{id:"P48", name:"Pin 48V"}, {id:"P60", name:"Pin 60V"}] }
+        ],
+        "Đà Nẵng": [
+            { id: "DN-01", name: "Trạm Hải Châu", pins: [{id:"P48", name:"Pin 48V"}, {id:"P60", name:"Pin 60V"}] }
+        ]
+    };
+
+    const provinceSelect = document.getElementById('provinceSelect');
+    const stationSelect = document.getElementById('stationSelect');
+    const pinSelect = document.getElementById('pinSelect');
+    const successMsg = document.getElementById('successMsg');
+    const errorMsg = document.getElementById('errorMsg');
+
+    provinceSelect.addEventListener('change', function() {
+        const province = this.value;
+        stationSelect.innerHTML = '<option value="">-- Chọn trạm --</option>';
+        pinSelect.innerHTML = '<option value="">-- Chọn pin --</option>';
+        stationSelect.disabled = true;
+        pinSelect.disabled = true;
+
+        if (!province || !data[province]) return;
+
+        data[province].forEach(station => {
+            const opt = document.createElement('option');
+            opt.value = station.id;
+            opt.textContent = station.name;
+            opt.dataset.name = station.name;
+            stationSelect.appendChild(opt);
+        });
+        stationSelect.disabled = false;
+    });
+
+    stationSelect.addEventListener('change', function() {
+        const province = provinceSelect.value;
+        const stationId = this.value;
+        pinSelect.innerHTML = '<option value="">-- Chọn pin --</option>';
+        pinSelect.disabled = true;
+
+        const station = (data[province] || []).find(s => s.id === stationId);
+        if (!station) return;
+
+        station.pins.forEach(pin => {
+            const opt = document.createElement('option');
+            opt.value = pin.id;
+            opt.textContent = pin.name;
+            pinSelect.appendChild(opt);
+        });
+        pinSelect.disabled = false;
+    });
+
+    document.getElementById('scheduleForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        if (!provinceSelect.value || !stationSelect.value || !pinSelect.value || !document.getElementById('startTime').value) {
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'flex';
+            return;
+        }
+
+        errorMsg.style.display = 'none';
+        successMsg.style.display = 'flex';
+    });
+</script>
+</body>
+</html>

@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.ueh.edu.vn/qnp/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/site.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/staff.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 </head>
 <body>
@@ -28,12 +30,12 @@
                 <div class="tab-pane fade show active" id="employee" role="tabpanel"
                      aria-labelledby="employee-tab">
 
-                    <form action="" method="post">
-                        <input type="hidden" name="user_type" value="employee">
+                    <form id="loginFormStaff" method="post">
+                        <input type="hidden">
                         <div class="form-floating mt-3 mb-3">
                             <input required type="text"
                                    class="form-control form-control-lg"
-                                   id="employee_taikhoan" name="TaiKhoan"
+                                   id="employee_taikhoan" name="username"
                                    placeholder="Nhập tài khoản" autocomplete="on" autofocus>
                             <label for="employee_taikhoan">Nhập tài khoản</label>
                         </div>
@@ -41,7 +43,7 @@
                             <input required type="password"
                                    class="form-control form-control-lg"
                                    id="employee_password"
-                                   name="MatKhau"
+                                   name="password"
                                    placeholder="Nhập mật khẩu" autocomplete="on">
                             <label for="employee_password">Nhập mật khẩu</label>
 
@@ -116,6 +118,39 @@
             this.classList.toggle('fa-eye');
             this.classList.toggle('fa-eye-slash');
         });
+    });
+
+
+    document.getElementById("loginFormStaff").addEventListener("submit", async function(event){
+        event.preventDefault(); // chặn submit truyền thống
+
+        const formData = new FormData(this);
+
+        const response = await fetch("/api/login", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            Swal.fire({
+                heightAuto: false,
+                icon: 'success',
+                title: 'Đăng nhập thành công',
+                text: 'Chào mừng bạn quay trở lại.',
+                confirmButtonText: 'Chuyển hướng'
+            }).then(() => {
+                window.location.href = '/my'; // chuyển sang trang login.html
+            });
+        } else {
+            Swal.fire({
+                heightAuto: false,
+                icon: 'error',
+                title: 'Lỗi',
+                text: result.message || 'Đăng nhập thất bại!'
+            });
+        }
     });
 
 </script>

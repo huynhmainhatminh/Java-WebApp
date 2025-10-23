@@ -29,7 +29,7 @@
                 Nhập tài khoản và mật khẩu admin để truy cập
             </p>
 
-            <form id="loginFormAdmin", method="POST"novalidate>
+            <form id="loginFormAdmin" method="POST"novalidate>
                 <!-- Tài khoản admin -->
                 <div class="input-group mb-3">
                     <input type="text" name="username" class="form-control" placeholder="Tài khoản Admin" required>
@@ -80,6 +80,7 @@
 
         if (result.success) {
             Swal.fire({
+                heightAuto: false,
                 icon: 'success',
                 title: 'Đăng nhập thành công',
                 text: 'Chào mừng bạn quay trở lại.',
@@ -89,6 +90,7 @@
             });
         } else {
             Swal.fire({
+                heightAuto: false,
                 icon: 'error',
                 title: 'Lỗi',
                 text: result.message || 'Đăng nhập thất bại!'
