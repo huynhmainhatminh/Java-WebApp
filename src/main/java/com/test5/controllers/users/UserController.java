@@ -18,14 +18,44 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("/profile")
+    public String profile() {
+        return "/user/profile";
+    }
+
+    @GetMapping("/history")
+    public String history() {
+        return "/user/history";
+    }
+
+    @GetMapping("/packages")
+    public String packages() {
+        return "/packages";
+    }
+
+
+    @GetMapping("/schedule")
+    public String schedule() {
+        return "/user/schedule";
+    }
+
     @GetMapping("/register")
-    public String register() {
-        return "register";
+    public String register(@CookieValue(value = "jwt", required = false) String token) {
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "register";
+
+        } else {
+            return "redirect:/my";
+        }
     }
 
     @GetMapping("/login")
-    public String login() {
-        return "login";
+    public String login(@CookieValue(value = "jwt", required = false) String token) {
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "login";
+        } else {
+            return "redirect:/my";
+        }
     }
 
 
