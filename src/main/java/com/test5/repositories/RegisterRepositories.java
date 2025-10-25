@@ -2,14 +2,13 @@ package com.test5.repositories;
 
 import com.test5.dao.UsersDAO;
 import com.test5.pojo.User;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
 public class RegisterRepositories implements IRegisterRepositories {
 
-    private UsersDAO usersDAO = null;
-
-    public RegisterRepositories(){
-        this.usersDAO = new UsersDAO();
-    }
+    private final UsersDAO usersDAO = new UsersDAO();
 
 
     @Override
