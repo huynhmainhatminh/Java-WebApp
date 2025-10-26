@@ -1,5 +1,5 @@
 package com.restapi.api.controllers;
-import com.restapi.api.model.RegisterRequests;
+import com.restapi.api.model.requests.RegisterRequests;
 import com.restapi.api.pojo.User;
 import com.restapi.api.services.RegisterServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,10 @@ public class RegisterController {
             return "Tên tài khoản đã tồn tại";
         }
 
+        if (!registerRequests.getPassword().equals(registerRequests.getConfirmPassword())) {
+            return "Mật khẩu xác nhận không khớp!";
+        }
+
         // RegisterServices registerServices = new RegisterServices();  cái này lỗi
 
         User user = new User();
@@ -31,7 +35,7 @@ public class RegisterController {
         user.setPassword(registerRequests.getPassword());
 
         registerServices.addUser(user);
-        return registerRequests.toString();
+        return "Đăng ký thành công";
     }
 
 }

@@ -1,4 +1,4 @@
-package com.restapi.api.services;
+package com.restapi.api.services.interfaces;
 
 import com.restapi.api.pojo.User;
 

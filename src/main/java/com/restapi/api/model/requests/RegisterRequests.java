@@ -1,4 +1,4 @@
-package com.restapi.api.model;
+package com.restapi.api.model.requests;
 import lombok.Getter;
 import lombok.Setter;
 

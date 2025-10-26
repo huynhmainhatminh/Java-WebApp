@@ -1,5 +1,6 @@
 package com.restapi.api.services;
 
+import com.restapi.api.services.interfaces.IRegisterServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.restapi.api.repositories.IRegisterRepositories;
