@@ -3,6 +3,7 @@ import com.restapi.api.model.requests.RegisterPackageRequests;
 import com.restapi.api.model.response.ResponseAPI;
 import com.restapi.api.pojo.RentalPackage;
 import com.restapi.api.pojo.User;
+import com.restapi.api.repositories.IDeletePackageRepositories;
 import com.restapi.api.services.GetInformationServices;
 import com.restapi.api.services.RegisterPackageServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,10 @@ public class DriverController {
 
     @Autowired
     GetInformationServices getInformation;
+
+    @Autowired
+    IDeletePackageRepositories iDeletePackageRepositories;
+
 
     @PostMapping("/registerPackage")
     public ResponseEntity<?> registerPack(@ModelAttribute RegisterPackageRequests registerPackageRequests){
@@ -39,12 +44,10 @@ public class DriverController {
                     new ResponseAPI(false, "Đăng ký dịch vụ thất bại")
             );
         }
-
     }
 
 
     @PostMapping("/information")
-<<<<<<< HEAD
     public ResponseEntity<?> information(@RequestParam(value = "username") String username) {
         if (getInformation.existsByUsername(username)) {
             return ResponseEntity.ok(
@@ -56,11 +59,22 @@ public class DriverController {
             );
         }
         // return getInformation.findByUsername(username);
-=======
-    public User information(@RequestParam(value = "username") String username) {
-        return getInformation.findByUsername(username);
->>>>>>> 4b548f1d7bc27aa26725a049737f7e08babeccc2
     }
 
+    @PostMapping("/deletePackage")
+    public ResponseEntity<?> deletePack(@RequestParam(value = "userId") Integer userId) {
+        if (iDeletePackageRepositories.existsByUser_id(userId)) {
+            iDeletePackageRepositories.deleteByUser_id(userId);
+            return ResponseEntity.ok(
+                    new ResponseAPI(true, "Xóa dịch vụ thành công!")
+            );
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new ResponseAPI(false, "Đã xảy ra lỗi!")
+            );
+        }
+
+
+    }
 
 }

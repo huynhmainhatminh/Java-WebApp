@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface IRegisterPackage extends JpaRepository<RentalPackage, Integer> {
+public interface IRegisterPackageRepositories extends JpaRepository<RentalPackage, Integer> {
 
 }

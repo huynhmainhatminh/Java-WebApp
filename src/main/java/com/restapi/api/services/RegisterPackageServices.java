@@ -2,7 +2,7 @@ package com.restapi.api.services;
 
 
 import com.restapi.api.pojo.RentalPackage;
-import com.restapi.api.repositories.IRegisterPackage;
+import com.restapi.api.repositories.IRegisterPackageRepositories;
 import com.restapi.api.services.interfaces.IRegisterPackageServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 public class RegisterPackageServices implements IRegisterPackageServices {
 
     @Autowired
-    IRegisterPackage registerPackage;
+    IRegisterPackageRepositories registerPackageRepositories;
 
     public RentalPackage registerPack(RentalPackage rentalPackage) {
-        return registerPackage.save(rentalPackage);
+        return registerPackageRepositories.save(rentalPackage);
     }
 
 }
