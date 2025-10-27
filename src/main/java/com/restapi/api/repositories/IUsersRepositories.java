@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface IUsersRepositories extends JpaRepository<User, Integer> {
 
 
-    public User findByUsername(String username);
     public User findByEmail(String email);
     public User findByRole(String role);
     public User findByFullName(String fullName);

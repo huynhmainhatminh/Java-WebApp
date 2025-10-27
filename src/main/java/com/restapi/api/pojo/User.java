@@ -8,6 +8,9 @@ import org.hibernate.annotations.ColumnDefault;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+
+// bảng quản lý các người dùng user
+
 @Getter
 @Setter
 @Entity
