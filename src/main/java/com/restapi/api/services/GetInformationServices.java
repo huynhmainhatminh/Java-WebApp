@@ -12,6 +12,7 @@ public class GetInformationServices implements IGetInformationServices {
     @Autowired
     IGetInformation getInformation;
 
+<<<<<<< HEAD
 
     public boolean existsByUsername(String username) {
         return getInformation.existsByUsername(username);
@@ -20,5 +21,9 @@ public class GetInformationServices implements IGetInformationServices {
 
     public String findByUsername(String username) {
         return getInformation.findByUsername(username).getUsername();
+=======
+    public User findByUsername(String username) {
+        return getInformation.findByUsername(username);
+>>>>>>> 4b548f1d7bc27aa26725a049737f7e08babeccc2
     }
 }

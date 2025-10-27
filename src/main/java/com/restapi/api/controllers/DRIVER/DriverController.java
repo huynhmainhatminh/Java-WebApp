@@ -44,6 +44,7 @@ public class DriverController {
 
 
     @PostMapping("/information")
+<<<<<<< HEAD
     public ResponseEntity<?> information(@RequestParam(value = "username") String username) {
         if (getInformation.existsByUsername(username)) {
             return ResponseEntity.ok(
@@ -55,6 +56,10 @@ public class DriverController {
             );
         }
         // return getInformation.findByUsername(username);
+=======
+    public User information(@RequestParam(value = "username") String username) {
+        return getInformation.findByUsername(username);
+>>>>>>> 4b548f1d7bc27aa26725a049737f7e08babeccc2
     }
 
 
