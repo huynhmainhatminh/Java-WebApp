@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 public class RegisterPackageRequests {
     Integer userId;
     String name;
-    BigDecimal price;
     Integer duration_days;
 
 
@@ -22,7 +21,6 @@ public class RegisterPackageRequests {
         return "RegisterPackageRequests{" +
                 "userId=" + userId +
                 ", name='" + name + '\'' +
-                ", price=" + price +
                 ", duration_days=" + duration_days +
                 '}';
     }

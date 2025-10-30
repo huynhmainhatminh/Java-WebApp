@@ -33,7 +33,7 @@ public class RentalPackage {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "price", nullable = false, precision = 12, scale = 2)
+    @Column(name = "price", nullable = false, precision = 12, scale = 3)
     private BigDecimal price;
 
     @Column(name = "duration_days", nullable = false)

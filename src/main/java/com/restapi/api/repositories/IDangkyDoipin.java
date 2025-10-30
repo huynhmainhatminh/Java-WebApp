@@ -27,6 +27,8 @@ public interface IDangkyDoipin extends JpaRepository<Battery, Integer> {
     @Query("SELECT COUNT(b) > 0 FROM Battery b WHERE b.id = :id AND b.status = 'EMPTY'")
     boolean existsByIdAndStatusEmpty(@Param("id") Integer id);
 
+
+
     @Transactional
     @Modifying
     @Query("UPDATE Battery b SET b.status = :status WHERE b.id = :id")

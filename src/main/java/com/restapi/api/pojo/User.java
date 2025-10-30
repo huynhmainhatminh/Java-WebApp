@@ -37,7 +37,7 @@ public class User {
     private String password;
 
     @ColumnDefault("0.00")
-    @Column(name = "wallet_balance", precision = 12, scale = 2)
+    @Column(name = "wallet_balance", precision = 12, scale = 3)
     private BigDecimal walletBalance;
 
     @ColumnDefault("'DRIVER'")
