@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -37,13 +39,18 @@ public class Battery {
     private BigDecimal healthPercentage;
 
     @ColumnDefault("0")
-    @Column(name = "charge_cycles", nullable = false)
+    @Column(name = "charge_cycles")
     private Integer chargeCycles;
 
     @ColumnDefault("'EMPTY'")
     @Lob
     @Column(name = "status", nullable = false)
     private String status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "current_station_id")
+    private Station currentStation;
 
     @Column(name = "manufacture_date")
     private LocalDate manufactureDate;
@@ -55,5 +62,9 @@ public class Battery {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "station_id")
+    private Station station;
 
 }
