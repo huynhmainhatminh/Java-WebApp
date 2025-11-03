@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -20,39 +20,45 @@ public class User {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Column(name = "username", nullable = false)
+    private String username;
+
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "phone_number", nullable = false, length = 20)
+    @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ColumnDefault("0.00")
-    @Column(name = "wallet_balance", precision = 12, scale = 2)
+    @ColumnDefault("0.000")
+    @Column(name = "wallet_balance", precision = 12, scale = 3)
     private BigDecimal walletBalance;
 
     @ColumnDefault("'DRIVER'")
-    @Column(name = "role", nullable = false, length = 20)
+    @Column(name = "role")
     private String role;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "station_id")
+    private Station station;
+
     @ColumnDefault("'ACTIVE'")
-    @Column(name = "status", length = 20)
+    @Lob
+    @Column(name = "status")
     private String status;
 
-    @CreatedDate // <<< THAY ĐỔI
-    @Column(name = "created_at", updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
     private Instant createdAt;
 
-    @LastModifiedDate // <<< THAY ĐỔI
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
     private Instant updatedAt;
-
-    @Column(name = "username", nullable = false)
-    private String username;
 
 }

@@ -6,8 +6,6 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -17,7 +15,6 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "maintenance_logs")
-@EntityListeners(AuditingEntityListener.class)
 public class MaintenanceLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,8 +44,8 @@ public class MaintenanceLog {
     @Column(name = "maintenance_date", nullable = false)
     private LocalDate maintenanceDate;
 
-    @CreatedDate // Thay đổi
-    @Column(name = "created_at", updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
     private Instant createdAt;
 
 }

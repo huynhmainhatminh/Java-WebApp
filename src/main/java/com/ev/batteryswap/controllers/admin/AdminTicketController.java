@@ -1,7 +1,7 @@
 package com.ev.batteryswap.controllers.admin;
 
 import com.ev.batteryswap.pojo.SupportTicket;
-import com.ev.batteryswap.services.IAdminTicketService;
+import com.ev.batteryswap.services.ITicketService; // <-- Đã đổi tên
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class AdminTicketController {
 
     @Autowired
-    private IAdminTicketService ticketService;
+    private ITicketService ticketService; // <-- Đã đổi tên
 
     @GetMapping
     public String listTickets(Model model,
@@ -26,9 +26,9 @@ public class AdminTicketController {
                               @RequestParam(required = false) String status,
                               @RequestParam(required = false) String priority,
                               @RequestParam(required = false) String search) {
-        Page<SupportTicket> ticketPage = ticketService.filterTickets(status, priority, search, PageRequest.of(page, 15));
+        Page<SupportTicket> ticketPage = ticketService.filterTickets(status, priority, search, PageRequest.of(page, 15)); // <-- Đã đổi tên
         model.addAttribute("ticketPage", ticketPage);
-        model.addAttribute("stats", ticketService.getTicketStatistics());
+        model.addAttribute("stats", ticketService.getTicketStatistics()); // <-- Đã đổi tên
         model.addAttribute("selectedStatus", status);
         model.addAttribute("selectedPriority", priority);
         model.addAttribute("search", search);
@@ -37,7 +37,7 @@ public class AdminTicketController {
 
     @GetMapping("/{id}")
     public String viewTicket(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
-        Optional<SupportTicket> ticket = ticketService.findById(id);
+        Optional<SupportTicket> ticket = ticketService.findById(id); // <-- Đã đổi tên
         if (ticket.isPresent()) {
             model.addAttribute("ticket", ticket.get());
             return "admin/ticket_detail";
@@ -50,7 +50,7 @@ public class AdminTicketController {
     public String updateTicket(@PathVariable("id") Integer id,
                                @ModelAttribute SupportTicket formData,
                                RedirectAttributes redirectAttributes) {
-        Optional<SupportTicket> ticketOptional = ticketService.findById(id);
+        Optional<SupportTicket> ticketOptional = ticketService.findById(id); // <-- Đã đổi tên
         if (ticketOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Ticket không tồn tại.");
             return "redirect:/admin/tickets";
@@ -61,14 +61,14 @@ public class AdminTicketController {
         ticket.setAdminResponse(formData.getAdminResponse());
         ticket.setUpdatedAt(Instant.now());
 
-        ticketService.save(ticket);
+        ticketService.save(ticket); // <-- Đã đổi tên
         redirectAttributes.addFlashAttribute("successMessage", "Đã cập nhật ticket!");
         return "redirect:/admin/tickets/" + id;
     }
 
     @GetMapping("/delete/{id}")
     public String deleteTicket(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
-        ticketService.deleteById(id);
+        ticketService.deleteById(id); // <-- Đã đổi tên
         redirectAttributes.addFlashAttribute("successMessage", "Đã xóa ticket thành công!");
         return "redirect:/admin/tickets";
     }

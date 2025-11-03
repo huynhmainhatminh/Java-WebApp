@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Home</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/admin/batteries}">Home</a></li>
                             <li class="breadcrumb-item"><a th:href="@{/admin/transactions}">Giao dịch Pin</a></li>
                             <li class="breadcrumb-item active" th:text="${transaction.id == null ? 'Tạo Mới' : 'Chỉnh Sửa'}"></li>
                         </ol>
@@ -33,15 +33,6 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="user">Người Dùng</label>
-                                        <select class="form-control" id="user" th:field="*{user}" required>
-                                            <option value="">-- Chọn người dùng --</option>
-                                            <option th:each="u : ${users.content}" th:value="${u.id}" th:text="${u.username} + ' (' + ${u.fullName} + ')'"></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
                                         <label for="station">Trạm Giao Dịch</label>
                                         <select class="form-control" id="station" th:field="*{station}" required>
                                             <option value="">-- Chọn trạm --</option>
@@ -56,7 +47,7 @@
                                         <label for="batteryIn">Pin Cũ (Pin trả vào)</label>
                                         <select class="form-control" id="batteryIn" th:field="*{batteryIn}" required>
                                             <option value="">-- Chọn pin cũ --</option>
-                                            <option th:each="bat : ${batteries.content}" th:value="${bat.id}" th:text="${bat.nameBattery} + ' (' + ${bat.status} + ')'"></option>
+                                            <option th:each="bat : ${batteries.content}" th:value="${bat.id}" th:text="${bat.serialNumber} + ' (' + ${bat.status} + ')'"></option>
                                         </select>
                                     </div>
                                 </div>
@@ -65,7 +56,7 @@
                                         <label for="batteryOut">Pin Mới (Pin lấy ra)</label>
                                         <select class="form-control" id="batteryOut" th:field="*{batteryOut}" required>
                                             <option value="">-- Chọn pin mới (chỉ pin AVAILABLE) --</option>
-                                            <option th:each="bat : ${batteries.content}" th:if="${bat.status == 'AVAILABLE'}" th:value="${bat.id}" th:text="${bat.nameBattery}"></option>
+                                            <option th:each="bat : ${batteries.content}" th:if="${bat.status == 'AVAILABLE'}" th:value="${bat.id}" th:text="${bat.serialNumber}"></option>
                                         </select>
                                     </div>
                                 </div>

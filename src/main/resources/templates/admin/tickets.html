@@ -22,12 +22,11 @@
                     <div class="card-header"><h3 class="card-title">Danh sách Tickets</h3></div>
                     <div class="card-body p-0">
                         <table class="table table-striped">
-                            <thead><tr><th>ID</th><th>Tiêu đề</th><th>Email</th><th>Trạng thái</th><th>Ưu tiên</th><th>Ngày tạo</th><th>Cập nhật cuối</th><th>Thao tác</th></tr></thead>
+                            <thead><tr><th>ID</th><th>Tiêu đề</th><th>Trạng thái</th><th>Ưu tiên</th><th>Ngày tạo</th><th>Cập nhật cuối</th><th>Thao tác</th></tr></thead>
                             <tbody>
                             <tr th:each="t : ${ticketPage.content}">
                                 <td th:text="${t.id}"></td>
                                 <td th:text="${t.subject}"></td>
-                                <td th:text="${t.user?.email ?: 'N/A'}"></td>
                                 <td><span class="badge" th:text="${t.status}"></span></td>
                                 <td><span class="badge" th:text="${t.priority}"></span></td>
                                 <td th:text="${t.createdAt != null ? #temporals.format(t.createdAt, 'dd-MM-yyyy HH:mm') : 'N/A'}"></td>

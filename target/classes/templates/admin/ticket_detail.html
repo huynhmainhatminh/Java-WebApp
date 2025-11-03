@@ -15,7 +15,6 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 th:text="${ticket.subject}"></h4>
-                        <p><strong>Từ User:</strong> <span th:text="${ticket.user?.fullName ?: 'N/A'}"></span> (<span th:text="${ticket.user?.email ?: 'N/A'}"></span>)</p>
                         <div class="bg-light p-3 rounded mb-3" style="white-space: pre-wrap;" th:text="${ticket.message}"></div>
                         <hr/>
                         <form th:action="@{/admin/tickets/update/{id}(id=${ticket.id})}" th:object="${ticket}" method="post">

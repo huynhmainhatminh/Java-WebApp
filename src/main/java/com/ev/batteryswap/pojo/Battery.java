@@ -4,31 +4,28 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "batteries")
-@EntityListeners(AuditingEntityListener.class)
 public class Battery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    // Thêm trường này để liên kết với Station
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "current_station_id")
+    @JoinColumn(name = "station_id")
     private Station station;
 
-    @Column(name = "serial_number", nullable = false, unique = true, length = 100)
-    private String nameBattery; // Giữ lại nameBattery để tương thích DTO và service
+    @Column(name = "serial_number", nullable = false, length = 100)
+    private String serialNumber;
 
     @Column(name = "model", nullable = false, length = 100)
     private String model;
@@ -36,27 +33,31 @@ public class Battery {
     @Column(name = "capacity_kwh", nullable = false, precision = 8, scale = 2)
     private BigDecimal capacityKwh;
 
-    @Column(name = "current_charge_percentage", nullable = false, precision = 5, scale = 2)
+    @ColumnDefault("0.00")
+    @Column(name = "current_charge_percentage", precision = 5, scale = 2)
     private BigDecimal currentChargePercentage;
 
-    @Column(name = "health_percentage", nullable = false, precision = 5, scale = 2)
-    private BigDecimal soh; // Giữ lại soh để tương thích DTO và service
+    @ColumnDefault("100.00")
+    @Column(name = "health_percentage", precision = 5, scale = 2)
+    private BigDecimal healthPercentage;
 
-    @Column(name = "charge_cycles", nullable = false)
-    private Integer chargeCycles = 0;
+    @ColumnDefault("0")
+    @Column(name = "charge_cycles")
+    private Integer chargeCycles;
 
-    @Column(name = "status", nullable = false, length = 20)
+    @ColumnDefault("'EMPTY'")
+    @Lob
+    @Column(name = "status")
     private String status;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "manufacture_date")
-    private Date manufactureDate;
+    private LocalDate manufactureDate;
 
-    @CreatedDate // <<< THAY ĐỔI
-    @Column(name = "created_at", updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
     private Instant createdAt;
 
-    @LastModifiedDate // <<< THAY ĐỔI
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
     private Instant updatedAt;
 }

@@ -22,7 +22,7 @@ public class Reservation {
 
     @ColumnDefault("'PENDING'")
     @Lob
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private String status;
 
     @Column(name = "expires_at", nullable = false)

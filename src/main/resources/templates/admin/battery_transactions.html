@@ -11,7 +11,7 @@
 
     <div class="content-wrapper">
         <section class="content-header">
-            <div class="container-fluid"><div class="row mb-2"><div class="col-sm-6"><h1>Quản lý Giao dịch Pin</h1></div><div class="col-sm-6"><ol class="breadcrumb float-sm-right"><li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Home</a></li><li class="breadcrumb-item active">Giao dịch Pin</li></ol></div></div></div>
+            <div class="container-fluid"><div class="row mb-2"><div class="col-sm-6"><h1>Quản lý Giao dịch Pin</h1></div><div class="col-sm-6"><ol class="breadcrumb float-sm-right"><li class="breadcrumb-item"><a th:href="@{/admin/batteries}">Home</a></li><li class="breadcrumb-item active">Giao dịch Pin</li></ol></div></div></div>
         </section>
 
         <section class="content">
@@ -58,47 +58,36 @@
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover">
-                                <thead><tr><th>ID</th><th>User</th><th>Trạm</th><th>Pin cũ</th><th>Pin mới</th><th>Trạng thái TT</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead>
+                                <thead><tr>
+                                    <th>ID</th>
+                                    <th>Trạm</th>
+                                    <th>Pin cũ</th>
+                                    <th>Pin mới</th>
+                                    <th>Trạng thái TT</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Thao tác</th>
+                                </tr></thead>
                                 <tbody>
                                 <tr th:each="tx : ${transactionPage.content}">
                                     <td><strong th:text="${tx.id}">1</strong></td>
-                                    <td th:text="${tx.user?.username ?: 'N/A'}">User A</td>
-                                    <td th:text="${tx.station.name}">Trạm A</td>
-                                    <td><code th:text="${tx.batteryIn.nameBattery}">PIN001</code></td>
-                                    <td><code th:text="${tx.batteryOut.nameBattery}">PIN002</code></td>
+                                    <td th:text="${tx.station?.name} ?: 'N/A'">Trạm A</td>
+                                    <td><code th:text="${tx.batteryIn?.serialNumber} ?: 'N/A'">PIN001</code></td>
+                                    <td><code th:text="${tx.batteryOut?.serialNumber} ?: 'N/A'">PIN002</code></td>
                                     <td><span class="badge" th:classappend="${#strings.equalsIgnoreCase(tx.paymentStatus, 'COMPLETED')} ? 'badge-success' : (${#strings.equalsIgnoreCase(tx.paymentStatus, 'PENDING')} ? 'badge-warning' : 'badge-danger')" th:text="${tx.paymentStatus}">COMPLETED</span></td>
-                                    <td th:text="${#temporals.format(tx.createdAt, 'dd-MM-yyyy HH:mm')}">--</td>
+                                    <td th:text="${tx.createdAt != null ? #temporals.format(tx.createdAt, 'dd-MM-yyyy HH:mm') : 'N/A'}">--</td>
                                     <td>
                                         <a th:href="@{/admin/transactions/edit/{id}(id=${tx.id})}" class="btn btn-warning btn-sm" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
                                         <a th:href="@{/admin/transactions/delete/{id}(id=${tx.id})}" class="btn btn-danger btn-sm" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa giao dịch này?');"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 <tr th:if="${transactionPage.empty}">
-                                    <td colspan="8" class="text-center">Không có giao dịch nào.</td>
+                                    <td colspan="7" class="text-center">Không có giao dịch nào.</td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="card-footer clearfix" th:if="${transactionPage.totalPages > 1}">
-                        <div class="row">
-                            <div class="col-md-6 text-muted">
-                                Hiển thị <span th:text="${transactionPage.pageable.offset + 1}"></span>-<span th:text="${transactionPage.pageable.offset + transactionPage.numberOfElements}"></span> / <span th:text="${transactionPage.totalElements}"></span> giao dịch
-                            </div>
-                            <div class="col-md-6">
-                                <ul class="pagination pagination-sm m-0 float-right">
-                                    <li class="page-item" th:classappend="${transactionPage.first} ? 'disabled'">
-                                        <a class="page-link" th:href="@{/admin/transactions(page=${transactionPage.number - 1}, stationId=${selectedStationId}, paymentStatus=${selectedPaymentStatus}, search=${search})}">Trước</a>
-                                    </li>
-                                    <li th:each="i : ${#numbers.sequence(0, transactionPage.totalPages - 1)}" class="page-item" th:classappend="${i == transactionPage.number} ? 'active'">
-                                        <a class="page-link" th:href="@{/admin/transactions(page=${i}, stationId=${selectedStationId}, paymentStatus=${selectedPaymentStatus}, search=${search})}" th:text="${i + 1}"></a>
-                                    </li>
-                                    <li class="page-item" th:classappend="${transactionPage.last} ? 'disabled'">
-                                        <a class="page-link" th:href="@{/admin/transactions(page=${transactionPage.number + 1}, stationId=${selectedStationId}, paymentStatus=${selectedPaymentStatus}, search=${search})}">Sau</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

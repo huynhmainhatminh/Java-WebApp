@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -15,7 +12,6 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "rentals")
-@EntityListeners(AuditingEntityListener.class)
 public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,14 +37,14 @@ public class Rental {
 
     @ColumnDefault("'ACTIVE'")
     @Lob
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private String status;
 
-    @CreatedDate // Thay đổi
-    @Column(name = "created_at", updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
     private Instant createdAt;
 
-    @LastModifiedDate // Thay đổi
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
     private Instant updatedAt;
 

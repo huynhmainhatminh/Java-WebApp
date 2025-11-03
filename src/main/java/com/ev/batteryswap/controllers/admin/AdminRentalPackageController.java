@@ -1,7 +1,7 @@
 package com.ev.batteryswap.controllers.admin;
 
 import com.ev.batteryswap.pojo.RentalPackage;
-import com.ev.batteryswap.services.IAdminRentalPackageService;
+import com.ev.batteryswap.services.IRentalPackageService; // <-- Đã đổi tên
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,13 +17,13 @@ import java.util.Optional;
 public class AdminRentalPackageController {
 
     @Autowired
-    private IAdminRentalPackageService packageService;
+    private IRentalPackageService packageService; // <-- Đã đổi tên
 
     @GetMapping
     public String listPackages(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<RentalPackage> packagePage = packageService.findAll(PageRequest.of(page, 15));
+        Page<RentalPackage> packagePage = packageService.findAll(PageRequest.of(page, 15)); // <-- Đã đổi tên
         model.addAttribute("packagePage", packagePage);
-        model.addAttribute("stats", packageService.getStatistics());
+        model.addAttribute("stats", packageService.getStatistics()); // <-- Đã đổi tên
         return "admin/rental_packages";
     }
 
@@ -35,14 +35,14 @@ public class AdminRentalPackageController {
 
     @PostMapping
     public String savePackage(@ModelAttribute("package") RentalPackage rentalPackage, RedirectAttributes redirectAttributes) {
-        packageService.save(rentalPackage);
+        packageService.save(rentalPackage); // <-- Đã đổi tên
         redirectAttributes.addFlashAttribute("successMessage", "Lưu gói thuê thành công!");
         return "redirect:/admin/packages";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
-        Optional<RentalPackage> rentalPackage = packageService.findById(id);
+        Optional<RentalPackage> rentalPackage = packageService.findById(id); // <-- Đã đổi tên
         if (rentalPackage.isPresent()) {
             model.addAttribute("package", rentalPackage.get());
             return "admin/package_form";
@@ -53,7 +53,7 @@ public class AdminRentalPackageController {
 
     @GetMapping("/delete/{id}")
     public String deletePackage(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
-        packageService.deleteById(id);
+        packageService.deleteById(id); // <-- Đã đổi tên
         redirectAttributes.addFlashAttribute("successMessage", "Xóa gói thuê thành công!");
         return "redirect:/admin/packages";
     }

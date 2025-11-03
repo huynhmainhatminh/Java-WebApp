@@ -2,8 +2,8 @@ package com.ev.batteryswap.controllers.admin;
 
 import com.ev.batteryswap.pojo.Battery;
 import com.ev.batteryswap.pojo.Station;
-import com.ev.batteryswap.services.IAdminBatteryService;
-import com.ev.batteryswap.services.IAdminStationService;
+import com.ev.batteryswap.services.IBatteryService; // <-- Đã đổi tên
+import com.ev.batteryswap.services.IStationService; // <-- Đã đổi tên
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,19 +19,19 @@ import java.util.Optional;
 public class AdminStationController {
 
     @Autowired
-    private IAdminStationService adminStationService;
+    private IStationService stationService; // <-- Đã đổi tên
 
     @Autowired
-    private IAdminBatteryService adminBatteryService;
+    private IBatteryService batteryService; // <-- Đã đổi tên
 
     @GetMapping
     public String listStations(Model model,
                                @RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "15") int size,
                                @RequestParam(required = false) String search) {
-        Page<Station> stationPage = adminStationService.filterStations(search, PageRequest.of(page, size));
+        Page<Station> stationPage = stationService.filterStations(search, PageRequest.of(page, size)); // <-- Đã đổi tên
         model.addAttribute("stationPage", stationPage);
-        model.addAttribute("stats", adminStationService.getStationStatistics());
+        model.addAttribute("stats", stationService.getStationStatistics()); // <-- Đã đổi tên
         model.addAttribute("search", search);
         return "admin/stations";
     }
@@ -43,11 +43,10 @@ public class AdminStationController {
         return "admin/station_form";
     }
 
-    // Đổi tên phương thức `createStation` thành `saveStation`
     @PostMapping
     public String saveStation(@ModelAttribute("station") Station station, RedirectAttributes redirectAttributes) {
         try {
-            adminStationService.saveStation(station);
+            stationService.saveStation(station); // <-- Đã đổi tên
             redirectAttributes.addFlashAttribute("successMessage", "Lưu thông tin trạm thành công!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi lưu trạm: " + e.getMessage());
@@ -57,7 +56,7 @@ public class AdminStationController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
-        Optional<Station> station = adminStationService.getStationById(id);
+        Optional<Station> station = stationService.getStationById(id); // <-- Đã đổi tên
         if (station.isPresent()) {
             model.addAttribute("station", station.get());
             model.addAttribute("pageTitle", "Chỉnh Sửa Trạm");
@@ -70,7 +69,7 @@ public class AdminStationController {
     @GetMapping("/delete/{id}")
     public String deleteStation(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         try {
-            adminStationService.deleteStation(id);
+            stationService.deleteStation(id); // <-- Đã đổi tên
             redirectAttributes.addFlashAttribute("successMessage", "Xóa trạm thành công!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi xóa trạm: " + e.getMessage());
@@ -80,18 +79,18 @@ public class AdminStationController {
 
     @GetMapping("/{id}")
     public String viewStationDetails(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
-        Optional<Station> stationOptional = adminStationService.getStationById(id);
+        Optional<Station> stationOptional = stationService.getStationById(id); // <-- Đã đổi tên
         if (stationOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy trạm!");
             return "redirect:/admin/stations";
         }
 
         Station station = stationOptional.get();
-        Page<Battery> batteriesInStation = adminBatteryService.filterBatteries(id, null, null, PageRequest.of(0, Integer.MAX_VALUE));
+        Page<Battery> batteriesInStation = batteryService.filterBatteries(id, null, null, PageRequest.of(0, Integer.MAX_VALUE)); // <-- Đã đổi tên
 
         model.addAttribute("station", station);
         model.addAttribute("batteries", batteriesInStation.getContent());
-        model.addAttribute("batteryStats", adminBatteryService.getBatteryStatisticsForStation(station));
+        model.addAttribute("batteryStats", batteryService.getBatteryStatisticsForStation(station)); // <-- Đã đổi tên
 
         return "admin/station_detail";
     }
