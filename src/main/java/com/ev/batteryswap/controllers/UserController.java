@@ -26,23 +26,11 @@ public class UserController {
     }
 
     @PostMapping("/rentalPackage")
-    public RentalPackage rentalPackage(@RequestParam(value = "userId") int userId, @RequestParam(value = "name") String name,
-                                       @RequestParam(value = "price") BigDecimal price, @RequestParam(value = "days") int days){
-
-        RentalPackage rentalPackage = new RentalPackage();
-        User user = new User();
-        user.setId(userId);
-        rentalPackage.setUser(user);
-        rentalPackage.setName(name);
-        rentalPackage.setPrice(price);
-        rentalPackage.setDurationDays(days);
-        return userServices.registerPackage(rentalPackage);
-
-    }
-
-    @PostMapping("/updateBalanceById")
     public String updateBalanceById(@RequestParam(value = "userId") int userId, @RequestParam(value = "name_pack") String name_pack,
                                         @RequestParam(value = "days") int days) {
+
+        User user = new User();
+        RentalPackage rentalPackage = new RentalPackage();
 
 
         BigDecimal balance_user = userServices.findById(userId).getWalletBalance();
@@ -50,16 +38,33 @@ public class UserController {
         if ( "Gói Cơ Bản 30 ngày".equals(name_pack) && days == 30 && balance_user.compareTo(new BigDecimal("270.000")) >= 0 ) {
             BigDecimal newBalance = balance_user.subtract(new BigDecimal("270.000"));
             userServices.updateBalanceById(userId, newBalance);
-
+            user.setId(userId);
+            rentalPackage.setUser(user);
+            rentalPackage.setName(name_pack);
+            rentalPackage.setPrice(new BigDecimal("270.000"));
+            rentalPackage.setDurationDays(days);
+            userServices.registerPackage(rentalPackage);
             return newBalance.toString();
 
         } else if ("Gói Nâng Cao 90 ngày".equals(name_pack) && days == 90 && balance_user.compareTo(new BigDecimal("810.000")) >= 0 ) {
             BigDecimal newBalance = balance_user.subtract(new BigDecimal("810.000"));
             userServices.updateBalanceById(userId, newBalance);
+            user.setId(userId);
+            rentalPackage.setUser(user);
+            rentalPackage.setName(name_pack);
+            rentalPackage.setPrice(new BigDecimal("810.000"));
+            rentalPackage.setDurationDays(days);
+            userServices.registerPackage(rentalPackage);
             return newBalance.toString();
+
         } else if ("Gói Cao Cấp 180 ngày".equals(name_pack) && days == 180 && balance_user.compareTo(new BigDecimal("1.620.000")) >= 0 ) {
             BigDecimal newBalance = balance_user.subtract(new BigDecimal("1.620.000"));
             userServices.updateBalanceById(userId, newBalance);
+            user.setId(userId);
+            rentalPackage.setUser(user);
+            rentalPackage.setName(name_pack);
+            rentalPackage.setPrice(new BigDecimal("1.620.000"));
+            rentalPackage.setDurationDays(days);
             return newBalance.toString();
         } else {
             return "Không đủ tiền";
