@@ -8,6 +8,8 @@ import com.ev.batteryswap.services.interfaces.IUserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 
 @Service
 public class UserServices implements IUserServices {
@@ -33,4 +35,8 @@ public class UserServices implements IUserServices {
         return irentalPackage.save(rentalPackage);
     }
 
+    @Override
+    public int updateBalanceById(int userId, BigDecimal price) {
+        return userRepositories.updateBalanceById(userId, price);
+    }
 }
