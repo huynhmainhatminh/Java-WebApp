@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 @Controller
 @RequestMapping("/admin/packages")
 public class AdminRentalPackageController {
@@ -67,7 +66,7 @@ public class AdminRentalPackageController {
         return "redirect:/admin/packages";
     }
 
-
+    //gọi form
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         RentalPackage rentalPackage = packageService.findById(id);
@@ -78,7 +77,7 @@ public class AdminRentalPackageController {
         redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy gói thuê!");
         return "redirect:/admin/packages";
     }
-
+    // Xóa goí thuê
     @GetMapping("/delete/{id}")
     public String deletePackage(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         packageService.deleteById(id);
