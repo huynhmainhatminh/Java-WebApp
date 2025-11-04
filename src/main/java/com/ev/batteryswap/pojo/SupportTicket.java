@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 
 import java.time.Instant;
 
@@ -11,6 +15,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "support_tickets")
+@EntityListeners(AuditingEntityListener.class)
 public class SupportTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,11 +43,12 @@ public class SupportTicket {
     @Column(name = "admin_response")
     private String adminResponse;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at")
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+
+    @LastModifiedDate
     @Column(name = "updated_at")
     private Instant updatedAt;
 

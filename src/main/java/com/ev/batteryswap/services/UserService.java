@@ -2,6 +2,7 @@ package com.ev.batteryswap.services;
 
 import com.ev.batteryswap.pojo.User;
 import com.ev.batteryswap.repositories.UserRepository;
+import com.ev.batteryswap.services.interfaces.IUserService;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements IUserService { // <-- Đã đổi tên
+public class UserService implements IUserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -38,8 +39,10 @@ public class UserServiceImpl implements IUserService { // <-- Đã đổi tên
 
     @Override
     public void updateUserRole(Integer userId, String role) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            throw new RuntimeException("User not found with id: " + userId);
+        }
         user.setRole(role);
         userRepository.save(user);
     }
@@ -51,5 +54,9 @@ public class UserServiceImpl implements IUserService { // <-- Đã đổi tên
     @Override
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+    @Override
+    public User findById(Integer userId) {
+        return userRepository.findById(userId).orElse(null);
     }
 }

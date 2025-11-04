@@ -4,6 +4,7 @@ import com.ev.batteryswap.pojo.Battery;
 import com.ev.batteryswap.pojo.SwapTransaction;
 import com.ev.batteryswap.repositories.BatteryRepository;
 import com.ev.batteryswap.repositories.SwapTransactionRepository;
+import com.ev.batteryswap.services.interfaces.ITransactionService;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class TransactionServiceImpl implements ITransactionService { // <-- Đã đổi tên
+public class TransactionService implements ITransactionService {
 
     @Autowired
     private SwapTransactionRepository transactionRepository;
@@ -43,7 +44,6 @@ public class TransactionServiceImpl implements ITransactionService { // <-- Đã
                     Integer transactionId = Integer.parseInt(search);
                     predicates.add(cb.equal(root.get("id"), transactionId));
                 } catch (NumberFormatException e) {
-                    // Nếu không phải số, có thể bỏ qua hoặc log lỗi
                 }
             }
             return cb.and(predicates.toArray(new Predicate[0]));
@@ -69,12 +69,18 @@ public class TransactionServiceImpl implements ITransactionService { // <-- Đã
     public void saveTransaction(SwapTransaction transaction) {
         // Lấy thông tin đầy đủ của 2 viên pin từ DB
         Battery batteryIn = batteryRepository.findById(transaction.getBatteryIn().getId())
-                .orElseThrow(() -> new RuntimeException("Pin trả vào không tồn tại!"));
+                .orElse(null);
+        if (batteryIn == null) {
+            throw new RuntimeException("Pin trả vào không tồn tại!");
+        }
 
         Battery batteryOut = batteryRepository.findById(transaction.getBatteryOut().getId())
-                .orElseThrow(() -> new RuntimeException("Pin lấy ra không tồn tại!"));
+                .orElse(null);
+        if (batteryOut == null) {
+            throw new RuntimeException("Pin lấy ra không tồn tại!");
+        }
 
-        // === BẮT ĐẦU LOGIC NGHIỆP VỤ THỰC TẾ ===
+
 
         // 1. Kiểm tra logic: Pin lấy ra phải đang "AVAILABLE"
         if (!"AVAILABLE".equals(batteryOut.getStatus())) {
@@ -83,7 +89,7 @@ public class TransactionServiceImpl implements ITransactionService { // <-- Đã
         }
 
         // 2. Tự động cập nhật trạng thái của các viên pin
-        batteryIn.setStatus("CHARGING"); // Hoặc "MAINTENANCE" tùy vào logic kiểm tra pin
+        batteryIn.setStatus("CHARGING");
         batteryIn.setStation(transaction.getStation()); // Cập nhật vị trí mới cho pin cũ
 
         batteryOut.setStatus("RENTED"); // Pin mới giờ đã được cho thuê
@@ -93,13 +99,12 @@ public class TransactionServiceImpl implements ITransactionService { // <-- Đã
         batteryRepository.save(batteryIn);
         batteryRepository.save(batteryOut);
 
-        // 4. Lưu bản ghi giao dịch
         transactionRepository.save(transaction);
     }
 
     @Override
-    public Optional<SwapTransaction> getTransactionById(Integer id) {
-        return transactionRepository.findById(id);
+    public SwapTransaction getTransactionById(Integer id) {
+        return transactionRepository.findById(id).orElse(null);
     }
 
     @Override

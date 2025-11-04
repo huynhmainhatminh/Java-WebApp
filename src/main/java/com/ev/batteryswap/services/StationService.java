@@ -2,6 +2,7 @@ package com.ev.batteryswap.services;
 
 import com.ev.batteryswap.pojo.Station;
 import com.ev.batteryswap.repositories.StationRepository;
+import com.ev.batteryswap.services.interfaces.IStationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,10 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
-public class StationServiceImpl implements IStationService { // <-- Đã đổi tên
+public class StationService implements IStationService {
 
     @Autowired
     private StationRepository stationRepository;
@@ -38,7 +38,7 @@ public class StationServiceImpl implements IStationService { // <-- Đã đổi 
         stats.put("total_stations", stationRepository.count());
         stats.put("active_stations", stationRepository.countByStatus("ACTIVE"));
         stats.put("maintenance_stations", stationRepository.countByStatus("MAINTENANCE"));
-        stats.put("inactive_stations", stationRepository.countByStatus("INACTIVE")); // Giả sử có trạng thái này
+        stats.put("inactive_stations", stationRepository.countByStatus("INACTIVE"));
         return stats;
     }
 
@@ -48,8 +48,8 @@ public class StationServiceImpl implements IStationService { // <-- Đã đổi 
     }
 
     @Override
-    public Optional<Station> getStationById(Integer id) {
-        return stationRepository.findById(id);
+    public Station getStationById(Integer id) {
+        return stationRepository.findById(id).orElse(null);
     }
 
     @Override

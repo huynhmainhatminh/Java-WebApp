@@ -9,10 +9,15 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "batteries")
+@EntityListeners(AuditingEntityListener.class)
 public class Battery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +26,7 @@ public class Battery {
 
     // Thêm trường này để liên kết với Station
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "station_id")
+    @JoinColumn(name = "current_station_id") // <-- ĐÃ SỬA TÊN CỘT
     private Station station;
 
     @Column(name = "serial_number", nullable = false, length = 100)
@@ -53,11 +58,13 @@ public class Battery {
     @Column(name = "manufacture_date")
     private LocalDate manufactureDate;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at")
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+
+    @LastModifiedDate
     @Column(name = "updated_at")
     private Instant updatedAt;
 }

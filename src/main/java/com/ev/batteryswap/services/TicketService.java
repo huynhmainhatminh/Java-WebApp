@@ -2,6 +2,7 @@ package com.ev.batteryswap.services;
 
 import com.ev.batteryswap.pojo.SupportTicket;
 import com.ev.batteryswap.repositories.SupportTicketRepository;
+import com.ev.batteryswap.services.interfaces.ITicketService;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,10 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
-public class TicketServiceImpl implements ITicketService { // <-- Đã đổi tên
+public class TicketService implements ITicketService {
 
     @Autowired
     private SupportTicketRepository ticketRepository;
@@ -45,8 +45,8 @@ public class TicketServiceImpl implements ITicketService { // <-- Đã đổi t�
     }
 
     @Override
-    public Optional<SupportTicket> findById(Integer id) {
-        return ticketRepository.findById(id);
+    public SupportTicket findById(Integer id) {
+        return ticketRepository.findById(id).orElse(null);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.ev.batteryswap.services;
 
 import com.ev.batteryswap.pojo.RentalPackage;
 import com.ev.batteryswap.repositories.RentalPackageRepository;
+import com.ev.batteryswap.services.interfaces.IRentalPackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+
 
 @Service
-public class RentalPackageServiceImpl implements IRentalPackageService { // <-- Đã đổi tên
+public class RentalPackageService implements IRentalPackageService { // <-- Đã đổi tên
 
     @Autowired
     private RentalPackageRepository rentalPackageRepository;
@@ -33,8 +34,8 @@ public class RentalPackageServiceImpl implements IRentalPackageService { // <-- 
     }
 
     @Override
-    public Optional<RentalPackage> findById(Integer id) {
-        return rentalPackageRepository.findById(id);
+    public RentalPackage findById(Integer id) {
+        return rentalPackageRepository.findById(id).orElse(null);
     }
 
     @Override

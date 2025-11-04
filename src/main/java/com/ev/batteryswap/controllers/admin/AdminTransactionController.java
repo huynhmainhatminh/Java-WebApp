@@ -4,9 +4,9 @@ import com.ev.batteryswap.pojo.Battery;
 import com.ev.batteryswap.pojo.Station;
 import com.ev.batteryswap.pojo.SwapTransaction;
 import com.ev.batteryswap.pojo.User;
-import com.ev.batteryswap.services.IBatteryService;
-import com.ev.batteryswap.services.ITransactionService;
-import com.ev.batteryswap.services.IUserService;
+import com.ev.batteryswap.services.interfaces.IBatteryService;
+import com.ev.batteryswap.services.interfaces.ITransactionService;
+import com.ev.batteryswap.services.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,10 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Collections; // <-- Thêm import
+import java.util.Collections;
 import java.util.List;
-import java.util.Map; // <-- Thêm import
-import java.util.Optional;
+import java.util.Map;
+
 
 @Controller
 @RequestMapping("/admin/transactions")
@@ -34,19 +34,13 @@ public class AdminTransactionController {
     @Autowired
     private IUserService userService;
 
-    // BƯỚC 1: Thêm log chi tiết vào @ModelAttribute
     @ModelAttribute("stations")
-    public List<Station> getAllStations(Model model) { // Thêm Model
+    public List<Station> getAllStations(Model model) {
         try {
-            System.out.println("LOG: Đang tải @ModelAttribute('stations')...");
-            List<Station> stations = batteryService.getAllStations();
-            System.out.println("LOG: Tải 'stations' thành công.");
-            return stations;
+            return batteryService.getAllStations();
         } catch (Exception e) {
-            System.err.println("### LỖI NGHIÊM TRỌNG: Không thể tải 'stations' trong @ModelAttribute ###");
-            e.printStackTrace();
             model.addAttribute("errorMessage", "Lỗi nghiêm trọng khi tải danh sách trạm: " + e.getMessage());
-            return Collections.emptyList(); // Trả về danh sách rỗng để tránh crash
+            return Collections.emptyList();
         }
     }
 
@@ -59,67 +53,44 @@ public class AdminTransactionController {
                                    @RequestParam(required = false) String search) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<SwapTransaction> transactionPage = Page.empty(pageable);
-        Map<String, Long> stats = Collections.emptyMap();
-
         try {
-            System.out.println("LOG: Đang tải 'stats' (thống kê giao dịch)...");
-            // BƯỚC 2: Tải stats trước
-            stats = transactionService.getTransactionStatistics();
-            System.out.println("LOG: Tải 'stats' thành công.");
-
-            System.out.println("LOG: Đang lọc giao dịch (filterTransactions)...");
-            // BƯỚC 3: Tải trang giao dịch
-            transactionPage = transactionService.filterTransactions(stationId, paymentStatus, search, pageable);
-            System.out.println("LOG: Lọc giao dịch thành công.");
+            Map<String, Long> stats = transactionService.getTransactionStatistics();
+            Page<SwapTransaction> transactionPage = transactionService.filterTransactions(stationId, paymentStatus, search, pageable);
 
             model.addAttribute("transactionPage", transactionPage);
             model.addAttribute("stats", stats);
 
         } catch (Exception e) {
-            System.err.println("### LỖI NGHIÊM TRỌNG: Lỗi khi tải trang listTransactions ###");
-            e.printStackTrace();
             model.addAttribute("errorMessage", "Đã xảy ra lỗi khi tải dữ liệu: " + e.getMessage());
-            model.addAttribute("transactionPage", Page.empty(pageable)); // Đảm bảo trang rỗng
-            model.addAttribute("stats", stats); // Vẫn hiển thị stats nếu nó đã tải thành công
+            model.addAttribute("transactionPage", Page.empty(pageable));
+            model.addAttribute("stats", Collections.emptyMap());
         }
 
         model.addAttribute("selectedStationId", stationId);
         model.addAttribute("selectedPaymentStatus", paymentStatus);
         model.addAttribute("search", search);
 
-        System.out.println("LOG: Hoàn tất, đang render 'admin/battery_transactions.html'");
         return "admin/battery_transactions";
     }
 
-    // Tải "batteries" và "users" CHỈ KHI CẦN VÀO FORM
     private void addFormAttributes(Model model) {
         try {
-            System.out.println("LOG: Đang tải 'batteries' cho form...");
             Page<Battery> allBatteries = batteryService.filterBatteries(null, null, null, PageRequest.of(0, Integer.MAX_VALUE));
             model.addAttribute("batteries", allBatteries);
-            System.out.println("LOG: Tải 'batteries' cho form thành công.");
         } catch (Exception e) {
-            System.err.println("### LỖI: Không thể tải 'batteries' cho form ###");
-            e.printStackTrace();
             model.addAttribute("batteries", Page.empty());
         }
 
         try {
-            System.out.println("LOG: Đang tải 'users' cho form...");
             Page<User> allUsers = userService.filterUsers(null, PageRequest.of(0, Integer.MAX_VALUE));
             model.addAttribute("users", allUsers);
-            System.out.println("LOG: Tải 'users' cho form thành công.");
         } catch (Exception e) {
-            System.err.println("### LỖI: Không thể tải 'users' cho form ###");
-            e.printStackTrace();
             model.addAttribute("users", Page.empty());
         }
     }
 
     @GetMapping("/new")
     public String showCreateTransactionForm(Model model) {
-        System.out.println("LOG: Yêu cầu trang /new");
         model.addAttribute("transaction", new SwapTransaction());
         addFormAttributes(model);
         return "admin/transaction_form";
@@ -127,13 +98,10 @@ public class AdminTransactionController {
 
     @PostMapping
     public String createTransaction(@ModelAttribute("transaction") SwapTransaction transaction, RedirectAttributes redirectAttributes) {
-        System.out.println("LOG: Yêu cầu POST / (tạo mới)");
         try {
             transactionService.saveTransaction(transaction);
             redirectAttributes.addFlashAttribute("successMessage", "Tạo giao dịch mới thành công!");
         } catch (Exception e) {
-            System.err.println("### LỖI: Không thể tạo giao dịch ###");
-            e.printStackTrace();
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi tạo giao dịch: " + e.getMessage());
         }
         return "redirect:/admin/transactions";
@@ -141,10 +109,10 @@ public class AdminTransactionController {
 
     @GetMapping("/edit/{id}")
     public String showEditTransactionForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
-        System.out.println("LOG: Yêu cầu trang /edit/" + id);
-        Optional<SwapTransaction> transaction = transactionService.getTransactionById(id);
-        if (transaction.isPresent()) {
-            model.addAttribute("transaction", transaction.get());
+        // SỬA LOGIC: Bỏ Optional, kiểm tra null
+        SwapTransaction transaction = transactionService.getTransactionById(id);
+        if (transaction != null) { // Sửa từ .isPresent()
+            model.addAttribute("transaction", transaction); // Sửa từ .get()
             addFormAttributes(model);
             return "admin/transaction_form";
         }
@@ -153,29 +121,41 @@ public class AdminTransactionController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateTransaction(@PathVariable("id") Integer id, @ModelAttribute("transaction") SwapTransaction transaction, RedirectAttributes redirectAttributes) {
-        System.out.println("LOG: Yêu cầu POST /update/" + id);
+    public String updateTransaction(@PathVariable("id") Integer id,
+                                    @ModelAttribute("transaction") SwapTransaction transactionFormData,
+                                    RedirectAttributes redirectAttributes) {
         try {
-            transaction.setId(id);
-            transactionService.saveTransaction(transaction);
+            SwapTransaction existingTransaction = transactionService.getTransactionById(id);
+            if (existingTransaction == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy giao dịch để cập nhật!");
+                return "redirect:/admin/transactions";
+            }
+
+            // Cập nhật các trường từ form
+            existingTransaction.setStation(transactionFormData.getStation());
+            existingTransaction.setBatteryIn(transactionFormData.getBatteryIn());
+            existingTransaction.setBatteryOut(transactionFormData.getBatteryOut());
+            existingTransaction.setAmount(transactionFormData.getAmount());
+            existingTransaction.setPaymentMethod(transactionFormData.getPaymentMethod());
+            existingTransaction.setPaymentStatus(transactionFormData.getPaymentStatus());
+            existingTransaction.setNotes(transactionFormData.getNotes());
+
+            transactionService.saveTransaction(existingTransaction);
+
             redirectAttributes.addFlashAttribute("successMessage", "Cập nhật giao dịch thành công!");
         } catch (Exception e) {
-            System.err.println("### LỖI: Không thể cập nhật giao dịch ###");
-            e.printStackTrace();
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi cập nhật giao dịch: " + e.getMessage());
         }
         return "redirect:/admin/transactions";
     }
 
+
     @GetMapping("/delete/{id}")
     public String deleteTransaction(@PathVariable("id") Integer transactionId, RedirectAttributes redirectAttributes) {
-        System.out.println("LOG: Yêu cầu GET /delete/" + transactionId);
         try {
             transactionService.deleteTransaction(transactionId);
             redirectAttributes.addFlashAttribute("successMessage", "Xóa giao dịch thành công!");
         } catch (Exception e) {
-            System.err.println("### LỖI: Không thể xóa giao dịch ###");
-            e.printStackTrace();
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi xóa giao dịch: " + e.getMessage());
         }
         return "redirect:/admin/transactions";
