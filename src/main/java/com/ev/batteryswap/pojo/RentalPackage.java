@@ -24,6 +24,10 @@ public class RentalPackage {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Lob
     @Column(name = "description")
     private String description;
