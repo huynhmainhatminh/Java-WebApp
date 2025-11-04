@@ -1,8 +1,10 @@
 package com.ev.batteryswap.controllers;
+import com.ev.batteryswap.dto.APIResponse;
 import com.ev.batteryswap.pojo.RentalPackage;
 import com.ev.batteryswap.pojo.User;
 import com.ev.batteryswap.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -26,8 +28,8 @@ public class UserController {
     }
 
     @PostMapping("/rentalPackage")
-    public String updateBalanceById(@RequestParam(value = "userId") int userId, @RequestParam(value = "name_pack") String name_pack,
-                                        @RequestParam(value = "days") int days) {
+    public ResponseEntity<?> updateBalanceById(@RequestParam(value = "userId") int userId, @RequestParam(value = "name_pack") String name_pack,
+                                            @RequestParam(value = "days") int days) {
 
         User user = new User();
         RentalPackage rentalPackage = new RentalPackage();
@@ -44,7 +46,9 @@ public class UserController {
             rentalPackage.setPrice(new BigDecimal("270.000"));
             rentalPackage.setDurationDays(days);
             userServices.registerPackage(rentalPackage);
-            return newBalance.toString();
+            return ResponseEntity.ok(
+                    new APIResponse(true, "Đăng Ký Gói Thành Công.")
+            );
 
         } else if ("Gói Nâng Cao 90 ngày".equals(name_pack) && days == 90 && balance_user.compareTo(new BigDecimal("810.000")) >= 0 ) {
             BigDecimal newBalance = balance_user.subtract(new BigDecimal("810.000"));
@@ -55,7 +59,9 @@ public class UserController {
             rentalPackage.setPrice(new BigDecimal("810.000"));
             rentalPackage.setDurationDays(days);
             userServices.registerPackage(rentalPackage);
-            return newBalance.toString();
+            return ResponseEntity.ok(
+                    new APIResponse(true, "Đăng Ký Gói Thành Công.")
+            );
 
         } else if ("Gói Cao Cấp 180 ngày".equals(name_pack) && days == 180 && balance_user.compareTo(new BigDecimal("1.620.000")) >= 0 ) {
             BigDecimal newBalance = balance_user.subtract(new BigDecimal("1.620.000"));
@@ -65,9 +71,13 @@ public class UserController {
             rentalPackage.setName(name_pack);
             rentalPackage.setPrice(new BigDecimal("1.620.000"));
             rentalPackage.setDurationDays(days);
-            return newBalance.toString();
+            return ResponseEntity.ok(
+                    new APIResponse(true, "Đăng Ký Gói Thành Công.")
+            );
         } else {
-            return "Không đủ tiền";
+            return ResponseEntity.badRequest().body(
+                    new APIResponse(false, "Đăng Ký Gói Thất Bại.")
+            );
         }
 
 //        BigDecimal balance_user = userServices.findById(userId).getWalletBalance();
