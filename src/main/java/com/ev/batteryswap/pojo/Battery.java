@@ -24,9 +24,8 @@ public class Battery {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    // Thêm trường này để liên kết với Station
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "current_station_id") // <-- ĐÃ SỬA TÊN CỘT
+    @JoinColumn(name = "current_station_id")
     private Station station;
 
     @Column(name = "serial_number", nullable = false, length = 100)

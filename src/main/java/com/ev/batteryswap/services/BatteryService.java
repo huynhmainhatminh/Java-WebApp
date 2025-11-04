@@ -5,7 +5,7 @@ import com.ev.batteryswap.pojo.Station;
 import com.ev.batteryswap.repositories.BatteryRepository;
 import com.ev.batteryswap.repositories.StationRepository;
 import com.ev.batteryswap.services.interfaces.IBatteryService;
-import jakarta.persistence.criteria.JoinType; // <-- THÊM IMPORT NÀY
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
