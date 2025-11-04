@@ -13,10 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
-public class TicketService implements ITicketService { // <-- Đã đổi tên
+public class TicketService implements ITicketService {
 
     @Autowired
     private SupportTicketRepository ticketRepository;
@@ -46,8 +45,8 @@ public class TicketService implements ITicketService { // <-- Đã đổi tên
     }
 
     @Override
-    public Optional<SupportTicket> findById(Integer id) {
-        return ticketRepository.findById(id);
+    public SupportTicket findById(Integer id) {
+        return ticketRepository.findById(id).orElse(null);
     }
 
     @Override

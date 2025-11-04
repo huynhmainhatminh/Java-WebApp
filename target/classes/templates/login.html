@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div th:insert="header :: site-header"></div>
+<main class="auth">
+    <div class="container auth-inner">
+        <section class="auth-card" aria-labelledby="login-title">
+            <h1 id="login-title" class="auth-title">Đăng Nhập</h1>
+            <p class="auth-subtitle">Vui lòng đăng nhập để tiếp tục</p>
+            <form id="loginForm" class="auth-form" novalidate>
+                <label class="field">
+                    <span class="label">Email</span>
+                    <input type="email" name="email" placeholder="example@email.com" required>
+                </label>
+                <label class="field">
+                    <span class="label">Mật Khẩu</span>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </label>
+                <div class="form-row">
+                    <label class="checkbox"><input type="checkbox" name="remember"><span>Remember Me</span></label>
+                    <a class="link" href="#">Quên mật khẩu?</a>
+                </div>
+                <button type="submit" class="button primary full">Đăng Nhập</button>
+                <p class="terms">Chưa có tài khoản? <a href="/register" class="link">Đăng ký ngay</a></p>
+            </form>
+            <script>
+                document.getElementById("loginForm").addEventListener("submit", async function(event){
+                    event.preventDefault();
+                    const formData = new FormData(this);
+                    const response = await fetch("/api/login", { method: "POST", body: formData });
+                    const result = await response.json();
+                    if (response.ok && result.success) {
+                        Swal.fire({
+                            icon: 'success', title: 'Đăng nhập thành công', text: 'Đang chuyển hướng...',
+                            timer: 1500, showConfirmButton: false
+                        }).then(() => {
+                            if (result.role === 'ADMIN') window.location.href = '/admin/dashboard';
+                            else if (result.role === 'STAFF') window.location.href = '/staff/home'; // Cần tạo trang này
+                            else window.location.href = '/my';
+                        });
+                    } else {
+                        Swal.fire({ icon: 'error', title: 'Lỗi', text: result.message || 'Đăng nhập thất bại!' });
+                    }
+                });
+            </script>
+        </section>
+    </div>
+</main>
+<div th:insert="footer :: site-footer"></div>
+</body>
+</html>

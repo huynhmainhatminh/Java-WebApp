@@ -1,9 +1,11 @@
 package com.ev.batteryswap.services;
+
 import com.ev.batteryswap.pojo.Battery;
 import com.ev.batteryswap.pojo.Station;
 import com.ev.batteryswap.repositories.BatteryRepository;
 import com.ev.batteryswap.repositories.StationRepository;
 import com.ev.batteryswap.services.interfaces.IBatteryService;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class BatteryService implements IBatteryService { // <-- Đã đổi tên
+public class BatteryService implements IBatteryService {
     @Autowired
     private BatteryRepository batteryRepository;
 
@@ -29,6 +31,10 @@ public class BatteryService implements IBatteryService { // <-- Đã đổi tên
     @Override
     public Page<Battery> filterBatteries(Integer stationId, String status, String nameKeyword, Pageable pageable) {
         return batteryRepository.findAll((Specification<Battery>) (root, query, criteriaBuilder) -> {
+            if (query.getResultType() != Long.class && query.getResultType() != long.class) {
+                root.fetch("station", JoinType.LEFT);
+            }
+
             List<Predicate> predicates = new ArrayList<>();
             // Điều kiện 1: Lọc theo Trạm (stationId)
             if (stationId != null) {
@@ -48,8 +54,8 @@ public class BatteryService implements IBatteryService { // <-- Đã đổi tên
 
 
     @Override
-    public Optional<Battery> getBatteryById(Integer id) {
-        return batteryRepository.findById(id);
+    public Battery getBatteryById(Integer id) {
+        return batteryRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -74,7 +80,7 @@ public class BatteryService implements IBatteryService { // <-- Đã đổi tên
         return stats;
     }
 
-    //Dùng để đưa tt cho phần station
+    //Dùng để đưa thông tin cho phần station
     @Override
     public Map<String, Long> getBatteryStatisticsForStation(Station station) {
         Map<String, Long> stats = new HashMap<>();

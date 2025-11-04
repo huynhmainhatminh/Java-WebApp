@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 
@@ -13,6 +15,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "vehicles")
+@EntityListeners(AuditingEntityListener.class)
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +36,8 @@ public class Vehicle {
     @Column(name = "license_plate", length = 20)
     private String licensePlate;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at")
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
 }

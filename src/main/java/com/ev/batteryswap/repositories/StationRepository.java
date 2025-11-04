@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StationRepository extends JpaRepository<Station, Integer>, JpaSpecificationExecutor<Station> {
-    // Thêm phương thức này để lấy thống kê
+    //phương thức này để lấy thống kê
     long countByStatus(String status);
 }
