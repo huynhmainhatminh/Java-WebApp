@@ -4,6 +4,7 @@ import com.ev.batteryswap.dto.AuthRequestRegister;
 import com.ev.batteryswap.pojo.User;
 import com.ev.batteryswap.services.AuthServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -14,9 +15,17 @@ public class AuthController {
     @Autowired
     AuthServices authServices;
 
+
+
+
     @PostMapping("/login")
-    public boolean login(@RequestBody AuthRequestLogin authRequest) {
-        return authServices.login(authRequest.getUsername(), authRequest.getPassword());
+    public ResponseEntity<?> login(@ModelAttribute AuthRequestLogin authRequest) {
+        if (authServices.login(authRequest.getUsername(), authRequest.getPassword())) {
+            return ResponseEntity.ok("Đăng nhập thành công.");
+        } else {
+            return ResponseEntity.badRequest().body("Đăng nhập thất bại.");
+        }
+        // return authServices.login(authRequest.getUsername(), authRequest.getPassword());
     }
 
 
