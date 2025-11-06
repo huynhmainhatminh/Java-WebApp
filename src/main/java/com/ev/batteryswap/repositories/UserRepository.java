@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecificationExecutor<User> {
-    // Tìm nhân viên(Staff) theo id trạm và vai trò staff)
+    // Tìm nhân viên(Staff) theo id trạm và vai trò là staff)
     List<User> findByStation_IdAndRole(Integer stationId, String role);
+    List<User> findByRole(String role);
 }

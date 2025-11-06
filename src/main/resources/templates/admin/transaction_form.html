@@ -12,23 +12,15 @@
                     <div class="col-sm-6">
                         <h1 th:text="${transaction.id == null ? 'Tạo Giao Dịch Mới' : 'Chỉnh Sửa Giao Dịch'}"></h1>
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a th:href="@{/admin/batteries}">Home</a></li>
-                            <li class="breadcrumb-item"><a th:href="@{/admin/transactions}">Giao dịch Pin</a></li>
-                            <li class="breadcrumb-item active" th:text="${transaction.id == null ? 'Tạo Mới' : 'Chỉnh Sửa'}"></li>
-                        </ol>
-                    </div>
                 </div>
             </div>
         </section>
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Thông tin giao dịch</h3>
-                    </div>
+                    <div class="card-header"><h3 class="card-title">Thông tin giao dịch</h3></div>
                     <form th:action="${transaction.id == null} ? @{/admin/transactions} : @{/admin/transactions/update/{id}(id=${transaction.id})}" th:object="${transaction}" method="post">
+                        <input type="hidden" th:field="*{id}" />
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
@@ -40,64 +32,49 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="user">Khách hàng</label>
+                                        <select class="form-control" id="user" th:field="*{user}" required>
+                                            <option value="">-- Chọn khách hàng --</option>
+                                            <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.username} + ' (' + ${u.fullName} + ')'"></option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="batteryIn">Pin Cũ (Pin trả vào)</label>
+                                        <label for="batteryIn">Pin Cũ (Pin trả vào - RENTED)</label>
                                         <select class="form-control" id="batteryIn" th:field="*{batteryIn}" required>
-                                            <option value="">-- Chọn pin cũ --</option>
-                                            <option th:each="bat : ${batteries.content}" th:value="${bat.id}" th:text="${bat.serialNumber} + ' (' + ${bat.status} + ')'"></option>
+                                            <option value="">-- Chọn pin khách trả --</option>
+                                            <option th:each="bat : ${rentedBatteries}"
+                                                    th:value="${bat.id}"
+                                                    th:text="${bat.serialNumber} + ' (' + ${bat.currentChargePercentage} + '%)'">
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="batteryOut">Pin Mới (Pin lấy ra)</label>
+                                        <label for="batteryOut">Pin Mới (Pin lấy ra - AVAILABLE)</label>
                                         <select class="form-control" id="batteryOut" th:field="*{batteryOut}" required>
-                                            <option value="">-- Chọn pin mới (chỉ pin AVAILABLE) --</option>
-                                            <option th:each="bat : ${batteries.content}" th:if="${bat.status == 'AVAILABLE'}" th:value="${bat.id}" th:text="${bat.serialNumber}"></option>
+                                            <option value="">-- Vui lòng chọn trạm trước --</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="amount">Số tiền</label>
-                                        <input type="number" step="1000" class="form-control" id="amount" th:field="*{amount}" required>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="paymentMethod">Phương thức TT</label>
-                                        <select class="form-control" id="paymentMethod" th:field="*{paymentMethod}" required>
-                                            <option value="CASH">Tiền mặt</option>
-                                            <option value="CARD">Thẻ</option>
-                                            <option value="WALLET">Ví điện tử</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="paymentStatus">Trạng thái Thanh toán</label>
-                                        <select class="form-control" id="paymentStatus" th:field="*{paymentStatus}">
-                                            <option value="PENDING">Chờ xử lý</option>
-                                            <option value="COMPLETED">Hoàn thành</option>
-                                            <option value="FAILED">Thất bại</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                <div class="col-md-6"><div class="form-group"><label>Số tiền</label><input type="number" step="1000" class="form-control" th:field="*{amount}" required></div></div>
+                                <div class="col-md-6"><div class="form-group"><label>Trạng thái TT</label><select class="form-control" th:field="*{paymentStatus}"><option value="PENDING">Chờ xử lý</option><option value="COMPLETED">Hoàn thành</option></select></div></div>
                             </div>
-                            <div class="form-group">
-                                <label for="notes">Ghi chú</label>
-                                <textarea class="form-control" id="notes" rows="3" th:field="*{notes}"></textarea>
+                            <div class="row">
+                                <div class="col-md-6"><div class="form-group"><label>Phương thức TT</label><select class="form-control" th:field="*{paymentMethod}" required><option value="CASH">Tiền mặt</option><option value="WALLET">Ví điện tử</option></select></div></div>
+                                <div class="col-md-6"><div class="form-group"><label>Ghi chú</label><textarea class="form-control" rows="1" th:field="*{notes}"></textarea></div></div>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Lưu</button>
+                            <button type="submit" class="btn btn-primary">Lưu Giao Dịch</button>
                             <a th:href="@{/admin/transactions}" class="btn btn-secondary">Hủy</a>
                         </div>
                     </form>
@@ -108,5 +85,50 @@
     <footer th:replace="~{admin/fragments/_footer :: footer}"></footer>
 </div>
 <div th:replace="~{admin/fragments/_footer :: common_scripts}"></div>
+
+<script th:inline="javascript">
+    $(document).ready(function() {
+        // Lấy danh sách pin AVAILABLE từ server để dùng cho dropdown Pin Ra
+        var availableBatteries = [
+            /*[# th:each="bat : ${availableBatteries}"]*/
+            {
+                id: [[${bat.id}]],
+                name: "[(${bat.serialNumber})] - [(${bat.currentChargePercentage})]%",
+                stationId: [[${bat.station?.id}]]
+            },
+            /*[/]*/
+        ];
+
+        var $batteryOutSelect = $('#batteryOut');
+        var $stationSelect = $('#station');
+
+        function updateBatteryOutDropdown(stationId) {
+            $batteryOutSelect.empty().append('<option value="">-- Chọn pin mới --</option>');
+            if (!stationId) {
+                $batteryOutSelect.prop('disabled', true);
+                return;
+            }
+            var filtered = availableBatteries.filter(b => b.stationId == stationId);
+            if (filtered.length > 0) {
+                $batteryOutSelect.prop('disabled', false);
+                filtered.forEach(b => $batteryOutSelect.append(new Option(b.name, b.id)));
+            } else {
+                $batteryOutSelect.append('<option disabled>Không có pin sẵn sàng</option>');
+            }
+        }
+
+        $stationSelect.change(function() {
+            updateBatteryOutDropdown($(this).val());
+        });
+
+        // Khởi chạy ban đầu
+        var currentStationId = $stationSelect.val();
+        if (currentStationId) {
+            updateBatteryOutDropdown(currentStationId);
+            var selectedOutId = [[${transaction.batteryOut?.id}]];
+            if (selectedOutId) $batteryOutSelect.val(selectedOutId);
+        }
+    });
+</script>
 </body>
 </html>
