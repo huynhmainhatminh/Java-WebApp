@@ -27,7 +27,6 @@ public class AdminTransactionController {
 
     @Autowired
     private ITransactionService transactionService;
-
     @Autowired
     private IBatteryService batteryService;
 
@@ -109,7 +108,6 @@ public class AdminTransactionController {
 
     @GetMapping("/edit/{id}")
     public String showEditTransactionForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
-        // SỬA LOGIC: Bỏ Optional, kiểm tra null
         SwapTransaction transaction = transactionService.getTransactionById(id);
         if (transaction != null) { // Sửa từ .isPresent()
             model.addAttribute("transaction", transaction); // Sửa từ .get()
