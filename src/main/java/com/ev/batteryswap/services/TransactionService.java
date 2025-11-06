@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -111,4 +112,10 @@ public class TransactionService implements ITransactionService {
     public List<Map<String, Object>> getHourlySwapReport() {
         return transactionRepository.countTransactionsByHour();
     }
+
+    @Override
+    public BigDecimal getTotalRevenue() {
+        return transactionRepository.getTotalRevenue();
+    }
+
 }

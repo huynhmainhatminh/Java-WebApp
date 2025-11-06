@@ -21,17 +21,18 @@ public class SwapTransaction {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    // SỬA LẠI: Bỏ 'optional = false' và 'nullable = false'
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "station_id")
     private Station station;
 
-    // SỬA LẠI: Bỏ 'optional = false' và 'nullable = false'
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "battery_out_id")
     private Battery batteryOut;
 
-    // SỬA LẠI: Bỏ 'optional = false' và 'nullable = false'
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "battery_in_id")
     private Battery batteryIn;

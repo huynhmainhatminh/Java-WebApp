@@ -23,14 +23,17 @@ public class AdminDashboardController {
 
     @GetMapping("/dashboard")
     public String showDashboard(Model model) {
-        // 1. Lấy các chỉ số KPI tổng quan từ các Service
+        // 1. Lấy các chỉ số thống kê cơ bản
         model.addAttribute("batteryStats", batteryService.getBatteryStatistics());
         model.addAttribute("stationStats", stationService.getStationStatistics());
-        model.addAttribute("transactionStats", transactionService.getTransactionStatistics());
+        Map<String, Long> transactionStats = transactionService.getTransactionStatistics();
+        model.addAttribute("transactionStats", transactionStats);
 
-        // 2. Chuẩn bị dữ liệu cho Biểu đồ tần suất đổi pin (gộp từ phần Báo cáo)
+        // 2. Lấy Tổng doanh thu (MỚI)
+        model.addAttribute("totalRevenue", transactionService.getTotalRevenue());
+
+        // 3. Chuẩn bị dữ liệu cho Biểu đồ tần suất (MỚI)
         List<Map<String, Object>> rawChartData = transactionService.getHourlySwapReport();
-        // Tạo mảng 24 giờ, mặc định là 0
         int[] dataByHour = new int[24];
         for (Map<String, Object> row : rawChartData) {
             Number hour = (Number) row.get("hour");
@@ -39,7 +42,6 @@ public class AdminDashboardController {
                 dataByHour[hour.intValue()] = count.intValue();
             }
         }
-        // Chuyển thành List để Thymeleaf dễ xử lý
         List<Integer> chartData = new ArrayList<>();
         for (int count : dataByHour) chartData.add(count);
         model.addAttribute("hourlySwapData", chartData);

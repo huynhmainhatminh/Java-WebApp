@@ -18,72 +18,71 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-3 col-6">
-                        <div class="small-box bg-info">
+                        <div class="small-box bg-success">
                             <div class="inner">
-                                <h3 th:text="${stationStats.get('total_stations') ?: 0}">0</h3>
-                                <p>Tổng số Trạm</p>
+                                <h3 th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0 ₫</h3>
+                                <p>Tổng Doanh Thu</p>
                             </div>
-                            <div class="icon"><i class="fas fa-charging-station"></i></div>
-                            <a th:href="@{/admin/stations}" class="small-box-footer">Quản lý Trạm <i class="fas fa-arrow-circle-right"></i></a>
+                            <div class="icon"><i class="fas fa-coins"></i></div>
+                            <a th:href="@{/admin/transactions(paymentStatus='COMPLETED')}" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <div class="col-lg-3 col-6">
-                        <div class="small-box bg-success">
+                        <div class="small-box bg-info">
                             <div class="inner">
-                                <h3><span th:text="${batteryStats.get('available') ?: 0}">0</span>/<span th:text="${batteryStats.get('total') ?: 0}">0</span></h3>
-                                <p>Pin Sẵn sàng hoạt động</p>
+                                <h3 th:text="${transactionStats.get('total_transactions')}">0</h3>
+                                <p>Lượt đổi pin</p>
                             </div>
-                            <div class="icon"><i class="fas fa-battery-full"></i></div>
-                            <a th:href="@{/admin/batteries}" class="small-box-footer">Quản lý Pin <i class="fas fa-arrow-circle-right"></i></a>
+                            <div class="icon"><i class="fas fa-exchange-alt"></i></div>
+                            <a th:href="@{/admin/transactions}" class="small-box-footer">Xem nhật ký <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3 th:text="${transactionStats.get('total_transactions') ?: 0}">0</h3>
-                                <p>Tổng lượt đổi pin</p>
+                                <h3 th:text="${stationStats.get('total_stations')}">0</h3>
+                                <p>Trạm hoạt động</p>
                             </div>
-                            <div class="icon"><i class="fas fa-exchange-alt"></i></div>
-                            <a th:href="@{/admin/transactions}" class="small-box-footer">Xem giao dịch <i class="fas fa-arrow-circle-right"></i></a>
+                            <div class="icon"><i class="fas fa-charging-station"></i></div>
+                            <a th:href="@{/admin/stations}" class="small-box-footer">Quản lý trạm <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3 th:text="${batteryStats.get('maintenance') ?: 0}">0</h3>
-                                <p>Pin đang bảo dưỡng</p>
+                                <h3 th:text="${batteryStats.get('maintenance')}">0</h3>
+                                <p>Pin cần bảo dưỡng</p>
                             </div>
                             <div class="icon"><i class="fas fa-tools"></i></div>
                             <a th:href="@{/admin/batteries(status='MAINTENANCE')}" class="small-box-footer">Xử lý ngay <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-primary card-outline">
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="far fa-chart-bar mr-1"></i>
-                                    Tần suất đổi pin trong ngày (Theo giờ)
+                                    Tần suất đổi pin trong ngày (Giờ cao điểm)
                                 </h3>
                                 <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                        <i class="fas fa-times"></i>
-                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="chart">
-                                    <canvas id="dashboardChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
+                                    <canvas id="dashboardChart" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div></section>
+
+            </div>
+        </section>
     </div>
     <footer th:replace="~{admin/fragments/_footer :: footer}"></footer>
 </div>
@@ -91,51 +90,28 @@
 <div th:replace="~{admin/fragments/_footer :: common_scripts}"></div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
-    // Lấy dữ liệu từ Controller truyền xuống
     var chartData = [[${hourlySwapData}]];
-
     $(function () {
-        // Cấu hình và vẽ biểu đồ
         var ctx = document.getElementById('dashboardChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'line', // Dùng biểu đồ đường cho đẹp trên Dashboard
+        new Chart(ctx, {
+            type: 'bar', // Dùng biểu đồ cột để nhìn rõ giờ cao điểm hơn
             data: {
-                labels: ['0h', '1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h', '18h', '19h', '20h', '21h', '22h', '23h'],
+                labels: ['0h','1h','2h','3h','4h','5h','6h','7h','8h','9h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h'],
                 datasets: [{
                     label: 'Số lượt đổi',
                     data: chartData,
-                    backgroundColor: 'rgba(60, 141, 188, 0.2)', // Vùng dưới đường
-                    borderColor: 'rgba(60, 141, 188, 1)',       // Màu đường
-                    pointRadius: 4,
-                    pointBackgroundColor: '#3b8bba',
-                    pointBorderColor: 'rgba(60, 141, 188, 1)',
-                    fill: true,            // Tô màu vùng dưới
-                    tension: 0.4           // Làm mềm đường cong
+                    backgroundColor: 'rgba(60, 141, 188, 0.9)',
+                    borderColor: 'rgba(60, 141, 188, 0.8)',
+                    borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                datasetFill: false,
                 scales: {
-                    x: { grid: { display: false } }, // Ẩn lưới trục X cho thoáng
-                    y: {
-                        beginAtZero: true,
-                        ticks: { stepSize: 1 } // Chỉ hiện số nguyên
-                    }
+                    y: { beginAtZero: true, ticks: { stepSize: 1 } }
                 },
-                plugins: {
-                    legend: { display: false }, // Ẩn chú thích vì chỉ có 1 đường
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false
-                    }
-                },
-                interaction: {
-                    mode: 'nearest',
-                    axis: 'x',
-                    intersect: false
-                }
+                plugins: { legend: { display: false } }
             }
         });
     });
