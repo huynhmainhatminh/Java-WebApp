@@ -7,12 +7,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
     <style>
         :root {
             --slate-900:#0f172a;--slate-800:#1f2937;--slate-700:#374151;--slate-600:#475569;--slate-500:#64748b;
             --gray-100:#f3f4f6;--gray-200:#e5e7eb;--blue-600:#2563eb;--blue-700:#1d4ed8;--green-500:#22c55e;
             --green-600:#16a34a;--green-700:#059669;--emerald-50:#f0fdf4;--emerald-100:#dcfce7;--yellow-100:#fef3c7;--yellow-500:#f59e0b;--yellow-800:#92400e;
         }
+
         *{box-sizing:border-box}
         html,body{margin:0;padding:0;font-family:Inter,system-ui,Segoe UI,Roboto,Apple Color Emoji,Segoe UI Emoji,sans-serif;background:#fafafa;color:var(--slate-800)}
         a{color:inherit}
@@ -79,13 +82,78 @@
 </head>
 <body>
 <!-- Header (tùy chọn) -->
-<header class="container">
-    <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <h1>Nạp tiền</h1>
+<header class="site-header">
+    <div class="container header-inner">
+        <a href="my" class="brand" aria-label="VinFast">
+            <img th:src="@{/img/logo.png}" alt="VinFast" class="brand-logo">
+            <span class="sr-only">VINFASTAUTO</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Chính">
+            <button class="nav-toggle" aria-expanded="false" aria-controls="menu">☰</button>
+            <ul id="menu" class="menu">
+                <li><a href="my">Trang chủ</a></li>
+                <li><a href="#">Đổi pin</a></li>
+                <li><a href="#">Liên kết</a></li>
+                <li class="has-sub">
+                    <a href="#" aria-haspopup="true" aria-expanded="false">Đặt lịch</a>
+                    <ul class="submenu" aria-label="Đặt lịch">
+                        <li><a href="#">Tìm kiếm trạm gần nhất</a></li>
+                        <li><a href="#">Đặt lịch đổi pin</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.php">Hỗ trợ</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <!-- Notification Bell -->
+            <div class="notification-container">
+                <button class="notification-bell" id="notificationBell" aria-label="Thông báo">
+                    <span class="bell-icon">🔔</span>
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Thông báo</h3>
+                        <button class="mark-all-read" id="markAllRead">Đánh dấu tất cả đã đọc</button>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <div class="notification-loading">Đang tải...</div>
+                    </div>
+                    <div class="notification-footer">
+                        <a href="#" class="view-all-notifications">Xem tất cả thông báo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-info">
+                <div class="money-display">
+                    <span class="money-label">💰</span>
+                    <span class="money-amount">0</span>
+                </div>
+                <div class="has-sub">
+                    <a href="#" aria-haspopup="true" aria-expanded="false" class="user-icon" title="TEST">
+                        <span class="user-avatar">👤</span>
+                    </a>
+                    <ul class="submenu" aria-label="Tài khoản">
+                        <li class="user-name-item">
+                            <span th:text="${username}" name="username" class="username">username</span>
+                        </li>
+                        <li><a href="naptien">Nạp tiền</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Lịch sử giao dịch</a></li>
+                        <li class="logout-item">
+                            <a href="logout.php" class="logout-link">Đăng xuất</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-    <span class="pill">UI Only</span>
 </header>
+
+<script th:src="@{/js/notifications.js}"></script>
 
 <main>
     <div class="container recharge-container">
@@ -96,7 +164,7 @@
 
         <div class="balance-display" aria-live="polite">
             <div class="balance-label">Số dư hiện tại</div>
-            <div class="balance-amount" id="balanceAmount">0 VNĐ</div>
+            <div th:text="${balance_amount}" class="balance-amount" name="balance_amount" id="balanceAmount">0 VNĐ</div>
         </div>
 
         <section class="card">
@@ -116,13 +184,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="contentInput">Nội dung chuyển khoản *</label>
-                    <input type="text" name="content" id="contentInput" class="form-input" placeholder="NAP_TIEN_[USERNAME]_[SỐ_TIỀN]" readonly />
-                </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="notesInput">Ghi chú (không bắt buộc)</label>
-                    <textarea id="notesInput" name="notes" class="form-input" rows="3" placeholder="Ghi chú thêm..."></textarea>
                 </div>
 
                 <button type="submit" class="submit-button">Tạo yêu cầu nạp tiền</button>
@@ -183,37 +245,24 @@
 </main>
 
 <!-- Footer (tùy chọn) -->
-<footer class="container" style="opacity:.7;font-size:.9rem;margin-bottom:24px">
-    © 2025 VinFast — Demo giao diện nạp tiền
-</footer>
+<div th:insert="footer :: site-footer"></div>
+
 
 <script>
     // ====== DỮ LIỆU GIẢ LẬP (thay bằng API thật nếu cần) ======
-    const username = "USER_DEMO";
-    const currentBalance = 350000; // ví dụ: 350,000 VNĐ
+    // const username = "USER_DEMO";
+    const username = document.getElementsByName("username");
+    // const currentBalance = 350000; // ví dụ: 350,000 VNĐ
+    // const currentBalance = document.getElementById("amountInput");
 
     const paymentInfos = [
         {
             id: 1,
-            bank_name: "Vietcombank",
-            account_number: "0123456789",
-            account_holder: "NGUYEN VAN A",
+            bank_name: "ACB Ngân hàng thương mại cổ phần Á Châu",
+            account_number: "22749061",
+            account_holder: "HUYNH MAI NHAT MINH",
             qr_code_url: "" // có thể để rỗng: sẽ dùng VietQR động theo lựa chọn
         },
-        {
-            id: 2,
-            bank_name: "Techcombank",
-            account_number: "1900123456789",
-            account_holder: "NGUYEN VAN A",
-            qr_code_url: ""
-        },
-        {
-            id: 3,
-            bank_name: "MBBank",
-            account_number: "123456789",
-            account_holder: "NGUYEN VAN A",
-            qr_code_url: ""
-        }
     ];
 
     // ====== DOM ELEMENTS ======
@@ -221,11 +270,11 @@
     const amountInput = document.getElementById("amountInput");
     const contentInput = document.getElementById("contentInput");
     const rechargeForm = document.getElementById("rechargeForm");
-    const balanceAmount = document.getElementById("balanceAmount");
+    // const balanceAmount = document.getElementById("balanceAmount");
     const bankCards = document.getElementById("bankCards");
 
     // Render số dư
-    balanceAmount.textContent = `${Number(currentBalance).toLocaleString("vi-VN")} VNĐ`;
+    // balanceAmount.textContent = `${Number(currentBalance).toLocaleString("vi-VN")} VNĐ`;
 
     // Render danh sách ngân hàng (khối “Thông tin chuyển khoản”)
     function renderBankCards() {
@@ -296,26 +345,13 @@
             amountButtons.forEach((b) => b.classList.remove("active"));
             this.classList.add("active");
             amountInput.value = this.dataset.amount;
-            updateContent();
         });
     });
 
     // nhập số tiền
     amountInput.addEventListener("input", function () {
         amountButtons.forEach((b) => b.classList.remove("active"));
-        updateContent();
     });
-
-    // cập nhật nội dung chuyển khoản
-    function updateContent() {
-        const amount = amountInput.value;
-        if (amount && !isNaN(amount)) {
-            const formattedAmount = parseInt(amount, 10).toLocaleString("vi-VN");
-            contentInput.value = `NAP_TIEN_${username}_${formattedAmount}`;
-        } else {
-            contentInput.value = "";
-        }
-    }
 
     // copy helper
     function copyToClipboard(targetEl) {
@@ -337,10 +373,15 @@
     }
 
     // submit form
-    rechargeForm.addEventListener("submit", function (e) {
+    rechargeForm.addEventListener("submit", async function (e) {
         e.preventDefault();
         const amount = Number(amountInput.value);
-        const content = contentInput.value.trim();
+        const formData = new FormData(this);
+        const response = await fetch("/qr", {
+            method: "POST",
+            body: formData
+        });
+
 
         if (!amount || amount < 10000) {
             alert("Số tiền nạp tối thiểu là 10,000 VNĐ");
@@ -350,16 +391,11 @@
             alert("Số tiền nạp tối đa là 10,000,000 VNĐ");
             return;
         }
-        if (!content) {
-            alert("Nội dung chuyển khoản chưa hợp lệ");
-            return;
-        }
-
-        showRechargeResult(amount, content);
+        showRechargeResult(amount, await response.text());
     });
 
     // ====== KẾT QUẢ NẠP TIỀN ======
-    function showRechargeResult(amount, content) {
+    function showRechargeResult(amount, url_qr) {
         const rechargeResult = document.getElementById("rechargeResult");
         const resultInfo = document.getElementById("resultInfo");
         const bankOptions = document.getElementById("bankOptions");
@@ -368,14 +404,6 @@
         <div class="result-item">
           <span class="result-label">Số tiền nạp:</span>
           <span class="result-value">${parseInt(amount,10).toLocaleString("vi-VN")} VNĐ</span>
-        </div>
-        <div class="result-item">
-          <span class="result-label">Nội dung chuyển khoản:</span>
-          <span class="result-value">${escapeHTML(content)}</span>
-        </div>
-        <div class="result-item">
-          <span class="result-label">Thời gian tạo:</span>
-          <span class="result-value">${new Date().toLocaleString("vi-VN")}</span>
         </div>
       `;
 
@@ -396,13 +424,13 @@
             option.addEventListener("click", function () {
                 document.querySelectorAll(".bank-option").forEach((el) => el.classList.remove("selected"));
                 this.classList.add("selected");
-                generateQRCode(this.dataset.bankCode, this.dataset.accountNumber, amount, content);
+                generateQRCode(url_qr);
             });
 
             bankOptions.appendChild(option);
             if (idx === 0) {
                 option.classList.add("selected");
-                generateQRCode(option.dataset.bankCode, option.dataset.accountNumber, amount, content);
+                generateQRCode(url_qr);
             }
         });
 
@@ -438,18 +466,16 @@
     }
 
     // tạo QR qua VietQR
-    function generateQRCode(bankCode, accountNumber, amount, content) {
+    function generateQRCode(url_qr) {
         const img = document.getElementById("qrCodeImage");
-        const qrUrl = `https://img.vietqr.io/image/${bankCode}-${accountNumber}-compact1.jpg?addInfo=${encodeURIComponent(
-            content
-        )}&amount=${encodeURIComponent(amount)}`;
+        // const qrUrl = url_qr;
 
         // loading state (tối giản)
-        img.alt = `Đang tải QR cho ${bankCode} - ${accountNumber}...`;
-        img.src = qrUrl;
+        img.alt = `Đang tải QR cho`;
+        img.src = url_qr;
 
         img.onload = function () {
-            img.alt = `QR Code chuyển khoản ${bankCode} - ${accountNumber}`;
+            img.alt = `QR Code chuyển khoản`;
         };
         img.onerror = function () {
             img.src = "https://via.placeholder.com/220x220/ef4444/ffffff?text=QR+Error";
@@ -468,7 +494,6 @@
     }
 
     // Khởi tạo nội dung chuyển khoản mẫu (nếu đã có số tiền)
-    updateContent();
 </script>
 </body>
 </html>
