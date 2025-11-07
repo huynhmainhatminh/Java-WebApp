@@ -1,10 +1,19 @@
 package com.ev.batteryswap.controllers;
-
+import com.ev.batteryswap.pojo.User;
+import com.ev.batteryswap.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 @Controller
 public class IndexController {
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/")
     public String index() {
@@ -22,13 +31,14 @@ public class IndexController {
     }
 
     @GetMapping("/my")
-    public String my() {
+    public String my(Model model) {
+        model.addAttribute("username", "phucvu02891");
         return "user/my";
     }
 
-    @GetMapping("/naptien")
-    public String naptien() {
-        return "user/naptien";
+    @GetMapping("/contact")
+    public String contact() {
+        return "user/contact";
     }
 
 
