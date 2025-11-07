@@ -46,8 +46,13 @@
             <ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-header">QUẢN LÝ CHUNG</li>
                 <li class="nav-item">
-                    <a th:href="@{/admin/batteries}" class="nav-link" th:classappend="${currentPage == 'dashboard'} ? 'active' : ''">
-                        <i class="nav-icon fas fa-tachometer-alt"></i> <p>Dashboard (QL Pin)</p>
+                    <a th:href="@{/admin/dashboard}" class="nav-link" th:classappend="${currentPage == 'dashboard'} ? 'active' : ''">
+                        <i class="nav-icon fas fa-tachometer-alt"></i> <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/batteries}" class="nav-link" th:classappend="${currentPage == 'batteries'} ? 'active' : ''">
+                        <i class="nav-icon fas fa-battery-full"></i> <p>Quản lý Pin</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -69,19 +74,6 @@
                     <a th:href="@{/admin/packages}" class="nav-link" th:classappend="${currentPage == 'packages'} ? 'active' : ''">
                         <i class="nav-icon fas fa-box-open"></i> <p>Quản lý Gói Thuê</p>
                     </a>
-                </li>
-                <li class="nav-item" th:classappend="${currentPage == 'reports'} ? 'menu-open' : ''">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-line"></i>
-                        <p>Báo cáo & Thống kê <i class="right fas fa-angle-left"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a th:href="@{/admin/reports/swap-frequency}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i> <p>Tần suất đổi pin</p>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
                 <li class="nav-header">QUẢN TRỊ VIÊN</li>
                 <li class="nav-item">

@@ -58,30 +58,48 @@
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover">
-                                <thead><tr>
+                                <thead>
+                                <tr>
                                     <th>ID</th>
                                     <th>Trạm</th>
-                                    <th>Pin cũ</th>
-                                    <th>Pin mới</th>
-                                    <th>Trạng thái TT</th>
+                                    <th>Pin cũ (Vào)</th>
+                                    <th>Pin mới (Ra)</th>
+                                    <th>Số tiền</th> <th>PTTT</th>    <th>Trạng thái</th>
                                     <th>Ngày tạo</th>
-                                    <th>Thao tác</th>
-                                </tr></thead>
+                                    <th style="width: 100px;">Thao tác</th>
+                                </tr>
+                                </thead>
                                 <tbody>
                                 <tr th:each="tx : ${transactionPage.content}">
-                                    <td><strong th:text="${tx.id}">1</strong></td>
+                                    <td th:text="${tx.id}">1</td>
                                     <td th:text="${tx.station?.name} ?: 'N/A'">Trạm A</td>
-                                    <td><code th:text="${tx.batteryIn?.serialNumber} ?: 'N/A'">PIN001</code></td>
-                                    <td><code th:text="${tx.batteryOut?.serialNumber} ?: 'N/A'">PIN002</code></td>
-                                    <td><span class="badge" th:classappend="${#strings.equalsIgnoreCase(tx.paymentStatus, 'COMPLETED')} ? 'badge-success' : (${#strings.equalsIgnoreCase(tx.paymentStatus, 'PENDING')} ? 'badge-warning' : 'badge-danger')" th:text="${tx.paymentStatus}">COMPLETED</span></td>
+
+                                    <td><code class="text-danger" th:text="${tx.batteryIn?.serialNumber} ?: 'N/A'">PIN_CU</code></td>
+                                    <td><code class="text-success" th:text="${tx.batteryOut?.serialNumber} ?: 'N/A'">PIN_MOI</code></td>
+
+                                    <td class="text-right"><strong><span th:text="${#numbers.formatDecimal(tx.amount, 0, 'COMMA', 0, 'POINT')}"></span> đ</strong></td>
+
+                                    <td>
+                                        <span class="badge badge-info" th:if="${tx.paymentMethod == 'CASH'}"><i class="fas fa-money-bill-wave mr-1"></i> Tiền mặt</span>
+                                        <span class="badge badge-primary" th:if="${tx.paymentMethod == 'CARD'}"><i class="far fa-credit-card mr-1"></i> Thẻ</span>
+                                        <span class="badge badge-warning" th:if="${tx.paymentMethod == 'WALLET'}"><i class="fas fa-wallet mr-1"></i> Ví điện tử</span>
+                                        <span class="badge badge-secondary" th:if="${tx.paymentMethod != 'CASH' and tx.paymentMethod != 'CARD' and tx.paymentMethod != 'WALLET'}" th:text="${tx.paymentMethod}">OTHER</span>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge"
+                                              th:classappend="${#strings.equalsIgnoreCase(tx.paymentStatus, 'COMPLETED')} ? 'badge-success' :
+                                              (${#strings.equalsIgnoreCase(tx.paymentStatus, 'PENDING')} ? 'badge-warning' : 'badge-danger')"
+                                              th:text="${tx.paymentStatus}">COMPLETED</span>
+                                    </td>
                                     <td th:text="${tx.createdAt != null ? #temporals.format(tx.createdAt, 'dd-MM-yyyy HH:mm') : 'N/A'}">--</td>
                                     <td>
-                                        <a th:href="@{/admin/transactions/edit/{id}(id=${tx.id})}" class="btn btn-warning btn-sm" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
+                                        <a th:href="@{/admin/transactions/edit/{id}(id=${tx.id})}" class="btn btn-warning btn-sm" title="Sửa"><i class="fas fa-pen"></i></a>
                                         <a th:href="@{/admin/transactions/delete/{id}(id=${tx.id})}" class="btn btn-danger btn-sm" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa giao dịch này?');"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 <tr th:if="${transactionPage.empty}">
-                                    <td colspan="7" class="text-center">Không có giao dịch nào.</td>
+                                    <td colspan="9" class="text-center">Không có giao dịch nào.</td>
                                 </tr>
                                 </tbody>
                             </table>
