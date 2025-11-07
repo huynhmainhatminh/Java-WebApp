@@ -27,7 +27,6 @@ public class AdminTransactionController {
 
     @Autowired
     private ITransactionService transactionService;
-
     @Autowired
     private IBatteryService batteryService;
 
@@ -75,17 +74,22 @@ public class AdminTransactionController {
 
     private void addFormAttributes(Model model) {
         try {
-            Page<Battery> allBatteries = batteryService.filterBatteries(null, null, null, PageRequest.of(0, Integer.MAX_VALUE));
-            model.addAttribute("batteries", allBatteries);
-        } catch (Exception e) {
-            model.addAttribute("batteries", Page.empty());
-        }
+            // 1. Lấy danh sách Pin SẴN SÀNG
+            Page<Battery> availableBatteries = batteryService.filterBatteries(null, "AVAILABLE", null, PageRequest.of(0, 1000));
+            model.addAttribute("availableBatteries", availableBatteries.getContent());
 
-        try {
-            Page<User> allUsers = userService.filterUsers(null, PageRequest.of(0, Integer.MAX_VALUE));
-            model.addAttribute("users", allUsers);
+            // 2. Lấy danh sách Pin ĐANG CHO THUÊ
+            Page<Battery> rentedBatteries = batteryService.filterBatteries(null, "RENTED", null, PageRequest.of(0, 1000));
+            model.addAttribute("rentedBatteries", rentedBatteries.getContent());
         } catch (Exception e) {
-            model.addAttribute("users", Page.empty());
+            model.addAttribute("batteries", Collections.emptyList());
+        }
+        try {
+            //Lấy user có role driver
+            List<User> drivers = userService.getUsersByRole("DRIVER");
+            model.addAttribute("users", drivers);
+        } catch (Exception e) {
+            model.addAttribute("users", Collections.emptyList());
         }
     }
 
@@ -109,10 +113,9 @@ public class AdminTransactionController {
 
     @GetMapping("/edit/{id}")
     public String showEditTransactionForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
-        // SỬA LOGIC: Bỏ Optional, kiểm tra null
         SwapTransaction transaction = transactionService.getTransactionById(id);
-        if (transaction != null) { // Sửa từ .isPresent()
-            model.addAttribute("transaction", transaction); // Sửa từ .get()
+        if (transaction != null) {
+            model.addAttribute("transaction", transaction);
             addFormAttributes(model);
             return "admin/transaction_form";
         }

@@ -2,8 +2,10 @@ package com.ev.batteryswap.controllers.admin;
 
 import com.ev.batteryswap.pojo.Battery;
 import com.ev.batteryswap.pojo.Station;
+import com.ev.batteryswap.pojo.User;
 import com.ev.batteryswap.services.interfaces.IBatteryService;
 import com.ev.batteryswap.services.interfaces.IStationService;
+import com.ev.batteryswap.services.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 
 @Controller
@@ -22,6 +26,8 @@ public class AdminStationController {
 
     @Autowired
     private IBatteryService batteryService;
+
+    @Autowired private IUserService userService;
 
     @GetMapping
     public String listStations(Model model,
@@ -110,10 +116,14 @@ public class AdminStationController {
             return "redirect:/admin/stations";
         }
 
-        Page<Battery> batteriesInStation = batteryService.filterBatteries(id, null, null, PageRequest.of(0, Integer.MAX_VALUE));
 
+        Page<Battery> batteriesInStation = batteryService.filterBatteries(id, null, null, PageRequest.of(0, 1000)); // Lấy max 1000 viên
+        List<User> staffInStation = userService.getStaffByStation(id);
+
+        // 3. Đưa tất cả vào Model
         model.addAttribute("station", station);
         model.addAttribute("batteries", batteriesInStation.getContent());
+        model.addAttribute("staffList", staffInStation);
         model.addAttribute("batteryStats", batteryService.getBatteryStatisticsForStation(station));
 
         return "admin/station_detail";

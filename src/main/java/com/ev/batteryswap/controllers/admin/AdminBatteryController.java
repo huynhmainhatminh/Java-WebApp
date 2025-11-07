@@ -73,7 +73,6 @@ public class AdminBatteryController {
                                 RedirectAttributes redirectAttributes) {
 
         try {
-
             Battery existingBattery = batteryService.getBatteryById(id);
             if (existingBattery == null) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy pin để cập nhật!");
