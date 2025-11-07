@@ -2,9 +2,10 @@ package com.ev.batteryswap.controllers;
 import com.ev.batteryswap.dto.APIResponse;
 import com.ev.batteryswap.pojo.RentalPackage;
 import com.ev.batteryswap.pojo.User;
-import com.ev.batteryswap.services.UserServices;
+import com.ev.batteryswap.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -15,16 +16,16 @@ import java.math.BigDecimal;
 public class UserController {
 
     @Autowired
-    UserServices userServices;
+    UserService userService;
 
     @PostMapping("/information")
     public User information(@RequestParam(value = "username") String username) {
-        return userServices.findByUsername(username);
+        return userService.findByUsername(username);
     }
 
     @GetMapping("/information/{id}")
     public User getInformationById(@PathVariable("id") int id) {
-         return userServices.findById(id);
+         return userService.findById(id);
     }
 
     @PostMapping("/rentalPackage")
@@ -35,37 +36,37 @@ public class UserController {
         RentalPackage rentalPackage = new RentalPackage();
 
 
-        BigDecimal balance_user = userServices.findById(userId).getWalletBalance();
+        BigDecimal balance_user = userService.findById(userId).getWalletBalance();
 
         if ( "Gói Cơ Bản 30 ngày".equals(name_pack) && days == 30 && balance_user.compareTo(new BigDecimal("270.000")) >= 0 ) {
             BigDecimal newBalance = balance_user.subtract(new BigDecimal("270.000"));
-            userServices.updateBalanceById(userId, newBalance);
+            userService.updateBalanceById(userId, newBalance);
             user.setId(userId);
             rentalPackage.setUser(user);
             rentalPackage.setName(name_pack);
             rentalPackage.setPrice(new BigDecimal("270.000"));
             rentalPackage.setDurationDays(days);
-            userServices.registerPackage(rentalPackage);
+            userService.registerPackage(rentalPackage);
             return ResponseEntity.ok(
                     new APIResponse(true, "Đăng Ký Gói Thành Công.")
             );
 
         } else if ("Gói Nâng Cao 90 ngày".equals(name_pack) && days == 90 && balance_user.compareTo(new BigDecimal("810.000")) >= 0 ) {
             BigDecimal newBalance = balance_user.subtract(new BigDecimal("810.000"));
-            userServices.updateBalanceById(userId, newBalance);
+            userService.updateBalanceById(userId, newBalance);
             user.setId(userId);
             rentalPackage.setUser(user);
             rentalPackage.setName(name_pack);
             rentalPackage.setPrice(new BigDecimal("810.000"));
             rentalPackage.setDurationDays(days);
-            userServices.registerPackage(rentalPackage);
+            userService.registerPackage(rentalPackage);
             return ResponseEntity.ok(
                     new APIResponse(true, "Đăng Ký Gói Thành Công.")
             );
 
         } else if ("Gói Cao Cấp 180 ngày".equals(name_pack) && days == 180 && balance_user.compareTo(new BigDecimal("1.620.000")) >= 0 ) {
             BigDecimal newBalance = balance_user.subtract(new BigDecimal("1.620.000"));
-            userServices.updateBalanceById(userId, newBalance);
+            userService.updateBalanceById(userId, newBalance);
             user.setId(userId);
             rentalPackage.setUser(user);
             rentalPackage.setName(name_pack);
@@ -79,6 +80,29 @@ public class UserController {
                     new APIResponse(false, "Đăng Ký Gói Thất Bại.")
             );
         }
+
+
+
+//        @PostMapping("/qr")
+//        @ResponseBody
+//        public ResponseEntity<?> handleForm(@RequestParam BigDecimal amount) {
+//            String url = "https://img.vietqr.io/image/ACB-22749061-compact1.jpg?addInfo=phucvu02891&amount="+amount+"";
+//            // model.addAttribute("qrUrl", url);
+//            return ResponseEntity.ok(url);
+//        }
+//
+//        @GetMapping("/naptien")
+//        public String naptien(Model model) {
+//            BigDecimal money = userService.findByUsername("phucvu02891").getWalletBalance();
+//            model.addAttribute("username", "phucvu02891");
+//            model.addAttribute("balance_amount", money);
+////        User user = new User();
+////        user.setUsername("USER");
+////        user.setWalletBalance(10000);
+////        String qrUrl = "";
+////        model.addAttribute("user", user);
+//            return "user/naptien";
+//        }
 
 //        BigDecimal balance_user = userServices.findById(userId).getWalletBalance();
 //

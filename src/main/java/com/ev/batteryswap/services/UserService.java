@@ -1,6 +1,8 @@
 package com.ev.batteryswap.services;
 
+import com.ev.batteryswap.pojo.RentalPackage;
 import com.ev.batteryswap.pojo.User;
+import com.ev.batteryswap.repositories.RentalPackageRepository;
 import com.ev.batteryswap.repositories.UserRepository;
 import com.ev.batteryswap.services.interfaces.IUserService;
 import jakarta.persistence.criteria.Predicate;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +22,17 @@ public class UserService implements IUserService {
     @Autowired
     private UserRepository userRepository;
 
+
+    @Autowired
+    private UserRepository userRepositories;
+
+    @Autowired
+    private RentalPackageRepository rentalPackageRepository;
+
+
+
     @Override
-    public Page<User> filterUsers(String searchKeyword, Pageable pageable) {
+    public Page<User> filterUsers(String searchKeyword, Pageable pageable) { // lọc danh sách và tìm kiếm người dùng
         return userRepository.findAll((Specification<User>) (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -38,7 +50,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void updateUserRole(Integer userId, String role) {
+    public void updateUserRole(Integer userId, String role) { // cập nhật người quyền hạn người dùng bằng id
         User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
             throw new RuntimeException("User not found with id: " + userId);
@@ -48,15 +60,39 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void deleteUser(Integer userId) {
+    public void deleteUser(Integer userId) { // xóa người dùng bằng id
+
         userRepository.deleteById(userId);
     }
+
     @Override
-    public void saveUser(User user) {
+    public void saveUser(User user) { // thêm người dùng mới
+
         userRepository.save(user);
     }
+
     @Override
-    public User findById(Integer userId) {
+    public User findById(Integer userId) { // tìm kiếm thông tin người dùng bằng id
+
         return userRepository.findById(userId).orElse(null);
     }
+
+
+
+
+    @Override
+    public User findByUsername(String username) { // tìm kiếm thông tin người bằng username
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public RentalPackage registerPackage(RentalPackage rentalPackage){
+        return rentalPackageRepository.save(rentalPackage);
+    }
+
+    @Override
+    public int updateBalanceById(int userId, BigDecimal price) {
+        return userRepositories.updateBalanceById(userId, price);
+    }
+
 }
