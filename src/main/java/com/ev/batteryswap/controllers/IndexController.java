@@ -32,7 +32,7 @@ public class IndexController {
 
     @GetMapping("/my")
     public String my(Model model) {
-        model.addAttribute("username", "phucvu02891");
+        model.addAttribute("username", "nhatnam3332");
         return "user/my";
     }
 
@@ -45,7 +45,7 @@ public class IndexController {
     @PostMapping("/qr")
     @ResponseBody
     public ResponseEntity<?> handleForm(@RequestParam BigDecimal amount) {
-        String url = "https://img.vietqr.io/image/ACB-22749061-compact1.jpg?addInfo=phucvu02891&amount="+amount+"";
+        String url = "https://img.vietqr.io/image/ACB-22749061-compact1.jpg?addInfo=nhatnam3332&amount="+amount;
         // model.addAttribute("qrUrl", url);
         return ResponseEntity.ok(url);
     }
@@ -53,14 +53,14 @@ public class IndexController {
 
     @GetMapping("/naptien")
     public String naptien(Model model) {
-        BigDecimal money = userService.findByUsername("phucvu02891").getWalletBalance();
-        model.addAttribute("username", "phucvu02891");
-        model.addAttribute("balance_amount", money);
-//        User user = new User();
-//        user.setUsername("USER");
-//        user.setWalletBalance(10000);
-//        String qrUrl = "";
-//        model.addAttribute("user", user);
+        BigDecimal money = userService.findByUsername("nhatnam3332").getWalletBalance();
+
+        // Định dạng tiền tệ theo locale Việt Nam
+        String formattedMoney = String.format("%,.0f VND", money);
+
+        model.addAttribute("username", "nhatnam3332");
+        model.addAttribute("balance_amount", formattedMoney);
+
         return "user/naptien";
     }
 
