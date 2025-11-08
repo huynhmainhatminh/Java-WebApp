@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 
 
@@ -83,26 +82,9 @@ public class UserController {
 
 
 
-//        @PostMapping("/qr")
-//        @ResponseBody
-//        public ResponseEntity<?> handleForm(@RequestParam BigDecimal amount) {
-//            String url = "https://img.vietqr.io/image/ACB-22749061-compact1.jpg?addInfo=phucvu02891&amount="+amount+"";
-//            // model.addAttribute("qrUrl", url);
-//            return ResponseEntity.ok(url);
-//        }
+
 //
-//        @GetMapping("/naptien")
-//        public String naptien(Model model) {
-//            BigDecimal money = userService.findByUsername("phucvu02891").getWalletBalance();
-//            model.addAttribute("username", "phucvu02891");
-//            model.addAttribute("balance_amount", money);
-////        User user = new User();
-////        user.setUsername("USER");
-////        user.setWalletBalance(10000);
-////        String qrUrl = "";
-////        model.addAttribute("user", user);
-//            return "user/naptien";
-//        }
+
 
 //        BigDecimal balance_user = userServices.findById(userId).getWalletBalance();
 //
