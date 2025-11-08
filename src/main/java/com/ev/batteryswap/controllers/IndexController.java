@@ -41,6 +41,11 @@ public class IndexController {
         return "user/contact";
     }
 
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "user/dashboard";
+    }
+
 
     @PostMapping("/qr")
     @ResponseBody
