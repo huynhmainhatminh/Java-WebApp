@@ -61,7 +61,6 @@ public class Battery {
     @Column(name = "manufacture_date")
     private LocalDate manufactureDate;
 
-
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
