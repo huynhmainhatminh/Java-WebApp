@@ -2,7 +2,14 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -15,37 +22,66 @@
             <p class="auth-subtitle">Vui lòng đăng nhập để tiếp tục</p>
             <form id="loginForm" class="auth-form" novalidate>
                 <label class="field">
-                    <span class="label">Email</span>
-                    <input type="email" name="email" placeholder="example@email.com" required>
+                    <span class="label">Tài Khoản</span>
+                    <input type="text" name="username" placeholder="Nhập tài khoản" required>
                 </label>
                 <label class="field">
                     <span class="label">Mật Khẩu</span>
-                    <input type="password" name="password" placeholder="••••••••" required>
+                    <input type="password" name="password" id="passwordInput" placeholder="Nhập mật khẩu" required>
+                    <i id="togglePassword"
+                       class="fa-solid fa-eye"
+                       style="position: absolute; right: 12px; top: 38px; cursor: pointer; color: #666;"></i>
                 </label>
+
+
                 <div class="form-row">
-                    <label class="checkbox"><input type="checkbox" name="remember"><span>Remember Me</span></label>
+                    <label class="checkbox">
+                        <input type="checkbox" name="remember">
+                        <span>Remember Me</span>
+                    </label>
                     <a class="link" href="#">Quên mật khẩu?</a>
                 </div>
-                <button type="submit" class="button primary full">Đăng Nhập</button>
-                <p class="terms">Chưa có tài khoản? <a href="/register" class="link">Đăng ký ngay</a></p>
+
+                <button type="submit" class="button primary full" ac>Đăng Nhập</button>
+
+                <p class="terms">
+                    Khi đăng nhập, bạn đồng ý với
+                    <a href="#" class="link">Điều khoản dịch vụ</a>
+                    và
+                    <a href="#" class="link">Chính sách bảo mật</a>.
+                </p>
             </form>
+
             <script>
                 document.getElementById("loginForm").addEventListener("submit", async function(event){
-                    event.preventDefault();
+                    event.preventDefault(); // chặn submit truyền thống
                     const formData = new FormData(this);
-                    const response = await fetch("/api/login", { method: "POST", body: formData });
-                    const result = await response.json();
-                    if (response.ok && result.success) {
+
+                    const response = await fetch("/api/login", {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const result = await response;
+                    // const response_json = response.json()
+
+                    if (result.ok) {
                         Swal.fire({
-                            icon: 'success', title: 'Đăng nhập thành công', text: 'Đang chuyển hướng...',
-                            timer: 1500, showConfirmButton: false
+                            heightAuto: false,
+                            icon: 'success',
+                            title: 'Đăng nhập thành công',
+                            text: 'Chào mừng bạn quay trở lại.',
+                            confirmButtonText: 'Chuyển hướng'
                         }).then(() => {
-                            if (result.role === 'ADMIN') window.location.href = '/admin/dashboard';
-                            else if (result.role === 'STAFF') window.location.href = '/staff/home'; // Cần tạo trang này
-                            else window.location.href = '/my';
+                            window.location.href = '/my'; // chuyển sang trang login.html
                         });
                     } else {
-                        Swal.fire({ icon: 'error', title: 'Lỗi', text: result.message || 'Đăng nhập thất bại!' });
+                        Swal.fire({
+                            heightAuto: false,
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: result.message || 'Đăng nhập thất bại!'
+                        });
                     }
                 });
             </script>
@@ -53,5 +89,18 @@
     </div>
 </main>
 <div th:insert="footer :: site-footer"></div>
+<script>
+    const passwordInput = document.getElementById('passwordInput');
+    const togglePassword = document.getElementById('togglePassword');
+
+    togglePassword.addEventListener('click', () => {
+        const isHidden = passwordInput.type === 'password';
+        passwordInput.type = isHidden ? 'text' : 'password';
+        togglePassword.classList.toggle('fa-eye');
+        togglePassword.classList.toggle('fa-eye-slash');
+    });
+</script>
+
 </body>
 </html>
+
