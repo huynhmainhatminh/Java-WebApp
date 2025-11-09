@@ -1,7 +1,6 @@
 package com.ev.batteryswap.services;
-import com.ev.batteryswap.pojo.RentalPackage;
+
 import com.ev.batteryswap.pojo.User;
-import com.ev.batteryswap.repositories.RentalPackageRepository;
 import com.ev.batteryswap.repositories.UserRepository;
 import com.ev.batteryswap.services.interfaces.IUserService;
 import jakarta.persistence.criteria.Predicate;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +18,6 @@ public class UserService implements IUserService {
 
     @Autowired
     private UserRepository userRepository;
-
-
-    @Autowired
-    private RentalPackageRepository rentalPackageRepository;
-
-
 
     @Override
     public Page<User> filterUsers(String searchKeyword, Pageable pageable) {
@@ -70,27 +62,6 @@ public class UserService implements IUserService {
 
 
     @Override
-    public RentalPackage registerPackage(RentalPackage rentalPackage){
-        return rentalPackageRepository.save(rentalPackage);
-    }
-
-    @Override
-    public int updateBalanceById(int userId, BigDecimal price) {
-        return userRepository.updateBalanceById(userId, price);
-    }
-
-    @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    @Override
-    public User findById(int id) {
-        return userRepository.findById(id);
-    }
-
-
-    @Override
     public List<User> getStaffByStation(Integer stationId) {
         return userRepository.findByStation_IdAndRole(stationId, "STAFF");
     }
@@ -98,6 +69,4 @@ public class UserService implements IUserService {
     public List<User> getUsersByRole(String role) {
         return userRepository.findByRole(role);
     }
-
-
 }

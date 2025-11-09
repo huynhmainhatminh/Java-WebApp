@@ -37,6 +37,10 @@ public class Battery {
     @Column(name = "capacity_kwh", nullable = false, precision = 8, scale = 2)
     private BigDecimal capacityKwh;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User currentUser;
+
     @ColumnDefault("0.00")
     @Column(name = "current_charge_percentage", precision = 5, scale = 2)
     private BigDecimal currentChargePercentage;

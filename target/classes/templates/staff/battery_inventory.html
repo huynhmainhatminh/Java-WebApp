@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{staff/fragments/_header :: common_header('Quản lý Pin')}"></head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <nav th:replace="~{staff/fragments/_header :: navbar}"></nav>
+    <aside th:replace="~{staff/fragments/_header :: sidebar('batteries')}"></aside>
+    <div class="content-wrapper">
+        <section class="content-header"><h1>Quản lý Pin tại trạm <span class="text-primary" th:text="${station?.name}"></span></h1></section>
+        <section class="content">
+            <div class="container-fluid">
+                <div th:replace="~{admin/fragments/_alerts :: alerts}"></div>
+                <div class="card">
+                    <div class="card-header"><h3 class="card-title">Bộ lọc</h3></div>
+                    <div class="card-body">
+                        <form th:action="@{/staff/batteries}" method="get" class="row">
+                            <div class="col-md-4"><div class="form-group"><label>Trạng thái:</label><select name="status" class="form-control"><option value="">Tất cả</option><option value="AVAILABLE" th:selected="${'AVAILABLE' == selectedStatus}">Sẵn sàng</option><option value="CHARGING" th:selected="${'CHARGING' == selectedStatus}">Đang sạc</option><option value="MAINTENANCE" th:selected="${'MAINTENANCE' == selectedStatus}">Bảo dưỡng</option><option value="EMPTY" th:selected="${'EMPTY' == selectedStatus}">Pin trống</option></select></div></div>
+                            <div class="col-md-5"><div class="form-group"><label>Tìm kiếm:</label><input type="text" name="search" class="form-control" placeholder="Tìm theo serial..." th:value="${search}"></div></div>
+                            <div class="col-md-3 align-self-end"><div class="form-group"><button type="submit" class="btn btn-primary"><i class="fas fa-search mr-1"></i> Lọc</button><a th:href="@{/staff/batteries}" class="btn btn-secondary"> <i class="fas fa-times mr-1"></i> Xóa</a></div></div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3 class="card-title">Danh sách Pin (<span th:text="${batteryPage.totalElements}">0</span>)</h3></div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead><tr><th>ID</th><th>Serial</th><th>Model</th><th>Sạc (%)</th><th>SOH (%)</th><th>Trạng thái</th></tr></thead>
+                                <tbody>
+                                <tr th:each="b : ${batteryPage.content}">
+                                    <td th:text="${b.id}"></td>
+                                    <td><code th:text="${b.serialNumber}"></code></td>
+                                    <td th:text="${b.model}"></td>
+                                    <td th:text="${b.currentChargePercentage} + '%'"></td>
+                                    <td th:text="${b.healthPercentage} + '%'"></td>
+                                    <td><span class="badge" th:classappend="${b.status == 'AVAILABLE' ? 'badge-success' : (b.status == 'CHARGING' ? 'badge-primary' : (b.status == 'MAINTENANCE' ? 'badge-warning' : 'badge-danger'))}" th:text="${b.status}"></span></td>
+                                </tr>
+                                <tr th:if="${batteryPage.empty}"><td colspan="6" class="text-center">Không có pin nào trong trạm.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div th:insert="~{admin/fragments/_footer :: footer}"></div>
+</div>
+<div th:insert="~{admin/fragments/_footer :: common_scripts}"></div>
+</body>
+</html>

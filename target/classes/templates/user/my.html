@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Battery Swap Station Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-inner">
+        <a href="my" class="brand" aria-label="VinFast">
+            <img th:src="@{/img/logo.png}" alt="VinFast" class="brand-logo">
+            <span class="sr-only">VINFASTAUTO</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Chính">
+            <button class="nav-toggle" aria-expanded="false" aria-controls="menu">☰</button>
+            <ul id="menu" class="menu">
+                <li><a href="my">Trang chủ</a></li>
+                <li><a href="#">Đổi pin</a></li>
+                <li><a href="#">Liên kết</a></li>
+                <li class="has-sub">
+                    <a href="#" aria-haspopup="true" aria-expanded="false">Đặt lịch</a>
+                    <ul class="submenu" aria-label="Đặt lịch">
+                        <li><a href="#">Tìm kiếm trạm gần nhất</a></li>
+                        <li><a href="#">Đặt lịch đổi pin</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.php">Hỗ trợ</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <!-- Notification Bell -->
+            <div class="notification-container">
+                <button class="notification-bell" id="notificationBell" aria-label="Thông báo">
+                    <span class="bell-icon">🔔</span>
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Thông báo</h3>
+                        <button class="mark-all-read" id="markAllRead">Đánh dấu tất cả đã đọc</button>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <div class="notification-loading">Đang tải...</div>
+                    </div>
+                    <div class="notification-footer">
+                        <a href="#" class="view-all-notifications">Xem tất cả thông báo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-info">
+                <div class="money-display">
+                    <span class="money-label">💰</span>
+                    <span class="money-amount">0</span>
+                </div>
+                <div class="has-sub">
+                    <a href="#" aria-haspopup="true" aria-expanded="false" class="user-icon" title="TEST">
+                        <span class="user-avatar">👤</span>
+                    </a>
+                    <ul class="submenu" aria-label="Tài khoản">
+                        <li class="user-name-item">
+                            <span class="user-name">nhatminh123<</span>
+                        </li>
+                        <li><a href="recharge.php">Nạp tiền</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Lịch sử giao dịch</a></li>
+                        <li class="logout-item">
+                            <a href="logout.php" class="logout-link">Đăng xuất</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script th:src="@{/js/notifications.js}"></script>
+
+
+<main class="landing">
+    <section class="hero">
+        <div class="container hero-inner">
+            <div class="hero-copy">
+                <h1 class="hero-title">EV Battery Swap Station Management System</h1>
+                <p class="hero-subtitle">Phần mềm quản lý trạm đổi pin xe điện</p>
+                <p class="hero-desc">Giám sát trạng thái trạm, quản lý tồn kho pin, điều phối đổi pin theo thời gian thực, báo cáo hiệu suất và cảnh báo sự cố.</p>
+            </div>
+
+            <div class="hero-art" aria-hidden="true">
+                <div class="hero-card">
+                    <div class="hero-metric">
+                        <span class="metric-label">Trạm hoạt động</span>
+                        <span class="metric-value">24</span>
+                    </div>
+                    <div class="hero-metric">
+                        <span class="metric-label">Lượt đổi hôm nay</span>
+                        <span class="metric-value">1.268</span>
+                    </div>
+                    <div class="hero-metric">
+                        <span class="metric-label">Tồn kho pin</span>
+                        <span class="metric-value">542</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container features-grid">
+            <article class="feature">
+                <h3>Quản lý trạm</h3>
+                <p>Theo dõi trạng thái online/offline, công suất, lịch bảo trì và nhật ký hoạt động.</p>
+            </article>
+            <article class="feature">
+                <h3>Quản lý pin</h3>
+                <p>Quản lý vòng đời pin, phân loại, chất lượng, tồn kho theo trạm và lịch sử đổi.</p>
+            </article>
+            <article class="feature">
+                <h3>Điều phối thời gian thực</h3>
+                <p>Phân luồng khách, dự báo nhu cầu, cân bằng tải giữa các trạm lân cận.</p>
+            </article>
+            <article class="feature">
+                <h3>Báo cáo & Cảnh báo</h3>
+                <p>Bảng điều khiển KPI, cảnh báo sự cố, cảnh báo tồn kho thấp và báo cáo định kỳ.</p>
+            </article>
+        </div>
+    </section>
+</main>
+<div th:insert="footer :: site-footer"></div>
+</body>
+</html>
