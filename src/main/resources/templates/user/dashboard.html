@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Quản lý Pin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css(v=${#dates.createNow().time})}">
     <style>
         .dashboard-container {
             max-width: 1400px;
@@ -478,14 +481,46 @@
         <p class="dashboard-subtitle">Quản lý hệ thống trạm pin trên toàn quốc</p>
     </div>
     <div class="station-cards-grid">
+        <div class="station-card" th:each="station : ${stations}">
             <div class="station-header">
                 <div>
+                    <!-- Hiển thị chỉ tên trạm -->
+                    <div class="station-name" th:text="${station.name}">Tên trạm</div>
+                    <div class="station-location" th:text="${station.address}">Địa chỉ</div>
                 </div>
             </div>
 
             <div class="station-stats">
+
+                <div class="station-stat">
+                    <div class="stat-number"
+                         th:text="${batteryStatsByStation[station.id]['total']}">0</div>
+                    <div class="stat-label">Tổng Số Pin</div>
                 </div>
 
+                <!-- PIN đang trống -->
+                <div class="station-stat">
+                    <div class="stat-number"
+                         th:text="${batteryStatsByStation[station.id]['empty']}">0</div>
+                    <div class="stat-label">Pin Đang Trống</div>
+                </div>
+
+
+                <!-- PIN đang sạc -->
+                <div class="station-stat">
+                    <div class="stat-number"
+                         th:text="${batteryStatsByStation[station.id]['charging']}">0</div>
+                    <div class="stat-label">Pin Đang Sạc</div>
+                </div>
+
+                <!-- PIN đang thuê -->
+                <div class="station-stat">
+                    <div class="stat-number"
+                         th:text="${batteryStatsByStation[station.id]['rented']}">0</div>
+                    <div class="stat-label">Pin Đang Thuê</div>
+                </div>
+
+            </div>
             <a class="station-button" href="#"><span>Xem danh sách pin</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -493,6 +528,33 @@
             </a>
         </div>
     </div>
+
+    <!-- Station Cards Grid -->
+    <!--    <div class="station-cards-grid">-->
+    <!--        <div class="station-card">-->
+    <!--            <div class="station-header">-->
+    <!--                <div>-->
+    <!--                    <div class="station-name">Trạm Trung Tâm</div>-->
+    <!--                    <div class="station-location">📍 Quận 1, TP. Hồ Chí Minh</div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+
+    <!--            <div class="station-stats">-->
+    <!--                <div class="station-stat"><div class="stat-number">100</div><div class="stat-label">Tổng số pin</div></div>-->
+    <!--                <div class="station-stat"><div class="stat-number">75</div><div class="stat-label">Pin sẵn sàng</div></div>-->
+    <!--                <div class="station-stat"><div class="stat-number">15</div><div class="stat-label">Đang sạc</div></div>-->
+    <!--                <div class="station-stat"><div class="stat-number">10</div><div class="stat-label">Đang thuê</div></div>-->
+    <!--            </div>-->
+
+    <!--            <a class="station-button" href="#"><span>Xem danh sách pin</span>-->
+    <!--                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">-->
+    <!--                    <path d="M5 12h14M12 5l7 7-7 7"/>-->
+    <!--                </svg>-->
+    <!--            </a>-->
+    <!--        </div>-->
+
+    <!--        &lt;!&ndash; Bạn có thể nhân bản thêm nhiều card ở đây &ndash;&gt;-->
+    <!--    </div>-->
 
     <!-- Pagination -->
     <div class="pagination">
