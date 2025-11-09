@@ -8,81 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css(v=${#dates.createNow().time})}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body>
-<header class="site-header">
-    <div class="container header-inner">
-        <a href="my" class="brand" aria-label="VinFast">
-            <img th:src="@{/img/logo.png}" alt="VinFast" class="brand-logo">
-            <span class="sr-only">VINFASTAUTO</span>
-        </a>
 
-        <nav class="main-nav" aria-label="Chính">
-            <button class="nav-toggle" aria-expanded="false" aria-controls="menu">☰</button>
-            <ul id="menu" class="menu">
-                <li><a href="my">Trang chủ</a></li>
-                <li><a href="#">Đổi pin</a></li>
-                <li><a href="#">Liên kết</a></li>
-                <li class="has-sub">
-                    <a href="#" aria-haspopup="true" aria-expanded="false">Đặt lịch</a>
-                    <ul class="submenu" aria-label="Đặt lịch">
-                        <li><a href="#">Tìm kiếm trạm gần nhất</a></li>
-                        <li><a href="#">Đặt lịch đổi pin</a></li>
-                    </ul>
-                </li>
-                <li><a href="contact">Hỗ trợ</a></li>
-            </ul>
-        </nav>
+<div th:insert="user/header-user :: site-header-user"></div>
 
-        <div class="header-actions">
-            <!-- Notification Bell -->
-            <div class="notification-container">
-                <button class="notification-bell" id="notificationBell" aria-label="Thông báo">
-                    <span class="bell-icon">🔔</span>
-                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
-                </button>
-                <div class="notification-dropdown" id="notificationDropdown">
-                    <div class="notification-header">
-                        <h3>Thông báo</h3>
-                        <button class="mark-all-read" id="markAllRead">Đánh dấu tất cả đã đọc</button>
-                    </div>
-                    <div class="notification-list" id="notificationList">
-                        <div class="notification-loading">Đang tải...</div>
-                    </div>
-                    <div class="notification-footer">
-                        <a href="#" class="view-all-notifications">Xem tất cả thông báo</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="user-info">
-                <div class="money-display">
-                    <span class="money-label">💰</span>
-                    <span class="money-amount">0</span>
-                </div>
-                <div class="has-sub">
-                    <a href="#" aria-haspopup="true" aria-expanded="false" class="user-icon" title="TEST">
-                        <span class="user-avatar">👤</span>
-                    </a>
-                    <ul class="submenu" aria-label="Tài khoản">
-                        <li class="user-name-item">
-                            <span th:text="${username}" class="username">username</span>
-                        </li>
-                        <li><a href="recharge.php">Nạp tiền</a></li>
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Lịch sử giao dịch</a></li>
-                        <li class="logout-item">
-                            <a href="logout.php" class="logout-link">Đăng xuất</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 
 <main class="contact">
     <div class="container">
@@ -99,28 +32,6 @@
                         <input type="email" name="email" placeholder="email@example.com" required
                                value="">
                     </label>
-
-                    <div class="form-row">
-                        <label class="field">
-                            <span class="label">Loại hỗ trợ</span>
-                            <select name="category">
-                                <option value="general">Hỗ trợ chung</option>
-                                <option value="technical">Kỹ thuật</option>
-                                <option value="billing">Thanh toán</option>
-                                <option value="complaint">Khiếu nại</option>
-                                <option value="feedback">Góp ý</option>
-                            </select>
-                        </label>
-                        <label class="field">
-                            <span class="label">Mức độ ưu tiên</span>
-                            <select name="priority">
-                                <option value="low">Thấp</option>
-                                <option value="medium" selected>Trung bình</option>
-                                <option value="high">Cao</option>
-                                <option value="urgent">Khẩn cấp</option>
-                            </select>
-                        </label>
-                    </div>
 
 
                     <label class="field">
