@@ -53,16 +53,19 @@ public class BatteryService implements IBatteryService {
     }
 
 
+    // get thông tin PIN bằng id
     @Override
     public Battery getBatteryById(Integer id) {
         return batteryRepository.findById(id).orElse(null);
     }
 
+    // thêm thông tin giá trị Pin mới
     @Override
     public void saveBattery(Battery battery) {
         batteryRepository.save(battery);
     }
 
+    // xóa Pin bằng id
     @Override
     public void deleteBattery(Integer id) {
         batteryRepository.deleteById(id);
@@ -92,7 +95,23 @@ public class BatteryService implements IBatteryService {
         stats.put("maintenance", batteryRepository.countByStationAndStatus(station, "MAINTENANCE"));
         stats.put("empty", batteryRepository.countByStationAndStatus(station, "EMPTY"));
         // rent rồi thì không còn ở trạm nữa
-        stats.put("rented", 0L);
+        stats.put("rented", batteryRepository.countByStationAndStatus(station, "RENTED"));
         return stats;
     }
+
+    // tìm kiếm pin đang cho thuê
+    public boolean existsByIdAndStatusRented(Integer battery_rented_id) {
+        return batteryRepository.existsByIdAndStatusRented(battery_rented_id);
+    }
+
+    // tìm kiếm pin trống chưa cho thuê
+    public boolean existsByIdAndStatusEmpty(Integer battery_empty_id) {
+        return batteryRepository.existsByIdAndStatusEmpty(battery_empty_id);
+    }
+
+    // cập nhật trạng thái pin bằng id
+    public void updateStatusById(Integer id, String status) {
+        batteryRepository.updateStatusById(id, status);
+    }
+
 }
