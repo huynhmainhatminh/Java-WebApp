@@ -16,4 +16,8 @@ public interface IBatteryService {
     Map<String, Long> getBatteryStatistics();
     Map<String, Long> getBatteryStatisticsForStation(Station station);
     Battery getBatteryById(Integer id);
+
+    boolean existsByIdAndStatusRented(Integer battery_rented_id); // tìm kiếm pin đang cho thuê
+    boolean existsByIdAndStatusEmpty(Integer battery_empty_id); // tìm kiếm pin trống chưa cho thuê
+    void updateStatusById(Integer id, String status); // cập nhật trạng thái pin bằng id
 }
