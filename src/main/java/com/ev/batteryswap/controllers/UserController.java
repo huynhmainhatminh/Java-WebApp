@@ -1,13 +1,19 @@
 package com.ev.batteryswap.controllers;
 import com.ev.batteryswap.dto.APIResponse;
 import com.ev.batteryswap.pojo.RentalPackage;
+import com.ev.batteryswap.pojo.Station;
 import com.ev.batteryswap.pojo.User;
+import com.ev.batteryswap.services.BatteryService;
 import com.ev.batteryswap.services.UserService;
+import com.ev.batteryswap.services.interfaces.IStationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @RestController
@@ -15,7 +21,11 @@ import java.math.BigDecimal;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private BatteryService batteryService;
+
 
     @PostMapping("/information")
     public User information(@RequestParam(value = "username") String username) {
@@ -79,23 +89,29 @@ public class UserController {
                     new APIResponse(false, "Đăng Ký Gói Thất Bại.")
             );
         }
-
-
-
-
-//
-
-
-//        BigDecimal balance_user = userServices.findById(userId).getWalletBalance();
-//
-//        BigDecimal price = new BigDecimal("270.000");        // Gói dịch vụ 270.000
-//
-//        BigDecimal newBalance = balance_user.subtract(price);
-//
-//        userServices.updateBalanceById(userId, newBalance);
-//        System.out.println(balance_user);
-//        return newBalance;
     }
+
+
+    @PostMapping("/doiPin")
+    public String existsByIdAndStatusRented(@RequestParam("battery_out_id") Integer battery_out_id,
+                                            @RequestParam("battery_in_id") Integer battery_in_id) {
+
+        // battery_out_id là PIN của trạm còn trống
+        // battery_in_id là PIN của người dùng đang cho thuê
+
+        // kiểm tra xem PIN cho thuê của người dùng có nằm trong database không và kiểm tra xem PIN người dùng chọn hiện có trống không
+        // thỏa mãn điều kiện khi : battery_out_id còn trống và battery_in_id đang cho thuê thì sẽ tiến hành
+        // battery_in_id đang vào tình trạng sạc, còn battery_out_id đưa vào tình trạng cho thuê
+
+        if (batteryService.existsByIdAndStatusRented(battery_in_id) && batteryService.existsByIdAndStatusEmpty(battery_out_id)) {
+            batteryService.updateStatusById(battery_in_id, "CHARGING");
+            batteryService.updateStatusById(battery_in_id, "RENTED");
+            return "Hợp Lý";
+        } else {
+            return "Không Hợp Lý";
+        }
+    }
+
 
 
 }
