@@ -57,9 +57,20 @@ public class IndexController {
     }
 
     @GetMapping("/contact")
-    public String contact() {
+    public String contact(Model model) {
+        BigDecimal money = userService.findByUsername("nhatnam3332").getWalletBalance();
+
+        // Định dạng tiền tệ theo locale Việt Nam
+        String formattedMoney = String.format("%,.0f VND", money);
+        model.addAttribute("money_amount", formattedMoney);
+
+
+        model.addAttribute("username", "nhatnam3332");
+        model.addAttribute("balance_amount", formattedMoney);
         return "user/contact";
     }
+
+
 
 //    @GetMapping("/dashboard")
 //    public String dashboard() {
