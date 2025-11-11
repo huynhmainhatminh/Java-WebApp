@@ -13,7 +13,7 @@ import java.util.Map;
 
 
 @Service
-public class RentalPackageService implements IRentalPackageService { // <-- Đã đổi tên
+public class RentalPackageService implements IRentalPackageService {
 
     @Autowired
     private RentalPackageRepository rentalPackageRepository;

@@ -1,6 +1,6 @@
 package com.ev.batteryswap.services;
 import com.ev.batteryswap.pojo.User;
-import com.ev.batteryswap.repositories.IUserRepositories;
+import com.ev.batteryswap.repositories.UserRepository;
 import com.ev.batteryswap.services.interfaces.IAuthServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class AuthServices implements IAuthServices {
 
     @Autowired
-    private IUserRepositories userRepositories;
+    private UserRepository userRepositories;
 
     @Override
     public boolean login(String username, String password) {
