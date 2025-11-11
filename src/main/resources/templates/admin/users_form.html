@@ -29,6 +29,8 @@
             <h3 class="card-title">Thông tin người dùng</h3>
           </div>
           <form th:action="${user.id == null} ? @{/admin/users} : @{/admin/users/update/{id}(id=${user.id})}" th:object="${user}" method="post">
+            <input type="hidden" th:field="*{id}" />
+
             <div class="card-body">
               <div class="form-group">
                 <label for="username">Tên tài khoản</label>
@@ -58,6 +60,18 @@
                   <option value="ADMIN">Admin</option>
                 </select>
               </div>
+
+              <div class="form-group" id="station-group">
+                <label for="station">Trạm (Chỉ dành cho STAFF)</label>
+                <select class="form-control" id="station" th:field="*{station}">
+                  <option value="">-- Không gán trạm --</option>
+                  <option th:each="st : ${allStations}"
+                          th:value="${st.id}"
+                          th:text="${st.name}">
+                  </option>
+                </select>
+                <small class="form-text text-muted">Chỉ gán trạm cho người dùng có vai trò là STAFF.</small>
+              </div>
             </div>
             <div class="card-footer">
               <button type="submit" class="btn btn-primary">Lưu</button>
@@ -71,5 +85,31 @@
   <footer th:replace="~{admin/fragments/_footer :: footer}"></footer>
 </div>
 <div th:replace="~{admin/fragments/_footer :: common_scripts}"></div>
+
+<script>
+  $(document).ready(function() {
+    var roleSelect = $('#role');
+    var stationGroup = $('#station-group');
+
+    function toggleStationField() {
+      if (roleSelect.val() === 'STAFF') {
+        stationGroup.slideDown();
+      } else {
+        stationGroup.slideUp();
+        // Tự động chọn "Không gán trạm" nếu không phải STAFF
+        $('#station').val('');
+      }
+    }
+
+    // Chạy lần đầu khi tải trang
+    toggleStationField();
+
+    // Chạy khi thay đổi Role
+    roleSelect.on('change', function() {
+      toggleStationField();
+    });
+  });
+</script>
+
 </body>
 </html>

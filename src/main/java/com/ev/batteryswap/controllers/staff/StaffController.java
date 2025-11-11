@@ -30,7 +30,7 @@ public class StaffController {
     private User getCurrentStaffUser() {
         // Giả lập nhân viên có ID=2.
         // Trong tương lai, bạn có thể thay đổi ID này để test
-        return userRepository.findById(2).orElse(null);
+        return userRepository.findById(2);
     }
 
     // Kiểm tra và chuyển hướng nếu nhân viên chưa được gán trạm
