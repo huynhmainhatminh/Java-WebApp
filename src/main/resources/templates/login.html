@@ -33,22 +33,10 @@
                        style="position: absolute; right: 12px; top: 38px; cursor: pointer; color: #666;"></i>
                 </label>
 
-
-                <div class="form-row">
-                    <label class="checkbox">
-                        <input type="checkbox" name="remember">
-                        <span>Remember Me</span>
-                    </label>
-                    <a class="link" href="#">Quên mật khẩu?</a>
-                </div>
-
-                <button type="submit" class="button primary full" ac>Đăng Nhập</button>
+                <button type="submit" class="button primary full">Đăng Nhập</button>
 
                 <p class="terms">
-                    Khi đăng nhập, bạn đồng ý với
-                    <a href="#" class="link">Điều khoản dịch vụ</a>
-                    và
-                    <a href="#" class="link">Chính sách bảo mật</a>.
+                    Đã chưa có tài khoản? <a class="link" href="register">Đăng ký</a>
                 </p>
             </form>
 
@@ -63,13 +51,12 @@
                     });
 
                     const result = await response;
-                    // const response_json = response.json()
 
                     if (result.ok) {
                         Swal.fire({
                             heightAuto: false,
                             icon: 'success',
-                            title: 'Đăng nhập thành công',
+                            title: await result.text(),
                             text: 'Chào mừng bạn quay trở lại.',
                             confirmButtonText: 'Chuyển hướng'
                         }).then(() => {
@@ -80,7 +67,7 @@
                             heightAuto: false,
                             icon: 'error',
                             title: 'Lỗi',
-                            text: result.message || 'Đăng nhập thất bại!'
+                            text: await result.text()
                         });
                     }
                 });

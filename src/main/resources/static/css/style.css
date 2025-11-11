@@ -42,7 +42,7 @@ a:hover { color: #0284c7; }
 .header-inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
     padding: 12px 0;
     gap: 12px;
     flex-wrap: nowrap;

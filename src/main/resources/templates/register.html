@@ -39,13 +39,6 @@
                     <input type="password" name="confirmPassword" placeholder="••••••••" required>
                 </label>
 
-                <div class="form-row">
-                    <label class="checkbox">
-                        <input type="checkbox" name="agree" required>
-                        <span>Tôi đồng ý với <a class="link" href="#">Điều khoản</a> và <a class="link" href="#">Chính sách</a></span>
-                    </label>
-                </div>
-
                 <button type="submit" class="button primary full">Đăng Ký</button>
 
                 <p class="terms">
@@ -64,12 +57,12 @@
                         body: formData
                     });
 
-                    const result = await response.json();
+                    const result = await response;
 
-                    if (result.success) {
+                    if (result.ok) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Đăng ký thành công',
+                            title: await result.text(),
                             text: 'Mời bạn đăng nhập để tiếp tục.',
                             confirmButtonText: 'Đăng nhập'
                         }).then(() => {
@@ -79,7 +72,7 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Lỗi',
-                            text: result.message || 'Đăng ký thất bại!'
+                            text: await result.text(),
                         });
                     }
                 });
