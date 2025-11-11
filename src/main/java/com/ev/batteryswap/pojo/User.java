@@ -39,13 +39,11 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ColumnDefault("0.000")
-    @Column(name = "wallet_balance", precision = 12, scale = 3)
-    private BigDecimal walletBalance;
+    @Column(name = "wallet_balance", precision = 12, scale = 2)
+    private BigDecimal walletBalance =  BigDecimal.ZERO;
 
-    @ColumnDefault("'DRIVER'")
     @Column(name = "role")
-    private String role;
+    private String role = "DRIVER";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
@@ -59,10 +57,10 @@ public class User {
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
-    private Instant createdAt;
+    private Instant createdAt = Instant.now();
 
     @LastModifiedDate
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    private Instant updatedAt = Instant.now();
 
 }

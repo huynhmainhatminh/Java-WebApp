@@ -55,19 +55,21 @@ public class AuthController {
 
     // API đăng ký
     @PostMapping("/register")
-    public User register(@RequestBody AuthRequestRegister authRequest) {
+    public ResponseEntity<?> register(@ModelAttribute AuthRequestRegister authRequest) {
         if (!authRequest.getPassword().equals(authRequest.getConfirmPassword())) {
-            throw new RuntimeException("Passwords do not match");
+            return ResponseEntity.badRequest().body("Mật khẩu không hợp lệ.");
         }
 
         if (authServices.existsByUsername(authRequest.getUsername())) {
-            throw new RuntimeException("Username already exists");
+            return ResponseEntity.badRequest().body("Tên tài khoản đã tồn tại.");
         }
         User user = new User();
         user.setFullName(authRequest.getFullName());
         user.setUsername(authRequest.getUsername());
         user.setPassword(authRequest.getPassword());
-        return authServices.register(user);
+        authServices.register(user);
+
+        return ResponseEntity.ok("Đăng ký thành công.");
     }
 
 }
