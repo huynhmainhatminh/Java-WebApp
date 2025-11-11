@@ -32,7 +32,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                         // Tạo đối tượng xác thực (Authentication)
                         UsernamePasswordAuthenticationToken authentication =  new UsernamePasswordAuthenticationToken(
-                                username, "", Collections.singleton(() -> "ROLE_" + role.toUpperCase()
+                                username, "", Collections.singleton(() -> role.toUpperCase()
                             )
                         );
                         SecurityContextHolder.getContext().setAuthentication(authentication); // Lưu thông tin xác thực vào SecurityContext (ThreadLocal).

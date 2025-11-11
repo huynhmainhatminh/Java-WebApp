@@ -24,7 +24,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/my").hasRole("DRIVER")
+                        .requestMatchers("/", "/login", "/register", "/my","/packages","/admin/login","/staff/login","/api/**").permitAll() // API công khai
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/img/**").permitAll() // hiệu ứng
+                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable) // vô hiệu hóa form login mặc định của Spring Security
