@@ -1,11 +1,14 @@
 package com.ev.batteryswap.controllers;
 import com.ev.batteryswap.pojo.Station;
+import com.ev.batteryswap.security.JwtUtils;
 import com.ev.batteryswap.services.UserService;
 import com.ev.batteryswap.services.interfaces.IBatteryService;
 import com.ev.batteryswap.services.interfaces.IStationService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import jakarta.servlet.http.Cookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +23,7 @@ import java.util.Map;
 public class IndexController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     private IStationService stationService;
@@ -28,89 +31,132 @@ public class IndexController {
     @Autowired
     private IBatteryService batteryService;
 
+    @Autowired
+    private JwtUtils  jwtUtils;
+
     @GetMapping("/")
-    public String index() {
-        return "index";
+    public String index(@CookieValue(value = "jwt", required = false) String token) {
+
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "index";
+        } else {
+            return "redirect:/my";
+        }
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
+    public void update_info(Model model, String token) {
 
-    @GetMapping("/register")
-    public String register() {
-        return "register";
-    }
+        String username = jwtUtils.extractUsername(token); // lấy username từ token jwt
+        String role = jwtUtils.extractRole(token); // lấy role người dùng từ token jwt
 
-    @GetMapping("/my")
-    public String my(Model model) {
-        model.addAttribute("username", "nhatnam3332");
-        return "user/my";
-    }
-
-
-    @GetMapping("/profile")
-    public String profile(Model model) {
-        model.addAttribute("username", "nhatnam3332");
-        return "user/profile";
-    }
-
-    @GetMapping("/contact")
-    public String contact(Model model) {
-        BigDecimal money = userService.findByUsername("nhatnam3332").getWalletBalance();
+        model.addAttribute("username", username);
+        model.addAttribute("role", role);
+        BigDecimal money = userService.findByUsername(username).getWalletBalance();
 
         // Định dạng tiền tệ theo locale Việt Nam
         String formattedMoney = String.format("%,.0f VND", money);
         model.addAttribute("money_amount", formattedMoney);
 
-
-        model.addAttribute("username", "nhatnam3332");
+        model.addAttribute("username", username);
         model.addAttribute("balance_amount", formattedMoney);
-        return "user/contact";
+    }
+
+    @GetMapping("/login")
+    public String login(@CookieValue(value = "jwt", required = false) String token) {
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "login";
+        } else {
+            return "redirect:/my";
+        }
+    }
+
+    @GetMapping("/register")
+    public String register(@CookieValue(value = "jwt", required = false) String token) {
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "register";
+        } else {
+            return "redirect:/my";
+        }
+    }
+
+    @GetMapping("/my")
+    public String my(@CookieValue(value = "jwt", required = false) String token, Model model) {
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "login";
+        } else {
+            update_info(model, token);
+            return "user/my";
+        }
     }
 
 
-
-//    @GetMapping("/dashboard")
-//    public String dashboard() {
-//        return "user/dashboard";
-//    }
+    @GetMapping("/profile")
+    public String profile(@CookieValue(value = "jwt", required = false) String token, Model model) {
 
 
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "login";
+        } else {
+            update_info(model, token);
+            return "user/profile";
+        }
+
+    }
+
+    @GetMapping("/contact")
+    public String contact(@CookieValue(value = "jwt", required = false) String token, Model model) {
+
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "login";
+        } else {
+            update_info(model, token);
+            return "user/contact";
+        }
+
+    }
+
+    @GetMapping("/lichsu")
+    public String lichsu(@CookieValue(value = "jwt", required = false) String token, Model model) {
+
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "login";
+        } else {
+            update_info(model, token);
+            return "user/lichsu";
+        }
+    }
+
+    @GetMapping("/packages")
+    public String packages() {
+        return "packages";
+    }
+
+
+    // tạo mã QR ACB
     @PostMapping("/qr")
     @ResponseBody
-    public ResponseEntity<?> handleForm(@RequestParam BigDecimal amount) {
-        String url = "https://img.vietqr.io/image/ACB-22749061-compact1.jpg?addInfo=nhatnam3332&amount="+amount;
-        // model.addAttribute("qrUrl", url);
+    public ResponseEntity<?> handleForm(@RequestParam BigDecimal amount, @CookieValue(value = "jwt", required = false) String token) {
+        String username = jwtUtils.extractUsername(token); // lấy username từ token jwt
+        String url = "https://img.vietqr.io/image/ACB-22749061-compact1.jpg?addInfo="+username+"&amount="+amount;
         return ResponseEntity.ok(url);
     }
 
 
     @GetMapping("/naptien")
-    public String naptien(Model model) {
-        BigDecimal money = userService.findByUsername("nhatnam3332").getWalletBalance();
+    public String naptien(@CookieValue(value = "jwt", required = false) String token, Model model) {
 
-        // Định dạng tiền tệ theo locale Việt Nam
-        String formattedMoney = String.format("%,.0f VND", money);
-        model.addAttribute("money_amount", formattedMoney);
-
-
-        model.addAttribute("username", "nhatnam3332");
-        model.addAttribute("balance_amount", formattedMoney);
-
-        return "user/naptien";
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "login";
+        } else {
+            update_info(model, token);
+            return "user/naptien";
+        }
     }
 
 
     @GetMapping("/dashboard")
-    public String listStations(Model model, @RequestParam(defaultValue = "0") int page) {
-        BigDecimal money = userService.findByUsername("nhatnam3332").getWalletBalance();
-        String formattedMoney = String.format("%,.0f VND", money);
-
-        model.addAttribute("username", "nhatnam3332");
-        model.addAttribute("money_amount", formattedMoney);
-
+    public String listStations(Model model, @RequestParam(defaultValue = "0") int page, @CookieValue(value = "jwt", required = false) String token) {
+        update_info(model, token);
         Page<Station> stationPage = stationService.filterStations(null, PageRequest.of(page, 3));
 //        model.addAttribute("stations", stationPage.getContent());
 //        return "user/dashboard"; // chính là file HTML bạn gửi ở trên
@@ -129,7 +175,5 @@ public class IndexController {
         model.addAttribute("batteryStatsByStation", batteryStatsByStation);
         return "user/dashboard";
     }
-
-
 
 }
