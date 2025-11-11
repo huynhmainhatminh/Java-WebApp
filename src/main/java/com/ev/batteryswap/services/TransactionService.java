@@ -92,9 +92,11 @@ public class TransactionService implements ITransactionService {
         // 2. Tự động cập nhật trạng thái của các viên pin
         batteryIn.setStatus("CHARGING");
         batteryIn.setStation(transaction.getStation()); // Cập nhật vị trí mới cho pin cũ
+        batteryIn.setCurrentUser(null);
 
         batteryOut.setStatus("RENTED"); // Pin mới giờ đã được cho thuê
-        batteryOut.setStation(null); // Pin mới không còn ở trạm nào nữa
+        batteryOut.setStation(null);// Pin mới không còn ở trạm nào nữa
+        batteryOut.setCurrentUser(transaction.getUser());
 
         // 3. Lưu lại trạng thái mới của 2 viên pin
         batteryRepository.save(batteryIn);

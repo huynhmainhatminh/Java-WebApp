@@ -25,6 +25,7 @@ public interface IUserService {
 
     //Tìm nhân viên dựa theo id trạm
     List<User> getStaffByStation(Integer stationId);
+    //Tìm user theo role
     List<User> getUsersByRole(String role);
 
 }

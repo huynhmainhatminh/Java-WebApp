@@ -3,6 +3,7 @@ package com.ev.batteryswap.controllers.staff;
 import com.ev.batteryswap.pojo.Battery;
 import com.ev.batteryswap.pojo.SwapTransaction;
 import com.ev.batteryswap.pojo.User;
+import com.ev.batteryswap.services.interfaces.IUserService;
 import com.ev.batteryswap.repositories.UserRepository;
 import com.ev.batteryswap.services.interfaces.IBatteryService;
 import com.ev.batteryswap.services.interfaces.ITransactionService;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("/staff")
@@ -27,10 +31,13 @@ public class StaffController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private IUserService userService;
+
     private User getCurrentStaffUser() {
         // Giả lập nhân viên có ID=2.
         // Trong tương lai, bạn có thể thay đổi ID này để test
-        return userRepository.findById(2).orElse(null);
+        return userRepository.findById(2);
     }
 
     // Kiểm tra và chuyển hướng nếu nhân viên chưa được gán trạm
@@ -109,8 +116,22 @@ public class StaffController {
 
         model.addAttribute("transaction", transaction);
 
-        Page<Battery> allBatteries = batteryService.filterBatteries(null, null, null, PageRequest.of(0, Integer.MAX_VALUE));
-        model.addAttribute("batteries", allBatteries.getContent());
+        // 1. Pin cũ (khách trả vào): Lấy TẤT CẢ pin đang RENTED
+        Page<Battery> rentedBatteries = batteryService.filterBatteries(null, "RENTED", null, PageRequest.of(0, 1000));
+        model.addAttribute("rentedBatteries", rentedBatteries.getContent());
+
+        // 2. Pin mới (đưa cho khách): Lấy pin AVAILABLE tại trạm của staff
+        Integer stationId = staff.getStation().getId();
+        Page<Battery> availableBatteries = batteryService.filterBatteries(stationId, "AVAILABLE", null, PageRequest.of(0, 1000));
+        model.addAttribute("availableBatteries", availableBatteries.getContent());
+
+        try {
+            // Lấy user có role driver
+            List<User> drivers = userService.getUsersByRole("DRIVER");
+            model.addAttribute("users", drivers);
+        } catch (Exception e) {
+            model.addAttribute("users", Collections.emptyList());
+        }
 
         return "staff/transaction_form";
     }

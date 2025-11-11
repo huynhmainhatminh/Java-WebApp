@@ -50,8 +50,8 @@
                                             <option value="">-- Chọn pin khách trả --</option>
                                             <option th:each="bat : ${rentedBatteries}"
                                                     th:value="${bat.id}"
-                                                    th:text="${bat.serialNumber} + ' (' + ${bat.currentChargePercentage} + '%)'">
-                                            </option>
+                                                    th:text="${bat.serialNumber} + ' (' + ${bat.currentChargePercentage} + '%)'"
+                                                    th:data-user-id="${bat.currentUser?.id}"> </option>
                                         </select>
                                     </div>
                                 </div>
@@ -88,7 +88,10 @@
 
 <script th:inline="javascript">
     $(document).ready(function() {
-        // Lấy danh sách pin AVAILABLE từ server để dùng cho dropdown Pin Ra
+
+        /* Logic cho dropdown pin mới (lấy ra từ trạm)*/
+
+        // Dữ liệu pin available
         var availableBatteries = [
             /*[# th:each="bat : ${availableBatteries}"]*/
             {
@@ -103,17 +106,25 @@
         var $stationSelect = $('#station');
 
         function updateBatteryOutDropdown(stationId) {
+            // Luôn xóa sạch và thêm lại placeholder
             $batteryOutSelect.empty().append('<option value="">-- Chọn pin mới --</option>');
+
             if (!stationId) {
                 $batteryOutSelect.prop('disabled', true);
+                // Đặt lại text của placeholder
+                $batteryOutSelect.find('option[value=""]').text('-- Vui lòng chọn trạm trước --');
                 return;
             }
+
             var filtered = availableBatteries.filter(b => b.stationId == stationId);
+
             if (filtered.length > 0) {
                 $batteryOutSelect.prop('disabled', false);
                 filtered.forEach(b => $batteryOutSelect.append(new Option(b.name, b.id)));
             } else {
-                $batteryOutSelect.append('<option disabled>Không có pin sẵn sàng</option>');
+                $batteryOutSelect.prop('disabled', true);
+                // Thêm một option "disabled" *sau* placeholder
+                $batteryOutSelect.append('<option value="" disabled>Không có pin sẵn sàng tại trạm này</option>');
             }
         }
 
@@ -121,14 +132,77 @@
             updateBatteryOutDropdown($(this).val());
         });
 
-        // Khởi chạy ban đầu
+        // Khởi chạy ban đầu cho "Pin Mới"
         var currentStationId = $stationSelect.val();
+        var selectedOutId = [[${transaction.batteryOut?.id}]];
+
         if (currentStationId) {
             updateBatteryOutDropdown(currentStationId);
-            var selectedOutId = [[${transaction.batteryOut?.id}]];
             if (selectedOutId) $batteryOutSelect.val(selectedOutId);
+        } else {
+            updateBatteryOutDropdown(null); // Vô hiệu hóa lúc đầu
         }
+
+        /* logic cho dropdown pin khách trả vào                  */
+
+        var $userSelect = $('#user');
+        var $batteryInSelect = $('#batteryIn');
+
+        // 1. Lưu lại tất cả các tùy chọn pin rented
+        var $allBatteryInOptions = $batteryInSelect.find('option[data-user-id]').clone();
+
+        // 2. Xóa các tùy chọn pin khỏi DOM, *chỉ để lại placeholder*
+        $batteryInSelect.find('option[data-user-id]').remove();
+
+        function updateBatteryInForUser(selectedUserId) {
+            var currentBatteryInValue = $batteryInSelect.val();
+
+            // 3. Xóa các tùy chọn pin (data-user-id) và thông báo (disabled) cũ
+            $batteryInSelect.find('option[data-user-id]').remove();
+            $batteryInSelect.find('option[disabled]').remove();
+
+            // 4. Lấy placeholder CÓ SẴN
+            var $placeholder = $batteryInSelect.find('option[value=""]');
+
+            if (!selectedUserId) {
+                $placeholder.text('-- Vui lòng chọn khách hàng trước --');
+                $batteryInSelect.prop('disabled', true);
+                return;
+            }
+
+            $batteryInSelect.prop('disabled', false);
+            $placeholder.text('-- Chọn pin khách trả --');
+
+            var found = false;
+            $allBatteryInOptions.each(function() {
+                if ($(this).data('user-id') == selectedUserId) {
+                    $batteryInSelect.append($(this).clone());
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                $batteryInSelect.append('<option value="" disabled>Khách hàng này không có pin nào đang thuê</option>');
+            }
+
+            // Chọn lại giá trị cũ (nếu là form Edit)
+            if(currentBatteryInValue) {
+                $batteryInSelect.val(currentBatteryInValue);
+            }
+        }
+
+        $userSelect.on('change', function() {
+            // Khi đổi user, reset giá trị pin cũ về "chưa chọn"
+            $batteryInSelect.val("");
+            updateBatteryInForUser($(this).val());
+        });
+
+        // 5. Chạy lần đầu khi tải trang (quan trọng cho form Sửa)
+        var initialUserId = $userSelect.val();
+        updateBatteryInForUser(initialUserId);
     });
 </script>
+
+
 </body>
 </html>

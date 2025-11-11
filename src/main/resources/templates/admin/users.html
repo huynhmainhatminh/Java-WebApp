@@ -46,15 +46,10 @@
                     </div>
                 </div>
 
-                <div class="card card-outline card-primary">
-                </div>
-
                 <div class="row mb-3">
                     <div class="col-12">
                         <a th:href="@{/admin/users/new}" class="btn btn-primary"><i class="fas fa-plus mr-2"></i>Thêm người dùng mới</a>
                     </div>
-                </div>
-                <div class="card">
                 </div>
 
                 <div class="card">
@@ -88,7 +83,8 @@
                                     <td th:text="${user.createdAt != null ? #temporals.format(user.createdAt, 'dd-MM-yyyy HH:mm') : 'N/A'}"></td>
                                     <td th:text="${user.updatedAt != null ? #temporals.format(user.updatedAt, 'dd-MM-yyyy HH:mm') : 'N/A'}"></td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning" th:attr="onclick=|openRoleModal(${user.id}, '${user.username}', '${user.role}')|"><i class="fas fa-user-edit"></i> Sửa vai trò</button>
+                                        <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Sửa</a>
+
                                         <a th:href="@{/admin/users/delete/{id}(id=${user.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');"><i class="fas fa-trash"></i> Xóa</a>
                                     </td>
                                 </tr>
@@ -127,38 +123,7 @@
     <footer th:replace="~{admin/fragments/_footer :: footer}"></footer>
 </div>
 
-<div class="modal fade" id="roleModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="roleForm" th:action="@{/admin/users/update-role}" method="post">
-                <input type="hidden" id="editUserId" name="id">
-                <div class="modal-header bg-warning"><h5 class="modal-title" id="roleModalTitle">Chỉnh sửa vai trò</h5><button type="button" class="close" data-dismiss="modal">&times;</button></div>
-                <div class="modal-body">
-                    <p>Người dùng: <strong id="usernameForModal"></strong></p>
-                    <div class="form-group">
-                        <label for="newRole">Vai trò mới</label>
-                        <select id="newRole" name="role" class="form-control">
-                            <option value="DRIVER">Driver</option>
-                            <option value="STAFF">Staff</option>
-                            <option value="ADMIN">Admin</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button><button type="submit" class="btn btn-warning"><i class="fas fa-save mr-1"></i> Lưu thay đổi</button></div>
-            </form>
-        </div>
-    </div>
-</div>
-
 <div th:replace="~{admin/fragments/_footer :: common_scripts}"></div>
 
-<script>
-    function openRoleModal(id, username, currentRole) {
-        document.getElementById('editUserId').value = id;
-        document.getElementById('usernameForModal').textContent = username;
-        document.getElementById('newRole').value = (currentRole || '').toUpperCase();
-        $('#roleModal').modal('show');
-    }
-</script>
 </body>
 </html>

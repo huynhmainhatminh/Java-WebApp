@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Map;
 
-public interface IRentalPackageService { // <-- Đã đổi tên
+public interface IRentalPackageService {
     Page<RentalPackage> findAll(Pageable pageable);
     Map<String, Number> getStatistics();
     RentalPackage save(RentalPackage rentalPackage);

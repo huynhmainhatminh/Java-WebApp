@@ -1,6 +1,8 @@
 package com.ev.batteryswap.controllers.admin;
 
+import com.ev.batteryswap.pojo.Station;
 import com.ev.batteryswap.pojo.User;
+import com.ev.batteryswap.services.interfaces.IBatteryService;
 import com.ev.batteryswap.services.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List; 
+
 
 @Controller
 @RequestMapping("/admin/users")
@@ -17,6 +21,15 @@ public class AdminUserController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IBatteryService batteryService;
+
+    //Lâ danh sách trạm theo cột station_id trong battery
+    @ModelAttribute("allStations")
+    public List<Station> getAllStations() {
+        return batteryService.getAllStations();
+    }
 
     @GetMapping
     public String listUsers(Model model,
@@ -46,6 +59,18 @@ public class AdminUserController {
         return "redirect:/admin/users";
     }
 
+    @GetMapping("/edit/{id}")
+    public String showEditUserForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+        User user = userService.findById(id);
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy người dùng!");
+            return "redirect:/admin/users";
+        }
+        model.addAttribute("user", user);
+        return "admin/users_form";
+    }
+
+
     @PostMapping("/update/{id}")
     public String updateUser(@PathVariable("id") Integer id,
                              @ModelAttribute("user") User userFormData,
@@ -63,28 +88,19 @@ public class AdminUserController {
             existingUser.setEmail(userFormData.getEmail());
             existingUser.setPhoneNumber(userFormData.getPhoneNumber());
             existingUser.setRole(userFormData.getRole());
-            existingUser.setStation(userFormData.getStation());
+
+            // Nếu role không phải staff, tự động gán trạm là null
+            if (!"STAFF".equals(userFormData.getRole())) {
+                existingUser.setStation(null);
+            } else {
+                existingUser.setStation(userFormData.getStation());
+            }
 
             userService.saveUser(existingUser);
             redirectAttributes.addFlashAttribute("successMessage", "Cập nhật người dùng thành công!");
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi cập nhật người dùng: " + e.getMessage());
-        }
-        return "redirect:/admin/users";
-    }
-
-
-    @PostMapping("/update-role")
-    public String updateUserRole(@RequestParam("id") Integer userId,
-                                 @RequestParam("role") String role,
-                                 RedirectAttributes redirectAttributes) {
-
-        try {
-            userService.updateUserRole(userId, role);
-            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật vai trò người dùng thành công!");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi: " + e.getMessage());
         }
         return "redirect:/admin/users";
     }

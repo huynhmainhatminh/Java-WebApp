@@ -33,7 +33,12 @@ public class BatteryService implements IBatteryService {
         return batteryRepository.findAll((Specification<Battery>) (root, query, criteriaBuilder) -> {
             if (query.getResultType() != Long.class && query.getResultType() != long.class) {
                 root.fetch("station", JoinType.LEFT);
+
+                if ("RENTED".equals(status)) {
+                    root.fetch("currentUser", JoinType.LEFT);
+                }
             }
+
 
             List<Predicate> predicates = new ArrayList<>();
             // Điều kiện 1: Lọc theo Trạm (stationId)

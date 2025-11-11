@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-public interface ITransactionService { // <-- Đã đổi tên
+public interface ITransactionService {
     Page<SwapTransaction> filterTransactions(Integer stationId, String paymentStatus, String search, Pageable pageable);
     Map<String, Long> getTransactionStatistics();
     void deleteTransaction(Integer transactionId);

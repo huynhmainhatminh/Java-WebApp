@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Map;
 
-public interface IStationService { // <-- Đã đổi tên
+public interface IStationService {
     Page<Station> filterStations(String search, Pageable pageable);
     Map<String, Long> getStationStatistics();
     Station saveStation(Station station);
