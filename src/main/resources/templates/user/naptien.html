@@ -3,343 +3,711 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Nạp tiền - VinFast (UI Only)</title>
+    <title>Nạp tiền - VinFast</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/style.css(v=${#dates.createNow().time})}">
 
     <style>
+        /* Enhanced Typography System */
         :root {
-            --slate-900:#0f172a;--slate-800:#1f2937;--slate-700:#374151;--slate-600:#475569;--slate-500:#64748b;
-            --gray-100:#f3f4f6;--gray-200:#e5e7eb;--blue-600:#2563eb;--blue-700:#1d4ed8;--green-500:#22c55e;
-            --green-600:#16a34a;--green-700:#059669;--emerald-50:#f0fdf4;--emerald-100:#dcfce7;--yellow-100:#fef3c7;--yellow-500:#f59e0b;--yellow-800:#92400e;
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-mono: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
 
-        *{box-sizing:border-box}
-        html,body{margin:0;padding:0;font-family:Inter,system-ui,Segoe UI,Roboto,Apple Color Emoji,Segoe UI Emoji,sans-serif;background:#fafafa;color:var(--slate-800)}
-        a{color:inherit}
-        .container{max-width:960px;margin-inline:auto;padding:24px}
-        header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-        .brand{display:flex;gap:.5rem;align-items:center}
-        .brand .logo{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#0ea5e9,#3b82f6)}
-        .brand h1{font-size:1.25rem;margin:0}
-        .pill{font-size:.75rem;background:#eef2ff;padding:.25rem .5rem;border-radius:999px;color:#3730a3}
-        .recharge-container{max-width:800px;margin:1rem auto}
-        .recharge-header{text-align:center;margin-bottom:1.5rem}
-        .recharge-header h2{margin:.25rem 0;color:var(--slate-800)}
-        .balance-display{background:linear-gradient(135deg,var(--emerald-50),var(--emerald-100));border:2px solid var(--green-500);border-radius:12px;padding:1.25rem;text-align:center;margin-bottom:1.5rem}
-        .balance-label{font-size:.95rem;color:var(--slate-700);margin-bottom:.25rem}
-        .balance-amount{font-size:2rem;font-weight:700;color:var(--green-700);font-family:"Courier New",monospace}
-        .card{background:#fff;border-radius:16px;padding:1.5rem;box-shadow:0 4px 10px rgba(0,0,0,.06);margin-bottom:1.5rem}
-        .form-group{margin-bottom:1rem}
-        .form-label{display:block;font-weight:600;color:var(--slate-700);margin-bottom:.5rem}
-        .form-input, textarea.form-input{width:100%;padding:.8rem;border:2px solid var(--gray-200);border-radius:10px;font-size:1rem;transition:border-color .2s}
-        .form-input:focus, textarea.form-input:focus{outline:none;border-color:var(--blue-600)}
-        .amount-buttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.75rem;margin-bottom:.5rem}
-        .amount-button{padding:.75rem;border:2px solid var(--gray-200);background:#fff;border-radius:10px;cursor:pointer;transition:.2s;font-weight:600}
-        .amount-button:hover,.amount-button.active{border-color:var(--blue-600);background:#eff6ff;color:var(--blue-700)}
-        .submit-button{width:100%;background:linear-gradient(135deg,var(--green-700),var(--green-600));color:#fff;border:none;padding:1rem 1.25rem;border-radius:12px;font-size:1.05rem;font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .2s}
-        .submit-button:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(5,150,105,.25)}
-        .payment-info h3{margin:0 0 1rem;color:var(--slate-800);text-align:center}
-        .bank-cards{display:grid;gap:1rem}
-        .bank-card{border:2px solid var(--gray-200);border-radius:12px;padding:1rem;transition:.2s}
-        .bank-card:hover{border-color:var(--blue-600);box-shadow:0 4px 12px rgba(37,99,235,.12)}
-        .bank-name{font-size:1.1rem;font-weight:800;color:var(--slate-800);margin-bottom:.5rem}
-        .account-item{display:grid;grid-template-columns:1fr auto auto;gap:.5rem;align-items:center;margin:.25rem 0}
-        .account-label{font-weight:600;color:var(--slate-600)}
-        .account-value{font-weight:700;color:var(--slate-800);font-family:"Courier New",monospace}
-        .copy-button{background:var(--blue-600);color:#fff;border:none;padding:.45rem .7rem;border-radius:8px;cursor:pointer;font-size:.875rem}
-        .copy-button:hover{background:var(--blue-700)}
-        .qr-code{text-align:center;margin-top:.75rem}
-        .qr-code img{max-width:150px;border-radius:10px}
-        .instructions{background:var(--yellow-100);border:1px solid var(--yellow-500);border-radius:10px;padding:1rem;margin-top:1rem}
-        .instructions h4{color:var(--yellow-800);margin:.25rem 0 .5rem}
-        .instructions ol{color:var(--yellow-800);margin:0;padding-left:1.25rem}
-        .recharge-result{display:none}
-        .recharge-result.show{display:block}
-        .result-header{text-align:center;margin-bottom:1.25rem}
-        .result-header h3{color:var(--green-700);margin:.25rem 0}
-        .result-info{background:var(--emerald-50);border:2px solid var(--green-500);border-radius:12px;padding:1rem;margin-bottom:1rem}
-        .result-item{display:flex;justify-content:space-between;gap:1rem;padding:.45rem 0;border-bottom:1px solid var(--emerald-100)}
-        .result-item:last-child{border-bottom:none}
-        .result-label{font-weight:600;color:var(--slate-700)}
-        .result-value{font-weight:800;color:var(--green-700);font-family:"Courier New",monospace}
-        .bank-selection{margin:1.25rem 0}
-        .bank-selection h4{text-align:center;margin:.25rem 0 1rem}
-        .bank-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem}
-        .bank-option{border:2px solid var(--gray-200);border-radius:12px;padding:1rem;cursor:pointer;transition:.2s;text-align:center}
-        .bank-option:hover,.bank-option.selected{border-color:var(--blue-600);background:#eff6ff}
-        .bank-option.selected{background:#dbeafe}
-        .qr-section{text-align:center;margin:1rem 0}
-        .qr-code-container{display:inline-block;padding:1rem;background:#fff;border:2px solid var(--gray-200);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
-        .qr-code-container img{max-width:220px;height:auto}
-        @media (max-width:768px){
-            .amount-buttons{grid-template-columns:repeat(2,1fr)}
-            .account-item{grid-template-columns:1fr auto}
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* Recharge Page Specific Styles */
+        .recharge-page {
+            min-height: calc(100vh - 200px);
+            padding: 40px 0 60px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            font-family: var(--font-primary);
+        }
+
+        .recharge-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 36px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 17px;
+            margin: 0;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            line-height: 1.6;
+        }
+
+        /* Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 2px solid #86efac;
+            border-radius: 20px;
+            padding: 28px 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .balance-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
+        }
+
+        .balance-label {
+            font-family: var(--font-primary);
+            font-size: 13px;
+            color: #059669;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .balance-amount {
+            font-family: var(--font-display);
+            font-size: 42px;
+            font-weight: 800;
+            color: #047857;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        /* Card Styles */
+        .recharge-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 36px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+        }
+
+        /* Amount Selection */
+        .amount-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .amount-btn {
+            padding: 18px 16px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 14px;
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            letter-spacing: -0.01em;
+        }
+
+        .amount-btn:hover {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+            color: #0284c7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
+        }
+
+        .amount-btn.active {
+            border-color: #0ea5e9;
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            color: white;
+            box-shadow: 0 6px 16px rgba(14, 165, 233, 0.35);
+            transform: translateY(-2px);
+        }
+
+        /* Custom Amount Input */
+        .custom-amount {
+            margin-top: 20px;
+        }
+
+        .custom-amount input {
+            width: 100%;
+            padding: 18px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 500;
+            color: #0f172a;
+            transition: all 0.3s ease;
+            letter-spacing: -0.01em;
+        }
+
+        .custom-amount input::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        .custom-amount input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+            background: white;
+        }
+
+        /* Bank Info */
+        .bank-info {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border: 2px dashed #cbd5e1;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .bank-name {
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #e2e8f0;
+            letter-spacing: -0.01em;
+        }
+
+        .bank-detail {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            gap: 16px;
+        }
+
+        .bank-detail-label {
+            font-family: var(--font-primary);
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+            letter-spacing: -0.005em;
+        }
+
+        .bank-detail-value {
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: 600;
+            color: #0f172a;
+            letter-spacing: 0.02em;
+        }
+
+        .copy-btn {
+            padding: 8px 14px;
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: var(--font-primary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.01em;
+        }
+
+        .copy-btn:hover {
+            background: #0284c7;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+        }
+
+        .copy-btn.copied {
+            background: #22c55e;
+        }
+
+        /* QR Section */
+        .qr-section {
+            text-align: center;
+            padding: 28px;
+            background: white;
+            border-radius: 14px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .qr-section h4 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .qr-container {
+            display: inline-block;
+            padding: 20px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .qr-container img {
+            max-width: 250px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        /* Instructions */
+        .instructions-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #fbbf24;
+            border-radius: 14px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .instructions-title {
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 700;
+            color: #92400e;
+            margin: 0 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.01em;
+        }
+
+        .instructions-box ol {
+            margin: 0;
+            padding-left: 24px;
+            color: #78350f;
+            font-family: var(--font-primary);
+        }
+
+        .instructions-box li {
+            margin: 10px 0;
+            line-height: 1.7;
+            font-size: 15px;
+            font-weight: 400;
+            letter-spacing: -0.005em;
+        }
+
+        /* Result Section */
+        .result-section {
+            display: none;
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-header {
+            text-align: center;
+            padding: 32px;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-radius: 16px;
+            margin-bottom: 28px;
+        }
+
+        .success-icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+            line-height: 1;
+        }
+
+        .success-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 700;
+            color: #059669;
+            margin: 0 0 10px;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .success-subtitle {
+            font-family: var(--font-primary);
+            color: #64748b;
+            margin: 0;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        /* Bank Selection */
+        .bank-selection {
+            margin: 28px 0;
+        }
+
+        .bank-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .bank-option {
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+
+        .bank-option:hover {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(14, 165, 233, 0.12);
+        }
+
+        .bank-option.selected {
+            border-color: #0ea5e9;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .bank-option-name {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 6px;
+            font-size: 15px;
+            letter-spacing: -0.01em;
+        }
+
+        .bank-option-number {
+            font-family: var(--font-mono);
+            font-size: 15px;
+            color: #64748b;
+            letter-spacing: 0.02em;
+            font-weight: 500;
+        }
+
+        /* Submit Button Enhancement */
+        .submit-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 18px 24px;
+            margin-top: 28px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            color: white;
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 16px rgba(14, 165, 233, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .recharge-page {
+                padding: 24px 0 40px;
+            }
+
+            .page-title {
+                font-size: 28px;
+                gap: 10px;
+            }
+
+            .page-subtitle {
+                font-size: 15px;
+            }
+
+            .balance-amount {
+                font-size: 34px;
+            }
+
+            .recharge-card {
+                padding: 24px;
+            }
+
+            .card-title {
+                font-size: 20px;
+            }
+
+            .amount-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .amount-btn {
+                font-size: 15px;
+                padding: 16px 12px;
+            }
+
+            .qr-container img {
+                max-width: 220px;
+            }
+
+            .success-title {
+                font-size: 24px;
+            }
+
+            .instructions-box li {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 24px;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .balance-amount {
+                font-size: 28px;
+            }
+
+            .amount-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bank-options {
+                grid-template-columns: 1fr;
+            }
+
+            .bank-detail {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
         }
     </style>
 </head>
 <body>
-<!-- Header (tùy chọn) -->
-<header class="site-header">
-    <div class="container header-inner">
-        <a href="my" class="brand" aria-label="VinFast">
-            <img th:src="@{/img/logo.png}" alt="VinFast" class="brand-logo">
-            <span class="sr-only">VINFASTAUTO</span>
-        </a>
+<!-- Header -->
+<div th:insert="user/header-user :: site-header-user"></div>
 
-        <nav class="main-nav" aria-label="Chính">
-            <button class="nav-toggle" aria-expanded="false" aria-controls="menu">☰</button>
-            <ul id="menu" class="menu">
-                <li><a href="my">Trang chủ</a></li>
-                <li><a href="#">Đổi pin</a></li>
-                <li><a href="#">Liên kết</a></li>
-                <li class="has-sub">
-                    <a href="#" aria-haspopup="true" aria-expanded="false">Đặt lịch</a>
-                    <ul class="submenu" aria-label="Đặt lịch">
-                        <li><a href="#">Tìm kiếm trạm gần nhất</a></li>
-                        <li><a href="#">Đặt lịch đổi pin</a></li>
-                    </ul>
-                </li>
-                <li><a href="contact.php">Hỗ trợ</a></li>
-            </ul>
-        </nav>
+<main class="recharge-page">
+    <div class="container recharge-wrapper">
 
-        <div class="header-actions">
-            <!-- Notification Bell -->
-            <div class="notification-container">
-                <button class="notification-bell" id="notificationBell" aria-label="Thông báo">
-                    <span class="bell-icon">🔔</span>
-                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
-                </button>
-                <div class="notification-dropdown" id="notificationDropdown">
-                    <div class="notification-header">
-                        <h3>Thông báo</h3>
-                        <button class="mark-all-read" id="markAllRead">Đánh dấu tất cả đã đọc</button>
-                    </div>
-                    <div class="notification-list" id="notificationList">
-                        <div class="notification-loading">Đang tải...</div>
-                    </div>
-                    <div class="notification-footer">
-                        <a href="#" class="view-all-notifications">Xem tất cả thông báo</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="user-info">
-                <div class="money-display">
-                    <span class="money-label">💰</span>
-                    <span class="money-amount">0</span>
-                </div>
-                <div class="has-sub">
-                    <a href="#" aria-haspopup="true" aria-expanded="false" class="user-icon" title="TEST">
-                        <span class="user-avatar">👤</span>
-                    </a>
-                    <ul class="submenu" aria-label="Tài khoản">
-                        <li class="user-name-item">
-                            <span th:text="${username}" name="username" class="username">username</span>
-                        </li>
-                        <li><a href="naptien">Nạp tiền</a></li>
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Lịch sử giao dịch</a></li>
-                        <li class="logout-item">
-                            <a href="logout.php" class="logout-link">Đăng xuất</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-
-<script th:src="@{/js/notifications.js}"></script>
-
-<main>
-    <div class="container recharge-container">
-        <div class="recharge-header">
-            <h2>💰 Nạp tiền vào tài khoản</h2>
-            <p>Nạp tiền để sử dụng dịch vụ thuê pin VinFast</p>
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">
+                Nạp tiền vào tài khoản
+            </h1>
+            <p class="page-subtitle">Nạp tiền nhanh chóng để sử dụng dịch vụ thuê pin VinFast</p>
         </div>
 
-        <div class="balance-display" aria-live="polite">
+        <!-- Balance Display -->
+        <div class="balance-card">
             <div class="balance-label">Số dư hiện tại</div>
-            <div th:text="${balance_amount}" class="balance-amount" name="balance_amount" id="balanceAmount">0 VNĐ</div>
+            <div th:text="${balance_amount}" class="balance-amount" id="balanceAmount">0 VNĐ</div>
         </div>
 
-        <section class="card">
-            <h3 style="margin:0 0 1rem">Thông tin nạp tiền</h3>
-            <form id="rechargeForm" novalidate>
-                <div class="form-group">
-                    <label class="form-label" for="amountInput">Số tiền nạp (VNĐ) *</label>
-                    <div class="amount-buttons" id="amountButtons">
-                        <button type="button" class="amount-button" data-amount="50000">50,000</button>
-                        <button type="button" class="amount-button" data-amount="100000">100,000</button>
-                        <button type="button" class="amount-button" data-amount="200000">200,000</button>
-                        <button type="button" class="amount-button" data-amount="500000">500,000</button>
-                        <button type="button" class="amount-button" data-amount="1000000">1,000,000</button>
-                        <button type="button" class="amount-button" data-amount="2000000">2,000,000</button>
-                    </div>
-                    <input type="number" name="amount" id="amountInput" class="form-input" placeholder="Nhập số tiền..." required min="10000" max="10000000" />
+        <!-- Recharge Form -->
+        <div class="recharge-card">
+            <h3 class="card-title">
+                Chọn số tiền nạp
+            </h3>
+
+            <form id="rechargeForm">
+                <div class="amount-grid" id="amountButtons">
+                    <button type="button" class="amount-btn" data-amount="50000">50,000 VNĐ</button>
+                    <button type="button" class="amount-btn" data-amount="100000">100,000 VNĐ</button>
+                    <button type="button" class="amount-btn" data-amount="200000">200,000 VNĐ</button>
+                    <button type="button" class="amount-btn" data-amount="500000">500,000 VNĐ</button>
+                    <button type="button" class="amount-btn" data-amount="1000000">1,000,000 VNĐ</button>
+                    <button type="button" class="amount-btn" data-amount="2000000">2,000,000 VNĐ</button>
                 </div>
 
-                <div class="form-group">
-
+                <div class="custom-amount">
+                    <input
+                            type="number"
+                            name="amount"
+                            id="amountInput"
+                            placeholder="Hoặc nhập số tiền tùy chỉnh (10,000 - 10,000,000 VNĐ)"
+                            min="10000"
+                            max="10000000"
+                    />
                 </div>
 
-                <button type="submit" class="submit-button">Tạo yêu cầu nạp tiền</button>
+                <button type="submit" class="submit-btn">
+                    <span>Tạo yêu cầu nạp tiền</span>
+                    <span>→</span>
+                </button>
             </form>
-        </section>
+        </div>
 
-        <section class="card payment-info">
-            <h3>🏦 Thông tin chuyển khoản</h3>
-            <div class="bank-cards" id="bankCards">
-                <!-- render động -->
-            </div>
+        <!-- Bank Information -->
+        <div class="recharge-card">
+            <h3 class="card-title">
+                Thông tin chuyển khoản
+            </h3>
 
-            <div class="instructions" role="note" aria-label="Hướng dẫn nạp tiền">
-                <h4>📋 Hướng dẫn nạp tiền:</h4>
+            <div id="bankCards"></div>
+
+            <div class="instructions-box">
+                <h4 class="instructions-title">
+                    Hướng dẫn nạp tiền
+                </h4>
                 <ol>
-                    <li>Chọn số tiền muốn nạp hoặc nhập số tiền tùy chỉnh</li>
-                    <li>Copy số tài khoản và chủ tài khoản</li>
-                    <li>Chuyển khoản với nội dung đã được tạo sẵn</li>
-                    <li>Chụp ảnh biên lai chuyển khoản</li>
+                    <li>Chọn số tiền muốn nạp từ các mức có sẵn hoặc nhập số tiền tùy chỉnh</li>
+                    <li>Nhấn "Tạo yêu cầu nạp tiền" để sinh QR Code</li>
+                    <li>Quét QR Code hoặc chuyển khoản thủ công theo thông tin trên</li>
+                    <li>Đảm bảo nội dung chuyển khoản chính xác</li>
                     <li>Liên hệ admin để xác nhận nạp tiền</li>
                 </ol>
             </div>
-        </section>
+        </div>
 
-        <!-- Kết quả nạp tiền -->
-        <section class="card recharge-result" id="rechargeResult" aria-live="polite">
-            <div class="result-header">
-                <h3>✅ Yêu cầu nạp tiền đã được tạo!</h3>
-                <p>Vui lòng chuyển khoản theo thông tin bên dưới</p>
+        <!-- Result Section -->
+        <div class="result-section" id="rechargeResult">
+            <div class="success-header">
+                <div class="success-icon">✅</div>
+                <h3 class="success-title">Yêu cầu nạp tiền đã được tạo!</h3>
+                <p class="success-subtitle">Vui lòng chuyển khoản theo thông tin bên dưới</p>
             </div>
 
-            <div class="result-info" id="resultInfo"></div>
+            <div class="recharge-card">
+                <div id="resultInfo"></div>
 
-            <div class="bank-selection">
-                <h4>🏦 Chọn ngân hàng để chuyển khoản</h4>
-                <div class="bank-options" id="bankOptions"></div>
-            </div>
+                <div class="bank-selection">
+                    <h4 class="card-title">
+                        Chọn ngân hàng để chuyển khoản
+                    </h4>
+                    <div class="bank-options" id="bankOptions"></div>
+                </div>
 
-            <div class="qr-section">
-                <h4>📱 Quét QR Code để chuyển khoản</h4>
-                <div class="qr-code-container">
-                    <img id="qrCodeImage" src="" alt="QR Code chuyển khoản" />
+                <div class="qr-section">
+                    <h4 style="margin: 0 0 20px; color: #0f172a;">
+                        Quét QR Code để chuyển khoản
+                    </h4>
+                    <div class="qr-container">
+                        <img id="qrCodeImage" src="" alt="QR Code chuyển khoản" />
+                    </div>
+                </div>
+
+                <div class="instructions-box" style="margin-top: 28px;">
+                    <h4 class="instructions-title">
+                        <span>⚠️</span>
+                        Lưu ý quan trọng
+                    </h4>
+                    <ol>
+                        <li>Kiểm tra kỹ thông tin tài khoản và số tiền trước khi chuyển</li>
+                        <li>Không thay đổi nội dung chuyển khoản để tránh xử lý chậm</li>
+                        <li>Chụp lại biên lai chuyển khoản để đối chiếu nếu cần</li>
+                        <li>Tiền sẽ được cộng vào tài khoản sau khi admin xác nhận</li>
+                    </ol>
                 </div>
             </div>
+        </div>
 
-            <div class="instructions" role="note">
-                <h4>📋 Hướng dẫn nạp tiền:</h4>
-                <ol>
-                    <li>Chọn ngân hàng phù hợp từ danh sách trên</li>
-                    <li>Quét QR code hoặc chuyển khoản thủ công</li>
-                    <li>Đảm bảo nội dung chuyển khoản chính xác</li>
-                    <li>Chụp ảnh biên lai chuyển khoản</li>
-                    <li>Liên hệ admin để xác nhận nạp tiền</li>
-                </ol>
-            </div>
-        </section>
     </div>
 </main>
 
-<!-- Footer (tùy chọn) -->
+<!-- Footer -->
 <div th:insert="footer :: site-footer"></div>
 
-
+<script th:src="@{/js/notifications.js}"></script>
 <script>
-    // ====== DỮ LIỆU GIẢ LẬP (thay bằng API thật nếu cần) ======
-    // const username = "USER_DEMO";
-    const username = document.getElementsByName("username");
-    // const currentBalance = 350000; // ví dụ: 350,000 VNĐ
-    // const currentBalance = document.getElementById("amountInput");
-
     const paymentInfos = [
         {
             id: 1,
-            bank_name: "ACB Ngân hàng thương mại cổ phần Á Châu",
+            bank_name: "ACB - Ngân hàng Á Châu",
             account_number: "22749061",
             account_holder: "HUYNH MAI NHAT MINH",
-            qr_code_url: "" // có thể để rỗng: sẽ dùng VietQR động theo lựa chọn
+            qr_code_url: ""
         },
     ];
 
-    // ====== DOM ELEMENTS ======
-    const amountButtons = document.querySelectorAll(".amount-button");
+    // DOM Elements
+    const amountButtons = document.querySelectorAll(".amount-btn");
     const amountInput = document.getElementById("amountInput");
-    const contentInput = document.getElementById("contentInput");
     const rechargeForm = document.getElementById("rechargeForm");
-    // const balanceAmount = document.getElementById("balanceAmount");
     const bankCards = document.getElementById("bankCards");
 
-    // Render số dư
-    // balanceAmount.textContent = `${Number(currentBalance).toLocaleString("vi-VN")} VNĐ`;
-
-    // Render danh sách ngân hàng (khối “Thông tin chuyển khoản”)
+    // Render Bank Cards
     function renderBankCards() {
         bankCards.innerHTML = "";
         paymentInfos.forEach((bank) => {
             const card = document.createElement("div");
-            card.className = "bank-card";
-
-            const name = document.createElement("div");
-            name.className = "bank-name";
-            name.textContent = bank.bank_name;
-
-            const accountWrap1 = document.createElement("div");
-            accountWrap1.className = "account-item";
-            const label1 = document.createElement("span");
-            label1.className = "account-label";
-            label1.textContent = "Số tài khoản:";
-            const value1 = document.createElement("span");
-            value1.className = "account-value";
-            value1.id = `account-${bank.id}`;
-            value1.textContent = bank.account_number;
-
-            const copyBtn = document.createElement("button");
-            copyBtn.className = "copy-button";
-            copyBtn.type = "button";
-            copyBtn.textContent = "Copy";
-            copyBtn.addEventListener("click", () => copyToClipboard(value1));
-
-            accountWrap1.appendChild(label1);
-            accountWrap1.appendChild(value1);
-            accountWrap1.appendChild(copyBtn);
-
-            const accountWrap2 = document.createElement("div");
-            accountWrap2.className = "account-item";
-            const label2 = document.createElement("span");
-            label2.className = "account-label";
-            label2.textContent = "Chủ tài khoản:";
-            const value2 = document.createElement("span");
-            value2.className = "account-value";
-            value2.textContent = bank.account_holder;
-
-            accountWrap2.appendChild(label2);
-            accountWrap2.appendChild(value2);
-
-            card.appendChild(name);
-            card.appendChild(accountWrap1);
-            card.appendChild(accountWrap2);
-
-            if (bank.qr_code_url) {
-                const qr = document.createElement("div");
-                qr.className = "qr-code";
-                const img = document.createElement("img");
-                img.alt = `QR Code ${bank.bank_name}`;
-                img.src = bank.qr_code_url;
-                qr.appendChild(img);
-                card.appendChild(qr);
-            }
-
+            card.className = "bank-info";
+            card.innerHTML = `
+                    <div class="bank-name">${bank.bank_name}</div>
+                    <div class="bank-detail">
+                        <span class="bank-detail-label">Số tài khoản:</span>
+                        <span class="bank-detail-value" id="account-${bank.id}">${bank.account_number}</span>
+                        <button type="button" class="copy-btn" onclick="copyText('account-${bank.id}', this)">Copy</button>
+                    </div>
+                    <div class="bank-detail">
+                        <span class="bank-detail-label">Chủ tài khoản:</span>
+                        <span class="bank-detail-value">${bank.account_holder}</span>
+                    </div>
+                `;
             bankCards.appendChild(card);
         });
     }
     renderBankCards();
 
-    // ====== HANDLERS ======
-    // click preset amount
+    // Amount Button Handlers
     amountButtons.forEach((button) => {
         button.addEventListener("click", function () {
             amountButtons.forEach((b) => b.classList.remove("active"));
@@ -348,40 +716,33 @@
         });
     });
 
-    // nhập số tiền
     amountInput.addEventListener("input", function () {
         amountButtons.forEach((b) => b.classList.remove("active"));
     });
 
-    // copy helper
-    function copyToClipboard(targetEl) {
-        const text = targetEl.textContent?.trim() ?? "";
-        navigator.clipboard
-            .writeText(text)
-            .then(() => {
-                const btn = targetEl.parentElement?.querySelector(".copy-button");
-                if (!btn) return;
-                const original = btn.textContent;
-                btn.textContent = "Đã copy!";
-                btn.style.background = "#059669";
-                setTimeout(() => {
-                    btn.textContent = original;
-                    btn.style.background = "";
-                }, 1800);
-            })
-            .catch(() => alert("Không thể copy. Vui lòng copy thủ công."));
+    // Copy Function
+    function copyText(elementId, button) {
+        const element = document.getElementById(elementId);
+        const text = element.textContent.trim();
+
+        navigator.clipboard.writeText(text).then(() => {
+            const originalText = button.textContent;
+            button.textContent = "✓ Đã copy";
+            button.classList.add("copied");
+
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove("copied");
+            }, 2000);
+        }).catch(() => {
+            alert("Không thể copy. Vui lòng copy thủ công.");
+        });
     }
 
-    // submit form
+    // Form Submit
     rechargeForm.addEventListener("submit", async function (e) {
         e.preventDefault();
         const amount = Number(amountInput.value);
-        const formData = new FormData(this);
-        const response = await fetch("/qr", {
-            method: "POST",
-            body: formData
-        });
-
 
         if (!amount || amount < 10000) {
             alert("Số tiền nạp tối thiểu là 10,000 VNĐ");
@@ -391,46 +752,53 @@
             alert("Số tiền nạp tối đa là 10,000,000 VNĐ");
             return;
         }
-        showRechargeResult(amount, await response.text());
+
+        const formData = new FormData(this);
+        const response = await fetch("/qr", {
+            method: "POST",
+            body: formData
+        });
+
+        const qrUrl = await response.text();
+        showRechargeResult(amount, qrUrl);
     });
 
-    // ====== KẾT QUẢ NẠP TIỀN ======
-    function showRechargeResult(amount, url_qr) {
-        const rechargeResult = document.getElementById("rechargeResult");
+    // Show Result
+    function showRechargeResult(amount, qrUrl) {
         const resultInfo = document.getElementById("resultInfo");
         const bankOptions = document.getElementById("bankOptions");
+        const rechargeResult = document.getElementById("rechargeResult");
 
         resultInfo.innerHTML = `
-        <div class="result-item">
-          <span class="result-label">Số tiền nạp:</span>
-          <span class="result-value">${parseInt(amount,10).toLocaleString("vi-VN")} VNĐ</span>
-        </div>
-      `;
+                <div class="bank-info">
+                    <div class="bank-detail">
+                        <span class="bank-detail-label">Số tiền nạp:</span>
+                        <span class="bank-detail-value" style="color: #059669; font-size: 20px;">
+                            ${parseInt(amount, 10).toLocaleString("vi-VN")} VNĐ
+                        </span>
+                    </div>
+                </div>
+            `;
 
-        // render bank options
         bankOptions.innerHTML = "";
         paymentInfos.forEach((bank, idx) => {
             const option = document.createElement("div");
             option.className = "bank-option";
-            option.dataset.bankId = bank.id;
-            option.dataset.bankCode = getBankCode(bank.bank_name);
-            option.dataset.accountNumber = bank.account_number;
-
             option.innerHTML = `
-          <div class="bank-name">${escapeHTML(bank.bank_name)}</div>
-          <div class="bank-account">${escapeHTML(bank.account_number)}</div>
-        `;
+                    <div class="bank-option-name">${bank.bank_name}</div>
+                    <div class="bank-option-number">${bank.account_number}</div>
+                `;
 
             option.addEventListener("click", function () {
                 document.querySelectorAll(".bank-option").forEach((el) => el.classList.remove("selected"));
                 this.classList.add("selected");
-                generateQRCode(url_qr);
+                updateQRCode(qrUrl);
             });
 
             bankOptions.appendChild(option);
             if (idx === 0) {
                 option.classList.add("selected");
-                generateQRCode(url_qr);
+                updateQRCode(qrUrl);
             }
         });
 
@@ -438,62 +806,12 @@
         rechargeResult.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    // map mã ngân hàng
-    function getBankCode(bankName) {
-        const bankCodes = {
-            Vietcombank: "VCB",
-            Techcombank: "TCB",
-            BIDV: "BIDV",
-            Agribank: "VBA",
-            Vietinbank: "CTG",
-            ACB: "ACB",
-            Sacombank: "STB",
-            MBBank: "MBB",
-            TPBank: "TPB",
-            VPBank: "VPB",
-            HDBank: "HDB",
-            SHB: "SHB",
-            Eximbank: "EIB",
-            MSB: "MSB",
-            OCB: "OCB",
-            SCB: "SCB",
-            VIB: "VIB",
-            SeABank: "SSB",
-            NCB: "NCB",
-            PGBank: "PGB"
-        };
-        return bankCodes[bankName] || "VCB";
-    }
-
-    // tạo QR qua VietQR
-    function generateQRCode(url_qr) {
+    // Update QR Code
+    function updateQRCode(qrUrl) {
         const img = document.getElementById("qrCodeImage");
-        // const qrUrl = url_qr;
-
-        // loading state (tối giản)
-        img.alt = `Đang tải QR cho`;
-        img.src = url_qr;
-
-        img.onload = function () {
-            img.alt = `QR Code chuyển khoản`;
-        };
-        img.onerror = function () {
-            img.src = "https://via.placeholder.com/220x220/ef4444/ffffff?text=QR+Error";
-            img.alt = "Không tải được QR Code";
-        };
+        img.src = qrUrl;
+        img.alt = "QR Code chuyển khoản";
     }
-
-    // escape helper
-    function escapeHTML(str) {
-        return String(str)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
-    // Khởi tạo nội dung chuyển khoản mẫu (nếu đã có số tiền)
 </script>
 </body>
 </html>
