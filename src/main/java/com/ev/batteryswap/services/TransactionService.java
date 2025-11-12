@@ -67,7 +67,7 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public void saveTransaction(SwapTransaction transaction) {
+    public void createTransaction(SwapTransaction transaction) {
         // Lấy thông tin đầy đủ của 2 viên pin từ DB
         Battery batteryIn = batteryRepository.findById(transaction.getBatteryIn().getId())
                 .orElse(null);
@@ -80,8 +80,6 @@ public class TransactionService implements ITransactionService {
         if (batteryOut == null) {
             throw new RuntimeException("Pin lấy ra không tồn tại!");
         }
-
-
 
         // 1. Kiểm tra logic: Pin lấy ra phải đang "AVAILABLE"
         if (!"AVAILABLE".equals(batteryOut.getStatus())) {
@@ -118,6 +116,14 @@ public class TransactionService implements ITransactionService {
     @Override
     public BigDecimal getTotalRevenue() {
         return transactionRepository.getTotalRevenue();
+    }
+
+    @Override
+    public void updateTransactionDetails(SwapTransaction transaction) {
+        // Hàm này chỉ lưu các thay đổi của bản thân giao dịch
+        // (ví dụ: thay đổi paymentStatus, notes, amount)
+        // và KHÔNG thực hiện logic thay đổi trạng thái pin.
+        transactionRepository.save(transaction);
     }
 
 }

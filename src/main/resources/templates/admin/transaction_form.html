@@ -89,8 +89,11 @@
 <script th:inline="javascript">
     $(document).ready(function() {
 
-        /* Logic cho dropdown pin mới (lấy ra từ trạm)*/
+        //id pin từ transaction
+        var selectedInId = /*[[${transaction.batteryIn?.id}]]*/ null;
+        var selectedOutId = /*[[${transaction.batteryOut?.id}]]*/ null;
 
+        /* Logic cho dropdown pin lấy ra - available)     */
         // Dữ liệu pin available
         var availableBatteries = [
             /*[# th:each="bat : ${availableBatteries}"]*/
@@ -106,62 +109,64 @@
         var $stationSelect = $('#station');
 
         function updateBatteryOutDropdown(stationId) {
-            // Luôn xóa sạch và thêm lại placeholder
             $batteryOutSelect.empty().append('<option value="">-- Chọn pin mới --</option>');
 
             if (!stationId) {
                 $batteryOutSelect.prop('disabled', true);
-                // Đặt lại text của placeholder
                 $batteryOutSelect.find('option[value=""]').text('-- Vui lòng chọn trạm trước --');
                 return;
             }
 
-            var filtered = availableBatteries.filter(b => b.stationId == stationId);
+            var found = false;
+            $batteryOutSelect.prop('disabled', false);
 
-            if (filtered.length > 0) {
-                $batteryOutSelect.prop('disabled', false);
-                filtered.forEach(b => $batteryOutSelect.append(new Option(b.name, b.id)));
-            } else {
+            availableBatteries.forEach(b => {
+                // Điều kiện 1: Pin này thuộc trạm đang chọn (stationId == stationId)
+                // Điều kiện 2: HOẶC Pin này LÀ pin đã được chọn của giao dịch (b.id == selectedOutId)
+                if ((b.stationId != null && b.stationId == stationId) || (b.id != null && b.id == selectedOutId)) {
+                    $batteryOutSelect.append(new Option(b.name, b.id));
+                    found = true;
+                }
+            });
+
+            if (!found) {
                 $batteryOutSelect.prop('disabled', true);
-                // Thêm một option "disabled" *sau* placeholder
                 $batteryOutSelect.append('<option value="" disabled>Không có pin sẵn sàng tại trạm này</option>');
             }
         }
 
         $stationSelect.change(function() {
+            // Khi đổi trạm, reset pin đã chọn (vì nó có thể không thuộc trạm mới)
+            selectedOutId = null;
             updateBatteryOutDropdown($(this).val());
         });
 
         // Khởi chạy ban đầu cho "Pin Mới"
         var currentStationId = $stationSelect.val();
-        var selectedOutId = [[${transaction.batteryOut?.id}]];
-
         if (currentStationId) {
-            updateBatteryOutDropdown(currentStationId);
-            if (selectedOutId) $batteryOutSelect.val(selectedOutId);
+            updateBatteryOutDropdown(currentStationId); // Chạy filter (giờ đã đúng)
+            if (selectedOutId) {
+                $batteryOutSelect.val(selectedOutId); // Chọn pin VFBAT004
+            }
         } else {
             updateBatteryOutDropdown(null); // Vô hiệu hóa lúc đầu
         }
 
-        /* logic cho dropdown pin khách trả vào                  */
 
+        /* logic cho dropdown pin khách trả vào - rented        */
         var $userSelect = $('#user');
         var $batteryInSelect = $('#batteryIn');
 
         // 1. Lưu lại tất cả các tùy chọn pin rented
         var $allBatteryInOptions = $batteryInSelect.find('option[data-user-id]').clone();
 
-        // 2. Xóa các tùy chọn pin khỏi DOM, *chỉ để lại placeholder*
+        // 2. Xóa các tùy chọn pin khỏi DOM
         $batteryInSelect.find('option[data-user-id]').remove();
 
         function updateBatteryInForUser(selectedUserId) {
-            var currentBatteryInValue = $batteryInSelect.val();
-
-            // 3. Xóa các tùy chọn pin (data-user-id) và thông báo (disabled) cũ
+            // 3. Xóa các tùy chọn cũ
             $batteryInSelect.find('option[data-user-id]').remove();
             $batteryInSelect.find('option[disabled]').remove();
-
-            // 4. Lấy placeholder CÓ SẴN
             var $placeholder = $batteryInSelect.find('option[value=""]');
 
             if (!selectedUserId) {
@@ -175,34 +180,39 @@
 
             var found = false;
             $allBatteryInOptions.each(function() {
-                if ($(this).data('user-id') == selectedUserId) {
-                    $batteryInSelect.append($(this).clone());
+                var $option = $(this);
+                var optionPinId = $option.val();
+                var optionUserId = $option.data('user-id');
+
+                // Điều kiện 1: User ID của pin này khớp với user đang chọn
+                // Điều kiện 2: HOẶC Pin này LÀ pin đã được chọn của giao dịch (ID=selectedInId)
+                if ((optionUserId != "" && optionUserId == selectedUserId) || (optionPinId != "" && optionPinId == selectedInId)) {
+                    $batteryInSelect.append($option.clone());
                     found = true;
                 }
             });
 
             if (!found) {
-                $batteryInSelect.append('<option value="" disabled>Khách hàng này không có pin nào đang thuê</option>');
+                $batteryInSelect.append('<option value="" disabled>Khách hàng này không có pin nào đang thuê</Tùy chọn>');
             }
 
-            // Chọn lại giá trị cũ (nếu là form Edit)
-            if(currentBatteryInValue) {
-                $batteryInSelect.val(currentBatteryInValue);
+            // Chọn lại giá trị cũ
+            if(selectedInId) {
+                $batteryInSelect.val(selectedInId);
             }
         }
 
         $userSelect.on('change', function() {
-            // Khi đổi user, reset giá trị pin cũ về "chưa chọn"
+            // Khi đổi user, reset pin đã chọn
+            selectedInId = null;
             $batteryInSelect.val("");
             updateBatteryInForUser($(this).val());
         });
 
-        // 5. Chạy lần đầu khi tải trang (quan trọng cho form Sửa)
+        // 5. Chạy lần đầu khi tải trang
         var initialUserId = $userSelect.val();
         updateBatteryInForUser(initialUserId);
     });
 </script>
-
-
 </body>
 </html>
