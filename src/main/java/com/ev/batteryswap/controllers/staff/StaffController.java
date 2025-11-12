@@ -145,7 +145,7 @@ public class StaffController {
         transaction.setStation(staff.getStation());
 
         try {
-            transactionService.saveTransaction(transaction);
+            transactionService.createTransaction(transaction);
             redirectAttributes.addFlashAttribute("successMessage", "Xác nhận đổi pin và ghi nhận giao dịch thành công!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi: " + e.getMessage());
