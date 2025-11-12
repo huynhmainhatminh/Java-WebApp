@@ -21,15 +21,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 @Controller
 @RequestMapping("/admin/transactions")
 public class AdminTransactionController {
-
-    private static final Logger logger = LoggerFactory.getLogger(AdminTransactionController.class);
 
     @Autowired
     private ITransactionService transactionService;
@@ -87,13 +82,11 @@ public class AdminTransactionController {
 
             // 2. Lấy danh sách Pin ĐANG CHO THUÊ
             Page<Battery> rentedPage = batteryService.filterBatteries(null, "RENTED", null, PageRequest.of(0, 1000));
-            // TẠO MỘT DANH SÁCH MỚI CÓ THỂ THAY ĐỔI (ArrayList)
             model.addAttribute("rentedBatteries", new ArrayList<>(rentedPage.getContent()));
 
         } catch (Exception e) {
-            logger.error("ADMIN: Không thể tải danh sách pin cho form!", e);
             model.addAttribute("availableBatteries", new ArrayList<>()); // Trả về ArrayList rỗng
-            model.addAttribute("rentedBatteries", new ArrayList<>()); // Trả về ArrayList rỗng
+            model.addAttribute("rentedBatteries", new ArrayList<>());
         }
 
         try {
@@ -101,7 +94,6 @@ public class AdminTransactionController {
             List<User> drivers = userService.getUsersByRole("DRIVER");
             model.addAttribute("users", drivers);
         } catch (Exception e) {
-            logger.error("ADMIN: Không thể tải danh sách DRIVER cho form!", e);
             model.addAttribute("users", Collections.emptyList());
         }
     }
@@ -126,15 +118,12 @@ public class AdminTransactionController {
 
     @GetMapping("/edit/{id}")
     public String showEditTransactionForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
-        // 1. Lấy giao dịch
         SwapTransaction transaction = transactionService.getTransactionById(id);
         if (transaction == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy giao dịch!");
             return "redirect:/admin/transactions";
         }
-        // 2. Gửi giao dịch đó sang HTML
         model.addAttribute("transaction", transaction);
-        // 3. TRẢ VỀ FILE HTML MỚI (CHỈ DÀNH CHO SỬA)
         return "admin/transaction_edit_form";
     }
 
@@ -159,7 +148,6 @@ public class AdminTransactionController {
 
             redirectAttributes.addFlashAttribute("successMessage", "Cập nhật giao dịch thành công!");
         } catch (Exception e) {
-            logger.error("ADMIN: LỖI khi cập nhật giao dịch ID: {}", id, e);
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi cập nhật giao dịch: " + e.getMessage());
         }
         return "redirect:/admin/transactions";

@@ -81,8 +81,6 @@ public class TransactionService implements ITransactionService {
             throw new RuntimeException("Pin lấy ra không tồn tại!");
         }
 
-
-
         // 1. Kiểm tra logic: Pin lấy ra phải đang "AVAILABLE"
         if (!"AVAILABLE".equals(batteryOut.getStatus())) {
             throw new RuntimeException("Logic lỗi: Pin lấy ra " +

@@ -69,7 +69,7 @@ public class StaffController {
                                 @RequestParam(defaultValue = "0") int page,
                                 @RequestParam(required = false) String status,
                                 @RequestParam(required = false) String search,
-                                RedirectAttributes redirectAttributes) { // Thêm redirectAttributes
+                                RedirectAttributes redirectAttributes) {
         User staff = getCurrentStaffUser();
         String redirect = checkStaffStation(staff, redirectAttributes);
         if (redirect != null) return redirect;
@@ -106,7 +106,7 @@ public class StaffController {
     }
 
     @GetMapping("/transactions/new")
-    public String showCreateTransactionForm(Model model, RedirectAttributes redirectAttributes) { // Thêm redirectAttributes
+    public String showCreateTransactionForm(Model model, RedirectAttributes redirectAttributes) {
         User staff = getCurrentStaffUser();
         String redirect = checkStaffStation(staff, redirectAttributes);
         if (redirect != null) return redirect;
