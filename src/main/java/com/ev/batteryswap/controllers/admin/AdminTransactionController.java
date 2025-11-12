@@ -16,14 +16,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @Controller
 @RequestMapping("/admin/transactions")
 public class AdminTransactionController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AdminTransactionController.class);
 
     @Autowired
     private ITransactionService transactionService;
@@ -75,20 +81,27 @@ public class AdminTransactionController {
     private void addFormAttributes(Model model) {
         try {
             // 1. Lấy danh sách Pin SẴN SÀNG
-            Page<Battery> availableBatteries = batteryService.filterBatteries(null, "AVAILABLE", null, PageRequest.of(0, 1000));
-            model.addAttribute("availableBatteries", availableBatteries.getContent());
+            Page<Battery> availablePage = batteryService.filterBatteries(null, "AVAILABLE", null, PageRequest.of(0, 1000));
+            // TẠO MỘT DANH SÁCH MỚI CÓ THỂ THAY ĐỔI (ArrayList)
+            model.addAttribute("availableBatteries", new ArrayList<>(availablePage.getContent()));
 
             // 2. Lấy danh sách Pin ĐANG CHO THUÊ
-            Page<Battery> rentedBatteries = batteryService.filterBatteries(null, "RENTED", null, PageRequest.of(0, 1000));
-            model.addAttribute("rentedBatteries", rentedBatteries.getContent());
+            Page<Battery> rentedPage = batteryService.filterBatteries(null, "RENTED", null, PageRequest.of(0, 1000));
+            // TẠO MỘT DANH SÁCH MỚI CÓ THỂ THAY ĐỔI (ArrayList)
+            model.addAttribute("rentedBatteries", new ArrayList<>(rentedPage.getContent()));
+
         } catch (Exception e) {
-            model.addAttribute("batteries", Collections.emptyList());
+            logger.error("ADMIN: Không thể tải danh sách pin cho form!", e);
+            model.addAttribute("availableBatteries", new ArrayList<>()); // Trả về ArrayList rỗng
+            model.addAttribute("rentedBatteries", new ArrayList<>()); // Trả về ArrayList rỗng
         }
+
         try {
             //Lấy user có role driver
             List<User> drivers = userService.getUsersByRole("DRIVER");
             model.addAttribute("users", drivers);
         } catch (Exception e) {
+            logger.error("ADMIN: Không thể tải danh sách DRIVER cho form!", e);
             model.addAttribute("users", Collections.emptyList());
         }
     }
@@ -103,7 +116,7 @@ public class AdminTransactionController {
     @PostMapping
     public String createTransaction(@ModelAttribute("transaction") SwapTransaction transaction, RedirectAttributes redirectAttributes) {
         try {
-            transactionService.saveTransaction(transaction);
+            transactionService.createTransaction(transaction);
             redirectAttributes.addFlashAttribute("successMessage", "Tạo giao dịch mới thành công!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi tạo giao dịch: " + e.getMessage());
@@ -113,14 +126,16 @@ public class AdminTransactionController {
 
     @GetMapping("/edit/{id}")
     public String showEditTransactionForm(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+        // 1. Lấy giao dịch
         SwapTransaction transaction = transactionService.getTransactionById(id);
-        if (transaction != null) {
-            model.addAttribute("transaction", transaction);
-            addFormAttributes(model);
-            return "admin/transaction_form";
+        if (transaction == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy giao dịch!");
+            return "redirect:/admin/transactions";
         }
-        redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy giao dịch!");
-        return "redirect:/admin/transactions";
+        // 2. Gửi giao dịch đó sang HTML
+        model.addAttribute("transaction", transaction);
+        // 3. TRẢ VỀ FILE HTML MỚI (CHỈ DÀNH CHO SỬA)
+        return "admin/transaction_edit_form";
     }
 
     @PostMapping("/update/{id}")
@@ -135,18 +150,16 @@ public class AdminTransactionController {
             }
 
             // Cập nhật các trường từ form
-            existingTransaction.setStation(transactionFormData.getStation());
-            existingTransaction.setBatteryIn(transactionFormData.getBatteryIn());
-            existingTransaction.setBatteryOut(transactionFormData.getBatteryOut());
             existingTransaction.setAmount(transactionFormData.getAmount());
             existingTransaction.setPaymentMethod(transactionFormData.getPaymentMethod());
             existingTransaction.setPaymentStatus(transactionFormData.getPaymentStatus());
             existingTransaction.setNotes(transactionFormData.getNotes());
 
-            transactionService.saveTransaction(existingTransaction);
+            transactionService.updateTransactionDetails(existingTransaction);
 
             redirectAttributes.addFlashAttribute("successMessage", "Cập nhật giao dịch thành công!");
         } catch (Exception e) {
+            logger.error("ADMIN: LỖI khi cập nhật giao dịch ID: {}", id, e);
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi cập nhật giao dịch: " + e.getMessage());
         }
         return "redirect:/admin/transactions";
