@@ -1,6 +1,7 @@
 package com.ev.batteryswap.controllers.staff;
 
 
+import com.ev.batteryswap.pojo.User;
 import com.ev.batteryswap.security.JwtUtils;
 import com.ev.batteryswap.services.AuthServices;
 import com.ev.batteryswap.services.UserService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 
 @Controller
 @RequestMapping("/staff/login")
@@ -37,9 +39,17 @@ public class StaffLoginController {
         // kiểm tra username và password có tồn tại trong database
         if (authServices.login(username, password)) {
             // nếu True
-            String role = userService.findByUsername(username).getRole(); // lấy role người dùng
+            //String role = userService.findByUsername(username).getRole(); // lấy role người dùng
+
+            User user = userService.findByUsername(username);
+            String role = user.getRole();
 
             if (role.equals("STAFF")) {
+
+                // staff phải được gán trạm
+                if (user.getStation() == null) {
+                    return ResponseEntity.badRequest().body("Tài khoản Staff chưa được gán trạm. Vui lòng liên hệ Admin.");
+                }
 
                 String token = jwtUtils.generateToken(username, role); // tạo token
 
