@@ -4,7 +4,6 @@ import com.ev.batteryswap.pojo.Battery;
 import com.ev.batteryswap.pojo.SwapTransaction;
 import com.ev.batteryswap.pojo.User;
 import com.ev.batteryswap.services.interfaces.IUserService;
-import com.ev.batteryswap.repositories.UserRepository;
 import com.ev.batteryswap.services.interfaces.IBatteryService;
 import com.ev.batteryswap.services.interfaces.ITransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 import java.util.Collections;
@@ -29,28 +31,28 @@ public class StaffController {
     private ITransactionService transactionService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private IUserService userService;
 
     private User getCurrentStaffUser() {
-        // Giả lập nhân viên có ID=2.
-        // Trong tương lai, bạn có thể thay đổi ID này để test
-        return userRepository.findById(2);
+        //lấy thông tin xác thực  từ securityContext
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // dùng username để truy vấn thông tin đầy đủ
+        return userService.findByUsername(username);
     }
 
-    // Kiểm tra và chuyển hướng nếu nhân viên chưa được gán trạm
+    // Kiểm tra và chuyển hướng nếu nhân viên chưa được gán trạm hặc không tìm thấy
     private String checkStaffStation(User staff, RedirectAttributes redirectAttributes) {
         if (staff == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy tài khoản nhân viên. Vui lòng liên hệ Admin.");
-            return "redirect:/admin/users"; // Chuyển hướng đến trang user
+            return "redirect:/staff/login";
         }
         if (staff.getStation() == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Tài khoản nhân viên chưa được gán trạm. Vui lòng liên hệ Admin.");
-            return "redirect:/admin/users"; // Chuyển hướng đến trang user
+            return "redirect:/staff/login";
         }
-        return null; // Không có lỗi
+        return null;
     }
 
     @GetMapping("/dashboard")
@@ -69,7 +71,7 @@ public class StaffController {
                                 @RequestParam(defaultValue = "0") int page,
                                 @RequestParam(required = false) String status,
                                 @RequestParam(required = false) String search,
-                                RedirectAttributes redirectAttributes) { // Thêm redirectAttributes
+                                RedirectAttributes redirectAttributes) {
         User staff = getCurrentStaffUser();
         String redirect = checkStaffStation(staff, redirectAttributes);
         if (redirect != null) return redirect;
@@ -106,7 +108,7 @@ public class StaffController {
     }
 
     @GetMapping("/transactions/new")
-    public String showCreateTransactionForm(Model model, RedirectAttributes redirectAttributes) { // Thêm redirectAttributes
+    public String showCreateTransactionForm(Model model, RedirectAttributes redirectAttributes) {
         User staff = getCurrentStaffUser();
         String redirect = checkStaffStation(staff, redirectAttributes);
         if (redirect != null) return redirect;
@@ -145,7 +147,7 @@ public class StaffController {
         transaction.setStation(staff.getStation());
 
         try {
-            transactionService.saveTransaction(transaction);
+            transactionService.createTransaction(transaction);
             redirectAttributes.addFlashAttribute("successMessage", "Xác nhận đổi pin và ghi nhận giao dịch thành công!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi: " + e.getMessage());

@@ -12,7 +12,8 @@ public interface ITransactionService {
     Page<SwapTransaction> filterTransactions(Integer stationId, String paymentStatus, String search, Pageable pageable);
     Map<String, Long> getTransactionStatistics();
     void deleteTransaction(Integer transactionId);
-    void saveTransaction(SwapTransaction transaction);
+    void createTransaction(SwapTransaction transaction);
+    void updateTransactionDetails(SwapTransaction transaction);
     List<Map<String, Object>> getHourlySwapReport();
     SwapTransaction getTransactionById(Integer id);
     BigDecimal getTotalRevenue();
