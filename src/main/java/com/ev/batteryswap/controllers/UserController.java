@@ -1,9 +1,12 @@
 package com.ev.batteryswap.controllers;
 import com.ev.batteryswap.dto.APIResponse;
+import com.ev.batteryswap.pojo.Battery;
 import com.ev.batteryswap.pojo.RentalPackage;
 import com.ev.batteryswap.pojo.Station;
 import com.ev.batteryswap.pojo.User;
+import com.ev.batteryswap.security.JwtUtils;
 import com.ev.batteryswap.services.BatteryService;
+import com.ev.batteryswap.services.StationService;
 import com.ev.batteryswap.services.UserService;
 import com.ev.batteryswap.services.interfaces.IStationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,12 @@ public class UserController {
     @Autowired
     private BatteryService batteryService;
 
+    @Autowired
+    private StationService stationService;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
 
     @PostMapping("/information")
     public User information(@RequestParam(value = "username") String username) {
@@ -43,7 +52,6 @@ public class UserController {
 
         User user = new User();
         RentalPackage rentalPackage = new RentalPackage();
-
 
         BigDecimal balance_user = userService.findById(userId).getWalletBalance();
 
@@ -92,26 +100,45 @@ public class UserController {
     }
 
 
-    @PostMapping("/doiPin")
-    public String existsByIdAndStatusRented(@RequestParam("battery_out_id") Integer battery_out_id,
-                                            @RequestParam("battery_in_id") Integer battery_in_id) {
+    // API đổi pin
+    @PostMapping("/change")
+    public ResponseEntity<?> doiPin(@RequestParam("station_id") Integer station_id, @RequestParam("pin_id") Integer pin_id,
+                         @RequestParam("serial_number") String serial_number, @RequestParam("model_batteries") String model_batteries,
+                         @RequestParam(value = "pin_id_user", required = false) Integer pin_id_user, @CookieValue(value = "jwt") String token) {
 
-        // battery_out_id là PIN của trạm còn trống
-        // battery_in_id là PIN của người dùng đang cho thuê
+        Station station = stationService.getStationById(station_id);
 
-        // kiểm tra xem PIN cho thuê của người dùng có nằm trong database không và kiểm tra xem PIN người dùng chọn hiện có trống không
-        // thỏa mãn điều kiện khi : battery_out_id còn trống và battery_in_id đang cho thuê thì sẽ tiến hành
-        // battery_in_id đang vào tình trạng sạc, còn battery_out_id đưa vào tình trạng cho thuê
+        try {
+            if (station != null) { // kiểm tra trạm có tồn tại trong database không
 
-        if (batteryService.existsByIdAndStatusRented(battery_in_id) && batteryService.existsByIdAndStatusEmpty(battery_out_id)) {
-            batteryService.updateStatusById(battery_in_id, "CHARGING");
-            batteryService.updateStatusById(battery_in_id, "RENTED");
-            return "Hợp Lý";
-        } else {
-            return "Không Hợp Lý";
+                Battery battery = batteryService.getBatteryById(pin_id);
+                if  (battery != null && battery.getStation().equals(station) && battery.getModel().equals(model_batteries) && battery.getSerialNumber().equals(serial_number) && battery.getStatus().equals("AVAILABLE")) {
+
+
+                    String username = jwtUtils.extractUsername(token); // trích xuất username từ token
+
+                    BigDecimal balance_user = userService.findByUsername(username).getWalletBalance(); // lấy giá trị tiền hiện tại của người dùng
+
+                    if (balance_user.compareTo(battery.getAmount()) >= 0) { // kiểm tra số dư có đủ tiền không
+                        BigDecimal newBalance = balance_user.subtract(battery.getAmount()); // trừ tiền của người dùng
+                        User user = userService.findByUsername(username);
+                        batteryService.updateCurrentUser(user, pin_id);
+                        batteryService.updateStatusById(pin_id, "RENTED"); // thay đổi trạng thái của Pin
+                        userService.updateBalanceById(user.getId(), newBalance); // cập nhật lại số tiền
+                        return ResponseEntity.ok("Đổi Pin Thành Công");
+                        // return "Đổi Pin Thành Công";
+                    } else {
+                        return ResponseEntity.badRequest().body("Không Đủ Số Dư");
+                        // return "Không Đủ Số Dư";
+                    }
+
+                }
+            }
+            return ResponseEntity.badRequest().body("Đổi Pin Thất Bại");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Đổi Pin Thất Bại");
         }
     }
-
 
 
 }
