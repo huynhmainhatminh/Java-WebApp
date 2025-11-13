@@ -559,7 +559,7 @@
         <!-- Balance Display -->
         <div class="balance-card">
             <div class="balance-label">Số dư hiện tại</div>
-            <div th:text="${balance_amount}" class="balance-amount" id="balanceAmount">0 VNĐ</div>
+            <div th:text="${money_amount}" class="balance-amount" id="balanceAmount">0 VNĐ</div>
         </div>
 
         <!-- Recharge Form -->
@@ -761,6 +761,7 @@
 
         const qrUrl = await response.text();
         showRechargeResult(amount, qrUrl);
+
     });
 
     // Show Result

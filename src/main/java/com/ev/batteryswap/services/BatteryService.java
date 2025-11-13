@@ -2,6 +2,7 @@ package com.ev.batteryswap.services;
 
 import com.ev.batteryswap.pojo.Battery;
 import com.ev.batteryswap.pojo.Station;
+import com.ev.batteryswap.pojo.User;
 import com.ev.batteryswap.repositories.BatteryRepository;
 import com.ev.batteryswap.repositories.StationRepository;
 import com.ev.batteryswap.services.interfaces.IBatteryService;
@@ -110,13 +111,18 @@ public class BatteryService implements IBatteryService {
     }
 
     // tìm kiếm pin trống chưa cho thuê
-    public boolean existsByIdAndStatusEmpty(Integer battery_empty_id) {
-        return batteryRepository.existsByIdAndStatusEmpty(battery_empty_id);
+    public boolean existsByIdAndStatusAvailable(Integer battery_available_id) {
+        return batteryRepository.existsByIdAndStatusAvailable(battery_available_id);
     }
 
     // cập nhật trạng thái pin bằng id
     public void updateStatusById(Integer id, String status) {
         batteryRepository.updateStatusById(id, status);
+    }
+
+    @Override
+    public void updateCurrentUser(User user, Integer id) {
+        batteryRepository.updateCurrentUser(user, id);
     }
 
 }
