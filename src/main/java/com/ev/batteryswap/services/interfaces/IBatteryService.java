@@ -2,6 +2,7 @@ package com.ev.batteryswap.services.interfaces;
 
 import com.ev.batteryswap.pojo.Battery;
 import com.ev.batteryswap.pojo.Station;
+import com.ev.batteryswap.pojo.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,6 +19,8 @@ public interface IBatteryService {
     Battery getBatteryById(Integer id);
 
     boolean existsByIdAndStatusRented(Integer battery_rented_id); // tìm kiếm pin đang cho thuê
-    boolean existsByIdAndStatusEmpty(Integer battery_empty_id); // tìm kiếm pin trống chưa cho thuê
+    boolean existsByIdAndStatusAvailable(Integer battery_empty_id); // tìm kiếm pin trống chưa cho thuê
     void updateStatusById(Integer id, String status); // cập nhật trạng thái pin bằng id
+    void updateCurrentUser(User user,  Integer id);
+
 }

@@ -37,6 +37,10 @@ public class Battery {
     @Column(name = "capacity_kwh", nullable = false, precision = 8, scale = 2)
     private BigDecimal capacityKwh;
 
+
+    @Column(name = "amount", precision = 12, scale = 2)
+    private BigDecimal amount =  BigDecimal.ZERO;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User currentUser;
@@ -68,4 +72,7 @@ public class Battery {
     @LastModifiedDate
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+
+
 }

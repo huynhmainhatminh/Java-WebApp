@@ -1,9 +1,7 @@
 package com.ev.batteryswap.pojo;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
@@ -50,10 +48,9 @@ public class User {
     @JoinColumn(name = "station_id")
     private Station station;
 
-    @ColumnDefault("'ACTIVE'")
     @Lob
     @Column(name = "status")
-    private String status;
+    private String status = "ACTIVE";
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

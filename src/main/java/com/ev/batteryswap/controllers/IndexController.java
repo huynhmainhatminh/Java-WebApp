@@ -1,4 +1,5 @@
 package com.ev.batteryswap.controllers;
+import com.ev.batteryswap.pojo.Battery;
 import com.ev.batteryswap.pojo.Station;
 import com.ev.batteryswap.security.JwtUtils;
 import com.ev.batteryswap.services.UserService;
@@ -57,8 +58,6 @@ public class IndexController {
         String formattedMoney = String.format("%,.0f VND", money);
         model.addAttribute("money_amount", formattedMoney);
 
-        model.addAttribute("username", username);
-        model.addAttribute("balance_amount", formattedMoney);
     }
 
     @GetMapping("/login")
@@ -128,7 +127,7 @@ public class IndexController {
 
     @GetMapping("/packages")
     public String packages() {
-        return "packages";
+        return  "packages";
     }
 
 
@@ -136,8 +135,12 @@ public class IndexController {
     @PostMapping("/qr")
     @ResponseBody
     public ResponseEntity<?> handleForm(@RequestParam BigDecimal amount, @CookieValue(value = "jwt", required = false) String token) {
+
+        String stk = "22749061"; // số tài khoản ngân hàng
+        String name_nganhang = "ACB"; // tên ngân hàng
+
         String username = jwtUtils.extractUsername(token); // lấy username từ token jwt
-        String url = "https://img.vietqr.io/image/ACB-22749061-compact1.jpg?addInfo="+username+"&amount="+amount;
+        String url = "https://img.vietqr.io/image/"+name_nganhang+"-"+stk+"-compact1.jpg?addInfo="+username+"&amount="+amount;
         return ResponseEntity.ok(url);
     }
 
@@ -151,6 +154,26 @@ public class IndexController {
             update_info(model, token);
             return "user/naptien";
         }
+    }
+
+    @GetMapping("/station")
+    public String station(@RequestParam() int id, Model model, @CookieValue(value = "jwt", required = false) String token) {
+        update_info(model, token);
+        Station station = stationService.getStationById(id);
+        Map<String, Long> batteryStatsByStation = batteryService.getBatteryStatisticsForStation(station);
+
+        Page<Battery> batteryPage = batteryService.filterBatteries(id, null, null, PageRequest.of(0, 10));
+
+        System.out.println(batteryPage);
+        model.addAttribute("stationName", station.getName());
+        model.addAttribute("stationAddress", station.getAddress());
+        model.addAttribute("stationId", station.getId());
+        model.addAttribute("batteryStatsByStation", batteryStatsByStation);
+        model.addAttribute("batteryPage", batteryPage);
+
+
+
+        return "user/station";
     }
 
 

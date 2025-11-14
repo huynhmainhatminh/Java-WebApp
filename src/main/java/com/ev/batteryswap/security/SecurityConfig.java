@@ -9,7 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity // Bật module bảo mật Spring Security
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -24,28 +24,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // trang công khai
-                        .requestMatchers(
-                                "/", "/login", "/register", "/packages",
-                                "/admin/login", "/staff/login", // Cho phép 2 trang login
-                                "/api/**", // Cho phép mọi API
-                                "/css/**", "/js/**", "/img/**" // Cho phép file tĩnh
-                        ).permitAll()
-
-                        //trang cho driver
-                        .requestMatchers("/my", "/naptien", "/contact", "/dashboard").hasAnyAuthority("DRIVER")
-
-                        //trang cho staff
-                        .requestMatchers("/staff/**").hasAnyAuthority("STAFF")
-
-                        //trang cho admin
+                        .requestMatchers("/", "/login", "/register", "/my","/packages","/admin/login","/staff/login","/api/**").permitAll() // API công khai
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/img/**").permitAll() // hiệu ứng
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
-
                         .anyRequest().authenticated()
                 )
-                .formLogin(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable) // vô hiệu hóa form login mặc định của Spring Security
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 }

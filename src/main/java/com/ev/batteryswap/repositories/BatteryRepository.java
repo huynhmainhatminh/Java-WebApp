@@ -2,10 +2,12 @@ package com.ev.batteryswap.repositories;
 
 import com.ev.batteryswap.pojo.Battery;
 import com.ev.batteryswap.pojo.Station;
+import com.ev.batteryswap.pojo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,14 +24,20 @@ public interface BatteryRepository extends JpaRepository<Battery, Integer>, JpaS
     boolean existsByIdAndStatusRented(Integer battery_rented_id);
 
     // tìm kiếm pin trống chưa cho thuê
-    @Query("SELECT COUNT(b) > 0 FROM Battery b WHERE b.id = :id AND b.status = 'EMPTY'")
-    boolean existsByIdAndStatusEmpty(Integer battery_empty_id);
+    @Query("SELECT COUNT(b) > 0 FROM Battery b WHERE b.id = :id AND b.status = 'AVAILABLE'")
+    boolean existsByIdAndStatusAvailable(Integer battery_empty_id);
 
     // cập nhật trạng thái pin bằng id
     @Transactional
     @Modifying
     @Query("UPDATE Battery b SET b.status = :status WHERE b.id = :id")
     void updateStatusById(Integer id, String status);
+
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Battery b SET b.currentUser = :user WHERE b.id = :id")
+    int updateCurrentUser(User user, Integer id);
 
 
 }
