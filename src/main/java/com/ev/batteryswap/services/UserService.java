@@ -1,7 +1,9 @@
 package com.ev.batteryswap.services;
+import com.ev.batteryswap.pojo.Rental;
 import com.ev.batteryswap.pojo.RentalPackage;
 import com.ev.batteryswap.pojo.User;
 import com.ev.batteryswap.repositories.RentalPackageRepository;
+import com.ev.batteryswap.repositories.RentalRepository;
 import com.ev.batteryswap.repositories.UserRepository;
 import com.ev.batteryswap.services.interfaces.IUserService;
 import jakarta.persistence.criteria.Predicate;
@@ -23,7 +25,7 @@ public class UserService implements IUserService {
 
 
     @Autowired
-    private RentalPackageRepository rentalPackageRepository;
+    private RentalRepository  rentalRepository;
 
 
 
@@ -70,8 +72,8 @@ public class UserService implements IUserService {
 
 
     @Override
-    public RentalPackage registerPackage(RentalPackage rentalPackage){
-        return rentalPackageRepository.save(rentalPackage);
+    public Rental registerPackage(Rental rental){
+        return rentalRepository.save(rental);
     }
 
     @Override
@@ -88,7 +90,6 @@ public class UserService implements IUserService {
     public User findById(int id) {
         return userRepository.findById(id);
     }
-
 
     @Override
     public List<User> getStaffByStation(Integer stationId) {

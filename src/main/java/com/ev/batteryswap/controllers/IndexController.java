@@ -1,7 +1,9 @@
 package com.ev.batteryswap.controllers;
 import com.ev.batteryswap.pojo.Battery;
+import com.ev.batteryswap.pojo.RentalPackage;
 import com.ev.batteryswap.pojo.Station;
 import com.ev.batteryswap.security.JwtUtils;
+import com.ev.batteryswap.services.RentalPackageService;
 import com.ev.batteryswap.services.UserService;
 import com.ev.batteryswap.services.interfaces.IBatteryService;
 import com.ev.batteryswap.services.interfaces.IStationService;
@@ -34,6 +36,12 @@ public class IndexController {
 
     @Autowired
     private JwtUtils  jwtUtils;
+
+
+    @Autowired
+    private RentalPackageService  rentalPackageService;
+
+
 
     @GetMapping("/")
     public String index(@CookieValue(value = "jwt", required = false) String token) {
@@ -126,8 +134,46 @@ public class IndexController {
     }
 
     @GetMapping("/packages")
-    public String packages() {
-        return  "packages";
+    public String packages(@CookieValue(value = "jwt", required = false) String token, Model model) {
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "packages";
+        } else {
+            update_info(model, token);
+            return "redirect:/pricing";
+        }
+    }
+
+    @GetMapping("/pricing")
+    public String packages_user(@CookieValue(value = "jwt", required = false) String token, Model model) {
+
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "login";
+        } else {
+            update_info(model, token);
+
+            RentalPackage pack_30 = rentalPackageService.findRentalPackageByName("Gói Cơ Bản 30 ngày");
+            RentalPackage pack_90 = rentalPackageService.findRentalPackageByName("Gói Nâng Cao 90 ngày");
+            RentalPackage pack_180 = rentalPackageService.findRentalPackageByName("Gói Cao Cấp 180 ngày");
+
+            model.addAttribute("price_amount_30", pack_30.getPrice());
+            model.addAttribute("price_amount_90", pack_90.getPrice());
+            model.addAttribute("price_amount_180", pack_180.getPrice());
+
+            model.addAttribute("content_pack_30", pack_30.getName());
+            model.addAttribute("content_pack_90", pack_90.getName());
+            model.addAttribute("content_pack_180", pack_180.getName());
+
+            model.addAttribute("days_30", pack_30.getDurationDays());
+            model.addAttribute("days_90", pack_90.getDurationDays());
+            model.addAttribute("days_180", pack_180.getDurationDays());
+
+//            model.addAttribute("description_30", pack_30.getDescription());
+//            model.addAttribute("description_90", pack_90.getDescription());
+//            model.addAttribute("description_180", pack_180.getDescription());
+
+            return "user/packages";
+        }
+
     }
 
 
@@ -164,14 +210,13 @@ public class IndexController {
 
         Page<Battery> batteryPage = batteryService.filterBatteries(id, null, null, PageRequest.of(0, 10));
 
-        System.out.println(batteryPage);
+        // System.out.println(batteryPage);
+
         model.addAttribute("stationName", station.getName());
         model.addAttribute("stationAddress", station.getAddress());
         model.addAttribute("stationId", station.getId());
         model.addAttribute("batteryStatsByStation", batteryStatsByStation);
         model.addAttribute("batteryPage", batteryPage);
-
-
 
         return "user/station";
     }

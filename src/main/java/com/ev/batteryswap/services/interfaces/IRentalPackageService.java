@@ -12,4 +12,7 @@ public interface IRentalPackageService {
     RentalPackage save(RentalPackage rentalPackage);
     void deleteById(Integer id);
     RentalPackage findById(Integer id);
+
+    RentalPackage findRentalPackageByName(String name);
+
 }
