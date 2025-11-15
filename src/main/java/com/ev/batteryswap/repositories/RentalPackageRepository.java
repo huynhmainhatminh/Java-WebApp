@@ -15,4 +15,8 @@ public interface RentalPackageRepository extends JpaRepository<RentalPackage, In
 
     @Query("SELECT AVG(rp.durationDays) FROM RentalPackage rp")
     Double getAverageDuration();
+
+
+    RentalPackage findRentalPackageByName(String name);
+
 }
