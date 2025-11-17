@@ -5,9 +5,16 @@ import com.ev.batteryswap.services.interfaces.IAuthServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class AuthServices implements IAuthServices {
+
+
+    List<String> tokenBlacklist = new ArrayList<>();
+
 
     @Autowired
     private UserRepository userRepositories;
@@ -27,4 +34,14 @@ public class AuthServices implements IAuthServices {
         return userRepositories.existsByUsername(username);
     }
 
+
+    @Override
+    public void blacklist (String token) {
+        tokenBlacklist.add(token);
+    }
+
+    @Override
+    public boolean isBlacklisted(String token) {
+        return tokenBlacklist.contains(token);
+    }
 }

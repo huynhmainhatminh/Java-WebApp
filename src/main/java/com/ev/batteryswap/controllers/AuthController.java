@@ -12,6 +12,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 
 @RestController
 @RequestMapping("/api")
@@ -50,6 +52,30 @@ public class AuthController {
         } else {
             return ResponseEntity.badRequest().body("Đăng nhập thất bại.");
         }
+    }
+
+
+    @GetMapping("/logout")
+    public void logout(
+            @CookieValue(name = "jwt", required = false) String token,
+            HttpServletResponse response, HttpServletRequest request
+    )  throws IOException {
+        // 1. Nếu có token thì đưa vào blacklist (in-memory)
+        if (token != null && !token.isEmpty() && jwtUtils.validateToken(token)) {
+            jwtUtils.logout(token); // hàm này bạn đã viết để blacklist token (in-memory)
+        }
+
+        // 2. Xoá cookie trên trình duyệt
+        ResponseCookie cookie = ResponseCookie.from("jwt", "")
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(0)
+                .build();
+        response.addHeader("Set-Cookie", cookie.toString());
+        // 3. Redirect về trang index
+        response.sendRedirect("/");
+
     }
 
 
