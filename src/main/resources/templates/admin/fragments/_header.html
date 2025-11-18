@@ -75,6 +75,12 @@
                         <i class="nav-icon fas fa-box-open"></i> <p>Quản lý Gói Thuê</p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a th:href="@{/admin/rentals}" class="nav-link" th:classappend="${currentPage == 'rentals'} ? 'active' : ''">
+                        <i class="nav-icon fas fa-file-invoice-dollar"></i> <p>Lịch sử Thuê Gói</p>
+                    </a>
+                </li>
                 <li class="nav-header">QUẢN TRỊ VIÊN</li>
                 <li class="nav-item">
                     <a th:href="@{/admin/users}" class="nav-link" th:classappend="${currentPage == 'users'} ? 'active' : ''">
