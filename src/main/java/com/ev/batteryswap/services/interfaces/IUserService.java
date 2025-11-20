@@ -20,12 +20,20 @@ public interface IUserService {
 
     User findByUsername(String username);
     User findById(int id);
+
+    // đăng ký gói dịch vụ
     Rental registerPackage(Rental rental);
+
+    // cập nhật tiền của người dùng
     int updateBalanceById(int userId, BigDecimal price);
 
     //Tìm nhân viên dựa theo id trạm
     List<User> getStaffByStation(Integer stationId);
+
     //Tìm user theo role
     List<User> getUsersByRole(String role);
+
+    // Tìm kiếm gói đăng ký từ người dùng
+    Rental findRentalByUser(User user);
 
 }

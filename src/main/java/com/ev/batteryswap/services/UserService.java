@@ -101,4 +101,11 @@ public class UserService implements IUserService {
     }
 
 
+    // Tìm kiếm gói đăng ký từ người dùng
+    @Override
+    public Rental findRentalByUser(User user) {
+        return rentalRepository.findRentalByUser(user);
+    }
+
+
 }

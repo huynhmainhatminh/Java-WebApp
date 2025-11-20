@@ -238,15 +238,29 @@
             margin-top: auto;
         }
 
+
+        .package-button:disabled,
+        .package-button.disabled {
+            background: #e5e7eb !important;
+            color: #9ca3af !important;
+            cursor: not-allowed;
+            box-shadow: none !important;
+        }
+
+        .package-button:disabled:hover,
+        .package-button.disabled:hover {
+            transform: none;
+        }
+
         .package-card.basic .package-button {
-            background: #f1f5f9;
-            color: #0f172a;
-            border: 2px solid #e2e8f0;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+            box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
         }
 
         .package-card.basic .package-button:hover {
-            background: #e2e8f0;
-            border-color: #cbd5e1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
         }
 
         .package-card.premium .package-button {
@@ -766,10 +780,19 @@
                     <li>Quy trình tiêu chuẩn</li>
                 </ul>
 
-                <button class="package-button" th:onclick="|openPaymentPopup('basic', 'Cơ Bản', '${price_amount_30}', '${days_30}')|">
-                    <span>Đăng ký ngay</span>
+                <button th:if="${rental != null}" class="package-button disabled">
+
+                    <span th:if="${rental.getTotalAmount() != price_amount_30}">Đăng ký ngay</span>
+                    <span th:if="${rental.getTotalAmount() == price_amount_30}">Gói hiện tại của bạn</span>
+
+                </button>
+
+                <button th:if="${rental == null}" class="package-button" th:onclick="|openPaymentPopup('basic', 'Cơ Bản', '${price_amount_30}', '${days_30}')|">
+                    <span >Đăng ký ngay</span>
                     <span>→</span>
                 </button>
+
+
             </div>
 
             <!-- Premium Package -->
@@ -795,7 +818,14 @@
                     <li>Tích điểm thưởng</li>
                 </ul>
 
-                <button class="package-button" th:onclick="|openPaymentPopup('basic', 'Nâng Cao', '${price_amount_90}', '${days_90}')|">
+                <button th:if="${rental != null}" class="package-button disabled">
+
+                    <span th:if="${rental.getTotalAmount() != price_amount_90}">Đăng ký ngay</span>
+                    <span th:if="${rental.getTotalAmount() == price_amount_90}">Gói hiện tại của bạn</span>
+
+                </button>
+
+                <button th:if="${rental == null}" class="package-button" th:onclick="|openPaymentPopup('basic', 'Nâng Cao', '${price_amount_90}', '${days_90}')|">
                     <span>Đăng ký ngay</span>
                     <span>→</span>
                 </button>
@@ -825,7 +855,15 @@
                     <li>Quà tặng đặc biệt</li>
                 </ul>
 
-                <button class="package-button" th:onclick="|openPaymentPopup('basic', 'Cao Cấp', '${price_amount_180}', '${days_180}')|">
+
+                <button th:if="${rental != null}" class="package-button disabled">
+
+                    <span th:if="${rental.getTotalAmount() != price_amount_180}">Đăng ký ngay</span>
+                    <span th:if="${rental.getTotalAmount() == price_amount_180}">Gói hiện tại của bạn</span>
+
+                </button>
+
+                <button th:if="${rental == null}" class="package-button" th:onclick="|openPaymentPopup('basic', 'Cao Cấp', '${price_amount_180}', '${days_180}')|">
                     <span>Đăng ký ngay</span>
                     <span>→</span>
                 </button>

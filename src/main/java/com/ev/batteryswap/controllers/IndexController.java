@@ -1,5 +1,6 @@
 package com.ev.batteryswap.controllers;
 import com.ev.batteryswap.pojo.Battery;
+import com.ev.batteryswap.pojo.Rental;
 import com.ev.batteryswap.pojo.RentalPackage;
 import com.ev.batteryswap.pojo.Station;
 import com.ev.batteryswap.security.JwtUtils;
@@ -8,10 +9,12 @@ import com.ev.batteryswap.services.UserService;
 import com.ev.batteryswap.services.interfaces.IBatteryService;
 import com.ev.batteryswap.services.interfaces.IStationService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import jakarta.servlet.http.Cookie;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,10 +40,8 @@ public class IndexController {
     @Autowired
     private JwtUtils  jwtUtils;
 
-
     @Autowired
     private RentalPackageService  rentalPackageService;
-
 
 
     @GetMapping("/")
@@ -154,6 +155,9 @@ public class IndexController {
             RentalPackage pack_30 = rentalPackageService.findRentalPackageByName("Gói Cơ Bản 30 ngày");
             RentalPackage pack_90 = rentalPackageService.findRentalPackageByName("Gói Nâng Cao 90 ngày");
             RentalPackage pack_180 = rentalPackageService.findRentalPackageByName("Gói Cao Cấp 180 ngày");
+            Rental rental = userService.findRentalByUser(userService.findByUsername(jwtUtils.extractUsername(token)));
+
+            model.addAttribute("rental", rental);
 
             model.addAttribute("price_amount_30", pack_30.getPrice());
             model.addAttribute("price_amount_90", pack_90.getPrice());
@@ -223,9 +227,10 @@ public class IndexController {
 
 
     @GetMapping("/dashboard")
-    public String listStations(Model model, @RequestParam(defaultValue = "0") int page, @CookieValue(value = "jwt", required = false) String token) {
+    public String listStations(Model model, @RequestParam(defaultValue = "1") int page, @CookieValue(value = "jwt", required = false) String token) {
+
         update_info(model, token);
-        Page<Station> stationPage = stationService.filterStations(null, PageRequest.of(page, 3));
+        Page<Station> stationPage = stationService.filterStations(null, PageRequest.of(page-1, 6));
 //        model.addAttribute("stations", stationPage.getContent());
 //        return "user/dashboard"; // chính là file HTML bạn gửi ở trên
 
@@ -241,6 +246,9 @@ public class IndexController {
 
         model.addAttribute("stations", stationPage);
         model.addAttribute("batteryStatsByStation", batteryStatsByStation);
+        model.addAttribute("totalPages", stationPage.getTotalPages());
+        model.addAttribute("currentPage", page);
+
         return "user/dashboard";
     }
 
