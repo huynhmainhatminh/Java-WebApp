@@ -78,6 +78,11 @@ public class BatteryService implements IBatteryService {
     }
 
     @Override
+    public Battery getBatteryByCurrentUser(User user) {
+        return batteryRepository.getBatteryByCurrentUser(user);
+    }
+
+    @Override
     public Map<String, Long> getBatteryStatistics() {
         Map<String, Long> stats = new HashMap<>();
         stats.put("total", batteryRepository.count());

@@ -39,5 +39,6 @@ public interface BatteryRepository extends JpaRepository<Battery, Integer>, JpaS
     @Query("UPDATE Battery b SET b.currentUser = :user WHERE b.id = :id")
     int updateCurrentUser(User user, Integer id);
 
+    Battery getBatteryByCurrentUser(User user);
 
 }

@@ -1,8 +1,5 @@
 package com.ev.batteryswap.controllers;
-import com.ev.batteryswap.pojo.Battery;
-import com.ev.batteryswap.pojo.Rental;
-import com.ev.batteryswap.pojo.RentalPackage;
-import com.ev.batteryswap.pojo.Station;
+import com.ev.batteryswap.pojo.*;
 import com.ev.batteryswap.security.JwtUtils;
 import com.ev.batteryswap.services.RentalPackageService;
 import com.ev.batteryswap.services.UserService;
@@ -57,15 +54,38 @@ public class IndexController {
     public void update_info(Model model, String token) {
 
         String username = jwtUtils.extractUsername(token); // lấy username từ token jwt
-        String role = jwtUtils.extractRole(token); // lấy role người dùng từ token jwt
 
-        model.addAttribute("username", username);
-        model.addAttribute("role", role);
+        User user = userService.findByUsername(username); // lấy toàn bộ thông tin người dùng
+
+        Rental rental = userService.findRentalByUser(user);  // lấy gói dịch vụ mà người dùng đăng ký
+
+        Battery battery = batteryService.getBatteryByCurrentUser(user);
+
+        String pack_name;
+        String model_battery;
+
+        if (rental != null) {
+            RentalPackage rentalPackage = rentalPackageService.findById(rental.getPackageField().getId()); // tìm gói
+            pack_name = rentalPackage.getName();
+        } else {
+            pack_name = "Không có gói";
+        }
+
+        if (battery != null) {
+            model_battery = battery.getModel();
+        } else {
+            model_battery = "Không có PIN";
+        }
+
         BigDecimal money = userService.findByUsername(username).getWalletBalance();
 
         // Định dạng tiền tệ theo locale Việt Nam
         String formattedMoney = String.format("%,.0f VND", money);
         model.addAttribute("money_amount", formattedMoney);
+
+        model.addAttribute("info_user", user);
+        model.addAttribute("pack_name", pack_name);
+        model.addAttribute("model_battery", model_battery);
 
     }
 
@@ -141,6 +161,16 @@ public class IndexController {
         } else {
             update_info(model, token);
             return "redirect:/pricing";
+        }
+    }
+
+    @GetMapping("/datlich")
+    public String datlich(@CookieValue(value = "jwt", required = false) String token, Model model) {
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "login";
+        } else {
+            update_info(model, token);
+            return "user/datlich";
         }
     }
 
