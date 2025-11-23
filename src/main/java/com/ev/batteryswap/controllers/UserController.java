@@ -2,10 +2,7 @@ package com.ev.batteryswap.controllers;
 import com.ev.batteryswap.dto.APIResponse;
 import com.ev.batteryswap.pojo.*;
 import com.ev.batteryswap.security.JwtUtils;
-import com.ev.batteryswap.services.BatteryService;
-import com.ev.batteryswap.services.RentalPackageService;
-import com.ev.batteryswap.services.StationService;
-import com.ev.batteryswap.services.UserService;
+import com.ev.batteryswap.services.*;
 import com.ev.batteryswap.services.interfaces.IStationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,6 +33,9 @@ public class UserController {
     @Autowired
     private RentalPackageService rentalPackageService;
 
+    @Autowired
+    private TicketService ticketService;
+
 
     @PostMapping("/information")
     public User information(@RequestParam(value = "username") String username) {
@@ -46,7 +46,6 @@ public class UserController {
     public User getInformationById(@PathVariable("id") int id) {
          return userService.findById(id);
     }
-
 
 
     @PostMapping("/register-package")
@@ -88,7 +87,6 @@ public class UserController {
         } catch (Exception e){
             return  ResponseEntity.badRequest().body("Không thể đăng ký gói.");
         }
-
     }
 
 
@@ -123,13 +121,37 @@ public class UserController {
                         return ResponseEntity.badRequest().body("Không Đủ Số Dư");
                         // return "Không Đủ Số Dư";
                     }
-
                 }
             }
             return ResponseEntity.badRequest().body("Đổi Pin Thất Bại");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Đổi Pin Thất Bại");
         }
+    }
+
+
+    @PostMapping("/support")
+    public ResponseEntity<?> supportUser(@RequestParam("subject") String subject, @RequestParam("message") String message, @CookieValue(value = "jwt") String token){
+
+        try{
+            String username = jwtUtils.extractUsername(token);
+
+            User user = userService.findByUsername(username);
+
+            SupportTicket supportTicket = new SupportTicket();
+
+            supportTicket.setUser_id(user);
+            supportTicket.setSubject(subject);
+            supportTicket.setMessage(message);
+
+            ticketService.save(supportTicket);
+
+            return ResponseEntity.ok().body("Gửi yêu cầu hỗ trợ thành công.");
+
+        } catch (Exception e) {
+            return ResponseEntity.ok().body("Gửi yêu cầu hỗ trợ thất bại.");
+        }
+
     }
 
 

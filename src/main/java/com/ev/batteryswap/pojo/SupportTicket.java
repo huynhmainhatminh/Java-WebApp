@@ -22,6 +22,10 @@ public class SupportTicket {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user_id;
+
     @Column(name = "subject", nullable = false)
     private String subject;
 
@@ -29,15 +33,13 @@ public class SupportTicket {
     @Column(name = "message", nullable = false)
     private String message;
 
-    @ColumnDefault("'OPEN'")
     @Lob
-    @Column(name = "status", nullable = false)
-    private String status;
+    @Column(name = "status")
+    private String status = "OPEN";
 
-    @ColumnDefault("'MEDIUM'")
     @Lob
-    @Column(name = "priority", nullable = false)
-    private String priority;
+    @Column(name = "priority")
+    private String priority = "MEDIUM";
 
     @Lob
     @Column(name = "admin_response")
@@ -46,7 +48,6 @@ public class SupportTicket {
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
-
 
     @LastModifiedDate
     @Column(name = "updated_at")

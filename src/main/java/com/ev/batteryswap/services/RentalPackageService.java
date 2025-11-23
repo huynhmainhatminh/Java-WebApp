@@ -47,4 +47,11 @@ public class RentalPackageService implements IRentalPackageService {
     public void deleteById(Integer id) {
         rentalPackageRepository.deleteById(id);
     }
+
+
+    @Override
+    public RentalPackage findRentalPackageByName(String name){
+        return rentalPackageRepository.findRentalPackageByName(name);
+    }
+
 }
