@@ -28,12 +28,13 @@
     </ul>
 </nav>
 
-<aside class="main-sidebar sidebar-dark-primary elevation-4" th:fragment="sidebar(currentPage)">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" th:fragment="sidebar(currentPage)" style="display: flex; flex-direction: column;">
     <a th:href="@{/admin/batteries}" class="brand-link">
         <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Admin Panel</span>
     </a>
-    <div class="sidebar">
+
+    <div class="sidebar" style="flex-grow: 1; overflow-y: auto; width: 100%;">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 <img src="https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
@@ -42,6 +43,7 @@
                 <a href="#" class="d-block">Admin</a>
             </div>
         </div>
+
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-header">QUẢN LÝ CHUNG</li>
@@ -89,6 +91,13 @@
                 </li>
             </ul>
         </nav>
+    </div>
+
+    <div class="sidebar-footer p-3" style="border-top: 1px solid #4b545c;">
+        <a th:href="@{/logout}" class="btn btn-danger btn-block text-left" style="color: white; white-space: nowrap; overflow: hidden;">
+            <i class="nav-icon fas fa-sign-out-alt mr-2"></i>
+            <span class="logout-text font-weight-bold">Đăng xuất</span>
+        </a>
     </div>
 </aside>
 </body>
