@@ -3,7 +3,6 @@ package com.ev.batteryswap.pojo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
@@ -24,6 +23,7 @@ public class Vehicle {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -32,9 +32,6 @@ public class Vehicle {
 
     @Column(name = "model", nullable = false, length = 100)
     private String model;
-
-    @Column(name = "license_plate", length = 20)
-    private String licensePlate;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

@@ -128,7 +128,16 @@ public class IndexController {
             update_info(model, token);
             return "user/profile";
         }
+    }
 
+    @GetMapping("/vehicle")
+    public String vehicle(@CookieValue(value = "jwt", required = false) String token, Model model) {
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "login";
+        } else {
+            update_info(model, token);
+            return "user/vehicle";
+        }
     }
 
     @GetMapping("/contact")

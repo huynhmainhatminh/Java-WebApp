@@ -1,17 +1,11 @@
 package com.ev.batteryswap.controllers;
-import com.ev.batteryswap.dto.APIResponse;
 import com.ev.batteryswap.pojo.*;
 import com.ev.batteryswap.security.JwtUtils;
 import com.ev.batteryswap.services.*;
-import com.ev.batteryswap.services.interfaces.IStationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
-import java.util.List;
 
 
 @RestController
@@ -35,6 +29,12 @@ public class UserController {
 
     @Autowired
     private TicketService ticketService;
+
+    @Autowired
+    private StationReviewService stationReviewService;
+
+    @Autowired
+    private VehicleService vehicleService;
 
 
     @PostMapping("/information")
@@ -152,6 +152,51 @@ public class UserController {
             return ResponseEntity.ok().body("Gửi yêu cầu hỗ trợ thất bại.");
         }
 
+    }
+
+
+    @PostMapping("/rating")
+
+    public ResponseEntity<?> reviewStation(@RequestParam("rating") Byte rating, @RequestParam("comment") String comment, @RequestParam("station_id") Integer station_id, @CookieValue(value = "jwt") String token){
+        try{
+            String username = jwtUtils.extractUsername(token);
+            User user = userService.findByUsername(username);
+            Station station = stationService.getStationById(station_id);
+            StationReview stationReview = new StationReview();
+
+            stationReview.setUser(user);
+            stationReview.setStation(station);
+            stationReview.setRating(rating);
+            stationReview.setComment(comment);
+
+            stationReviewService.save(stationReview);
+
+            return ResponseEntity.ok().body("Đánh giá thành công.");
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Đánh giá thất bại.");
+        }
+    }
+
+
+    @PostMapping("/vehicle")
+
+    public ResponseEntity<?> vehicle(@RequestParam("vin_code")  String vin_code, @RequestParam("model")  String model, @CookieValue(value = "jwt") String token){
+        try{
+            String username = jwtUtils.extractUsername(token);
+            User user = userService.findByUsername(username);
+
+            Vehicle vehicle = new Vehicle();
+            vehicle.setUser(user);
+            vehicle.setModel(model);
+            vehicle.setVinCode(vin_code);
+            vehicleService.save(vehicle);
+
+            return ResponseEntity.ok().body("Liên kết phương tiện thành công.");
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Liên kết phương tiện thất bại.");
+        }
     }
 
 
