@@ -10,6 +10,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css(v=${#dates.createNow().time})}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* === Z-INDEX FIX FOR HEADER DROPDOWNS === */
+        .site-header-user {
+            position: relative;
+            z-index: 1000 !important;
+        }
+        .site-header-user .submenu,
+        .site-header-user #notifDropdown {
+            z-index: 1001 !important;
+        }
+        /* === END Z-INDEX FIX === */
+    </style>
 
 </head>
 <body>
@@ -46,8 +58,7 @@
                     </label>
 
                     <button type="submit" class="submit-button">
-                        <span class="button-text">Gửi ticket hỗ trợ</span>
-                        <span class="button-icon">→</span>
+                        <span class="button-text">Gửi yêu cầu hỗ trợ</span>
                     </button>
                 </form>
             </div>
@@ -56,6 +67,65 @@
 </main>
 
 <div th:insert="footer :: site-footer"></div>
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector(".contact-form");
+
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const email = form.querySelector('input[name="email"]').value.trim();
+            const subject = form.querySelector('input[name="subject"]').value.trim();
+            const message = form.querySelector('textarea[name="message"]').value.trim();
+
+            if (!email || !subject || !message) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Thiếu thông tin",
+                    text: "Vui lòng nhập đầy đủ các trường bắt buộc."
+                });
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    `/api/support?subject=${encodeURIComponent(subject)}&message=${encodeURIComponent(message)}`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    }
+                );
+
+                if (!response.ok) {
+                    const errorText = await response.text().catch(() => "Lỗi không xác định.");
+                    throw new Error(errorText);
+                }
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Đã gửi thành công",
+                    text: "Chúng tôi đã nhận được yêu cầu hỗ trợ của bạn."
+                });
+
+                form.reset();
+
+            } catch (err) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi gửi yêu cầu",
+                    text: err.message || "Không thể kết nối đến API."
+                });
+            }
+        });
+    });
+</script>
+
 
 </body>
 </html>
