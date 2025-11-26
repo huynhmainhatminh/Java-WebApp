@@ -58,7 +58,6 @@ public class Battery {
     private Integer chargeCycles;
 
     @ColumnDefault("'EMPTY'")
-    @Lob
     @Column(name = "status")
     private String status;
 

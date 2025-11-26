@@ -45,6 +45,9 @@ public class UserController {
     @Autowired
     private PaymentInfoService paymentInfoService;
 
+    @Autowired
+    private ReservationService reservationService;
+
 
     String generateTransactionId() {
         long number = ThreadLocalRandom.current().nextLong(100000000000L, 999999999999L);
@@ -236,6 +239,30 @@ public class UserController {
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Liên kết phương tiện thất bại.");
+        }
+    }
+
+
+    @PostMapping("/reserve-battery")
+    public ResponseEntity<?> reserveBattery(
+            @RequestParam("station_id") Integer stationId,
+            @RequestParam("battery_id") Integer batteryId,
+            @RequestParam("pickup_time") String pickupTime,
+            @CookieValue(value = "jwt", required = false) String token) {
+
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return ResponseEntity.status(401).body("Vui lòng đăng nhập để đặt lịch.");
+        }
+
+        try {
+            String username = jwtUtils.extractUsername(token);
+            User user = userService.findByUsername(username);
+
+            reservationService.createReservation(user.getId(), stationId, batteryId, pickupTime);
+
+            return ResponseEntity.ok("Đặt lịch thành công! Vui lòng đến trạm đúng giờ.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Lỗi: " + e.getMessage());
         }
     }
 

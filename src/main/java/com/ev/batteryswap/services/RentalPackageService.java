@@ -48,10 +48,8 @@ public class RentalPackageService implements IRentalPackageService {
         rentalPackageRepository.deleteById(id);
     }
 
-
     @Override
-    public RentalPackage findRentalPackageByName(String name){
+    public RentalPackage findRentalPackageByName(String name) {
         return rentalPackageRepository.findRentalPackageByName(name);
     }
-
 }

@@ -262,9 +262,8 @@ public class IndexController {
     public String listStations(Model model, @RequestParam(defaultValue = "1") int page, @CookieValue(value = "jwt", required = false) String token) {
 
         update_info(model, token);
-        Page<Station> stationPage = stationService.filterStations(null, PageRequest.of(page-1, 6), null);
+        Page<Station> stationPage = stationService.filterStations(null, PageRequest.of(page-1, 6));
 //        model.addAttribute("stations", stationPage.getContent());
-//        return "user/dashboard"; // chính là file HTML bạn gửi ở trên
 
         // List<Station> stations =  batteryService.getAllStations();
 
