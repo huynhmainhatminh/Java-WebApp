@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "maintenance_logs")
+@Table(name = "maintenance_logs.html")
 @EntityListeners(AuditingEntityListener.class)
 public class MaintenanceLog {
     @Id

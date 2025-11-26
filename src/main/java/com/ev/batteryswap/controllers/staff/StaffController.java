@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.ev.batteryswap.services.interfaces.IMaintenanceLogService;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +33,9 @@ public class StaffController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IMaintenanceLogService maintenanceLogService;
 
     private User getCurrentStaffUser() {
         //lấy thông tin xác thực  từ securityContext
@@ -153,5 +157,22 @@ public class StaffController {
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi: " + e.getMessage());
         }
         return "redirect:/staff/transactions";
+    }
+
+    @PostMapping("/batteries/report")
+    public String reportBatteryIssue(@RequestParam("batteryId") Integer batteryId,
+                                     @RequestParam("reason") String reason,
+                                     RedirectAttributes redirectAttributes) {
+        User staff = getCurrentStaffUser();
+        // Check staff station... (bạn có thể gọi hàm checkStaffStation nếu cần)
+
+        try {
+            maintenanceLogService.reportIssue(batteryId, reason, staff);
+            redirectAttributes.addFlashAttribute("successMessage", "Đã báo hỏng pin thành công. Pin đã chuyển sang chế độ Bảo trì.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi: " + e.getMessage());
+        }
+
+        return "redirect:/staff/batteries"; // Quay lại trang danh sách pin
     }
 }

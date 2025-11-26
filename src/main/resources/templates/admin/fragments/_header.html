@@ -67,6 +67,13 @@
                         <i class="nav-icon fas fa-exchange-alt"></i> <p>Giao dịch</p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a th:href="@{/admin/maintenance}" class="nav-link" th:classappend="${currentPage == 'maintenance'} ? 'active' : ''">
+                        <i class="nav-icon fas fa-tools"></i> <p>Nhật ký bảo trì</p>
+                    </a>
+                </li>
+
                 <li class="nav-item">
                     <a th:href="@{/admin/tickets}" class="nav-link" th:classappend="${currentPage == 'tickets'} ? 'active' : ''">
                         <i class="nav-icon fas fa-headset"></i> <p>Hỗ trợ khách hàng</p>
