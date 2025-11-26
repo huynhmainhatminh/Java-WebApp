@@ -17,7 +17,7 @@ public class SecurityConfig {
     public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
     }
-
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -27,6 +27,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/login", "/register", "/my","/packages","/admin/login","/staff/login","/api/**").permitAll() // API công khai
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/img/**").permitAll() // hiệu ứng
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/staff/**").hasAnyAuthority("STAFF")
                         .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable) // vô hiệu hóa form login mặc định của Spring Security
