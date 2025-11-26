@@ -1,6 +1,7 @@
 package com.ev.batteryswap.controllers;
 import com.ev.batteryswap.pojo.*;
 import com.ev.batteryswap.security.JwtUtils;
+import com.ev.batteryswap.services.PaymentInfoService;
 import com.ev.batteryswap.services.RentalPackageService;
 import com.ev.batteryswap.services.UserService;
 import com.ev.batteryswap.services.interfaces.IBatteryService;
@@ -39,6 +40,9 @@ public class IndexController {
 
     @Autowired
     private RentalPackageService  rentalPackageService;
+
+    @Autowired
+    private PaymentInfoService paymentInfoService;
 
 
     @GetMapping("/")
@@ -152,17 +156,6 @@ public class IndexController {
 
     }
 
-    @GetMapping("/lichsu")
-    public String lichsu(@CookieValue(value = "jwt", required = false) String token, Model model) {
-
-        if (token == null || !jwtUtils.validateToken(token)) {
-            return "login";
-        } else {
-            update_info(model, token);
-            return "user/lichsu";
-        }
-    }
-
     @GetMapping("/packages")
     public String packages(@CookieValue(value = "jwt", required = false) String token, Model model) {
         if (token == null || !jwtUtils.validateToken(token)) {
@@ -269,7 +262,7 @@ public class IndexController {
     public String listStations(Model model, @RequestParam(defaultValue = "1") int page, @CookieValue(value = "jwt", required = false) String token) {
 
         update_info(model, token);
-        Page<Station> stationPage = stationService.filterStations(null, PageRequest.of(page-1, 6));
+        Page<Station> stationPage = stationService.filterStations(null, PageRequest.of(page-1, 6), null);
 //        model.addAttribute("stations", stationPage.getContent());
 //        return "user/dashboard"; // chính là file HTML bạn gửi ở trên
 
@@ -289,6 +282,26 @@ public class IndexController {
         model.addAttribute("currentPage", page);
 
         return "user/dashboard";
+    }
+
+
+    @GetMapping("/lichsu")
+    public String lichsu(@CookieValue(value = "jwt", required = false) String token, Model model, @RequestParam(defaultValue = "1") int page) {
+
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return "login";
+        } else {
+            update_info(model, token);
+
+            User user = userService.findByUsername(jwtUtils.extractUsername(token)); // lấy toàn bộ thông tin người dùng
+
+
+            Page<PaymentInfo> paymentInfos = paymentInfoService.filterPaymentInfo(user.getId(), PageRequest.of(page-1, 15));
+
+            model.addAttribute("payinfos", paymentInfos);
+
+            return "user/lichsu";
+        }
     }
 
 }

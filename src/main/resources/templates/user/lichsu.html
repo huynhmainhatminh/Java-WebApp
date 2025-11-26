@@ -285,79 +285,97 @@
                 <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Diễn tả: activate to sort column ascending">Diễn tả</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody th:each="payinfo : ${payinfos}">
+
             <!-- Dữ liệu mẫu -->
+<!--            <tr>-->
+<!--                <td></td>-->
+<!--                <td><strong>#000001</strong></td>-->
+<!--                <td data-order="1699200000">11/11/2025 10:30</td>-->
+<!--                <td>-->
+<!--                    <span class="badge badge-success">Đổi pin</span>-->
+<!--                </td>-->
+<!--                <td class="amount-negative" data-order="-50000">-50.000 VNĐ</td>-->
+<!--                <td>-->
+<!--                    Đổi pin tại trạm A-->
+<!--                    <br><small style="color: #6b7280;">Trạm: Trạm Quận 1</small>-->
+<!--                </td>-->
+<!--            </tr>-->
+
             <tr>
                 <td></td>
-                <td><strong>#000001</strong></td>
-                <td data-order="1699200000">11/11/2025 10:30</td>
+                <td th:text="${payinfo.getTransactionId()}"><strong>000000000000</strong></td>
+                <td th:text="${#temporals.format(payinfo.createdAt, 'dd/MM/yyyy HH:mm:ss')}"></td>
                 <td>
-                    <span class="badge badge-success">Đổi pin</span>
+                    <span th:if="${payinfo.getPaymentMethod() == 'Nạp tiền'}" class="badge badge-success">Nạp tiền</span>
+                    <span th:if="${payinfo.getPaymentMethod() == 'Thuê gói'}" class="badge badge-warning">Thuê gói</span>
+                    <span th:if="${payinfo.getPaymentMethod() == 'Đổi pin'}" class="badge badge-danger">Đổi pin</span>
+
                 </td>
-                <td class="amount-negative" data-order="-50000">-50.000 VNĐ</td>
-                <td>
-                    Đổi pin tại trạm A
-                    <br><small style="color: #6b7280;">Trạm: Trạm Quận 1</small>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><strong>#000002</strong></td>
-                <td data-order="1699286400">10/11/2025 14:20</td>
-                <td>
-                    <span class="badge badge-warning">Thuê pin</span>
-                </td>
-                <td class="amount-negative" data-order="-100000">-100.000 VNĐ</td>
-                <td>
-                    Thuê pin 1 ngày
-                    <br><small style="color: #6b7280;">Trạm: Trạm Quận 3</small>
+                <td class="amount-negative" th:text="${#numbers.formatDecimal(payinfo.getAmount(), 0, 'POINT', 0, 'NONE')} + ' VNĐ'">-50.000 VNĐ</td>
+                <td th:text="${payinfo.note}" >
+                    Nội dung
                 </td>
             </tr>
-            <tr>
-                <td></td>
-                <td><strong>#000003</strong></td>
-                <td data-order="1699372800">09/11/2025 09:15</td>
-                <td>
-                    <span class="badge badge-danger">Trả pin</span>
-                </td>
-                <td class="amount-positive" data-order="50000">+50.000 VNĐ</td>
-                <td>
-                    Hoàn tiền cọc pin
-                    <br><small style="color: #6b7280;">Trạm: Trạm Quận 5</small>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><strong>#000004</strong></td>
-                <td data-order="1699459200">08/11/2025 16:45</td>
-                <td>
-                    <span class="badge badge-success">Đổi pin</span>
-                </td>
-                <td class="amount-negative" data-order="-50000">-50.000 VNĐ</td>
-                <td>
-                    Đổi pin khẩn cấp
-                    <br><small style="color: #6b7280;">Trạm: Trạm Quận 7</small>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><strong>#000005</strong></td>
-                <td data-order="1699545600">07/11/2025 11:00</td>
-                <td>
-                    <span class="badge badge-warning">Thuê pin</span>
-                </td>
-                <td class="amount-negative" data-order="-150000">-150.000 VNĐ</td>
-                <td>
-                    Thuê pin 2 ngày
-                    <br><small style="color: #6b7280;">Trạm: Trạm Quận 10</small>
-                </td>
-            </tr>
+
+            <!--            <tr>-->
+<!--                <td></td>-->
+<!--                <td><strong>#000002</strong></td>-->
+<!--                <td data-order="1699286400">10/11/2025 14:20</td>-->
+<!--                <td>-->
+<!--                    <span class="badge badge-warning">Thuê pin</span>-->
+<!--                </td>-->
+<!--                <td class="amount-negative" data-order="-100000">-100.000 VNĐ</td>-->
+<!--                <td>-->
+<!--                    Thuê pin 1 ngày-->
+<!--                    <br><small style="color: #6b7280;">Trạm: Trạm Quận 3</small>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td></td>-->
+<!--                <td><strong>#000003</strong></td>-->
+<!--                <td data-order="1699372800">09/11/2025 09:15</td>-->
+<!--                <td>-->
+<!--                    <span class="badge badge-danger">Trả pin</span>-->
+<!--                </td>-->
+<!--                <td class="amount-positive" data-order="50000">+50.000 VNĐ</td>-->
+<!--                <td>-->
+<!--                    Hoàn tiền cọc pin-->
+<!--                    <br><small style="color: #6b7280;">Trạm: Trạm Quận 5</small>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td></td>-->
+<!--                <td><strong>#000004</strong></td>-->
+<!--                <td data-order="1699459200">08/11/2025 16:45</td>-->
+<!--                <td>-->
+<!--                    <span class="badge badge-success">Đổi pin</span>-->
+<!--                </td>-->
+<!--                <td class="amount-negative" data-order="-50000">-50.000 VNĐ</td>-->
+<!--                <td>-->
+<!--                    Đổi pin khẩn cấp-->
+<!--                    <br><small style="color: #6b7280;">Trạm: Trạm Quận 7</small>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td></td>-->
+<!--                <td><strong>#000005</strong></td>-->
+<!--                <td data-order="1699545600">07/11/2025 11:00</td>-->
+<!--                <td>-->
+<!--                    <span class="badge badge-warning">Thuê pin</span>-->
+<!--                </td>-->
+<!--                <td class="amount-negative" data-order="-150000">-150.000 VNĐ</td>-->
+<!--                <td>-->
+<!--                    Thuê pin 2 ngày-->
+<!--                    <br><small style="color: #6b7280;">Trạm: Trạm Quận 10</small>-->
+<!--                </td>-->
+<!--            </tr>-->
             </tbody>
         </table>
     </div>
 
     <div style="text-align: center; margin-top: 2rem;">
-        <a href="dashboard.html" class="button primary">Về Dashboard</a>
+        <a href="dashboard" class="button primary">Về Dashboard</a>
     </div>
 </main>
 

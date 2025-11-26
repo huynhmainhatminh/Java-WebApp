@@ -3,9 +3,15 @@ import com.ev.batteryswap.pojo.*;
 import com.ev.batteryswap.security.JwtUtils;
 import com.ev.batteryswap.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 @RestController
@@ -36,6 +42,15 @@ public class UserController {
     @Autowired
     private VehicleService vehicleService;
 
+    @Autowired
+    private PaymentInfoService paymentInfoService;
+
+
+    String generateTransactionId() {
+        long number = ThreadLocalRandom.current().nextLong(100000000000L, 999999999999L);
+        return String.valueOf(number);
+    }
+
 
     @PostMapping("/information")
     public User information(@RequestParam(value = "username") String username) {
@@ -48,6 +63,8 @@ public class UserController {
     }
 
 
+
+    // API đăng ký gói dịch vụ
     @PostMapping("/register-package")
     public ResponseEntity<?> updateBalanceById(@RequestParam(value = "name_pack") String name_pack,
                                             @RequestParam(value = "days") int days, @CookieValue(value = "jwt") String token) {
@@ -83,6 +100,17 @@ public class UserController {
 
             BigDecimal newBalance = balanceUser.subtract(packagePrice);
             userService.updateBalanceById(userId, newBalance);
+
+
+            // Lưu lịch sử giao dịch
+            PaymentInfo paymentInfo = new PaymentInfo();
+            paymentInfo.setUser(user);
+            paymentInfo.setAmount(packagePrice);
+            paymentInfo.setTransactionId(generateTransactionId());
+            paymentInfo.setPaymentMethod("Thuê gói");
+            paymentInfo.setNote(name_pack);
+            paymentInfoService.save(paymentInfo);
+
             return ResponseEntity.ok().body("Đăng ký gói thành công");
         } catch (Exception e){
             return  ResponseEntity.badRequest().body("Không thể đăng ký gói.");
@@ -90,7 +118,7 @@ public class UserController {
     }
 
 
-    // API đổi pin
+    // API đổi pin xe điện
     @PostMapping("/change")
     public ResponseEntity<?> doiPin(@RequestParam("station_id") Integer station_id, @RequestParam("pin_id") Integer pin_id,
                          @RequestParam("serial_number") String serial_number, @RequestParam("model_batteries") String model_batteries,
@@ -115,6 +143,17 @@ public class UserController {
                         batteryService.updateCurrentUser(user, pin_id);
                         batteryService.updateStatusById(pin_id, "RENTED"); // thay đổi trạng thái của Pin
                         userService.updateBalanceById(user.getId(), newBalance); // cập nhật lại số tiền
+
+
+                        // Lưu lịch sử giao dịch
+                        PaymentInfo paymentInfo = new PaymentInfo();
+                        paymentInfo.setUser(user);
+                        paymentInfo.setAmount(battery.getAmount());
+                        paymentInfo.setTransactionId(generateTransactionId());
+                        paymentInfo.setPaymentMethod("Đổi pin");
+                        paymentInfo.setNote(model_batteries);
+                        paymentInfoService.save(paymentInfo);
+
                         return ResponseEntity.ok("Đổi Pin Thành Công");
                         // return "Đổi Pin Thành Công";
                     } else {
@@ -130,6 +169,7 @@ public class UserController {
     }
 
 
+    // API gửi hỗ trợ
     @PostMapping("/support")
     public ResponseEntity<?> supportUser(@RequestParam("subject") String subject, @RequestParam("message") String message, @CookieValue(value = "jwt") String token){
 
@@ -155,8 +195,8 @@ public class UserController {
     }
 
 
+    // API đánh giá trạm
     @PostMapping("/rating")
-
     public ResponseEntity<?> reviewStation(@RequestParam("rating") Byte rating, @RequestParam("comment") String comment, @RequestParam("station_id") Integer station_id, @CookieValue(value = "jwt") String token){
         try{
             String username = jwtUtils.extractUsername(token);
@@ -179,8 +219,8 @@ public class UserController {
     }
 
 
+    // API liên kết phương tiện
     @PostMapping("/vehicle")
-
     public ResponseEntity<?> vehicle(@RequestParam("vin_code")  String vin_code, @RequestParam("model")  String model, @CookieValue(value = "jwt") String token){
         try{
             String username = jwtUtils.extractUsername(token);
@@ -198,6 +238,5 @@ public class UserController {
             return ResponseEntity.badRequest().body("Liên kết phương tiện thất bại.");
         }
     }
-
 
 }
